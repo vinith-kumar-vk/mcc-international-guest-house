@@ -37,21 +37,6 @@
     </header>
 
     <main>
-        <!-- Booking Progress Indicator -->
-        <div class="progress-container">
-            <div class="step active">
-                <div class="step-num">1</div> Select Space
-            </div>
-            <div class="step-divider"></div>
-            <div class="step">
-                <div class="step-num">2</div> Enter Details
-            </div>
-            <div class="step-divider"></div>
-            <div class="step">
-                <div class="step-num">3</div> Confirm Payment
-            </div>
-        </div>
-
         <!-- SLIDER SECTION (Room Carousel) -->
         <div class="slider-section">
             <div class="title-section">
