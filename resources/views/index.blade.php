@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Booking Demo</title>
+    <title>MMIP Room Booking</title>
     <!-- Modern Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Phosphor Icons for Modern Aesthetics -->
@@ -14,7 +14,26 @@
 
 <body>
     <header>
-        <h1>Space Booking Demo</h1>
+        <div class="header-left">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+        </div>
+        <div class="header-center">
+            <h1>MMIP Room Booking</h1>
+        </div>
+        <div class="header-right">
+            <div class="profile-dropdown">
+                <button class="profile-btn" onclick="toggleDropdown(event)">
+                    <i class="ph-fill ph-user-circle"></i>
+                </button>
+                <div class="dropdown-menu" id="profileMenu">
+                    @auth
+                        <a href="#" class="dropdown-item logout">Logout</a>
+                    @else
+                        <a href="#" class="dropdown-item">Login</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -33,197 +52,184 @@
             </div>
         </div>
 
-        <div class="title-section">
-            <h2>Available Spaces</h2>
-            <p>Find and book the perfect room for your needs</p>
-        </div>
-
-        <!-- Filters Area -->
-        <div class="filters">
-            <div class="filter-group">
-                <i class="ph ph-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search spaces..." oninput="filterSpaces()">
+        <!-- SLIDER SECTION (Room Carousel) -->
+        <div class="slider-section">
+            <div class="title-section">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Explore More Spaces</h2>
+                <p>Browse through our collection of premium rooms</p>
             </div>
-            <div class="filter-group">
-                <i class="ph ph-users"></i>
-                <select id="capacityFilter" onchange="filterSpaces()">
-                    <option value="all">Any Capacity</option>
-                    <option value="5">Up to 5 people</option>
-                    <option value="10">Up to 10 people</option>
-                    <option value="20">Up to 20 people</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <i class="ph ph-money"></i>
-                <select id="priceFilter" onchange="filterSpaces()">
-                    <option value="all">Any Price</option>
-                    <option value="500">Under ₹800</option>
-                    <option value="800">Under ₹1000</option>
-                    <option value="1000">₹1000 & above</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Room Cards Container -->
-        <div class="cards-container" id="spacesContainer">
-
-            <!-- Room 1: Meeting Room -->
-            <div class="card" data-name="Meeting Room" data-capacity="5" data-price="500">
-                <div class="card-image-wrapper">
-                    <img src="{{ asset('assets/meeting.png') }}" alt="Meeting Room">
-                    <span class="badge status-available">Available</span>
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <h2>Meeting Room</h2>
-                        <div class="rating"><i class="ph-fill ph-star"></i> 4.8 <span>(124)</span></div>
-                    </div>
-                    <p class="description">Ideal for small team discussions, 1-on-1s, and focused brainstorming
-                        sessions.</p>
-
-                    <div class="amenities">
-                        <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                        <span title="Air Conditioning"><i class="ph ph-wind"></i> AC</span>
-                        <span title="Whiteboard"><i class="ph ph-presentation-chart"></i> Whiteboard</span>
-                    </div>
-
-                    <div class="card-meta">
-                        <div class="meta-item"><i class="ph-fill ph-users"></i> 5 Seats</div>
-                        <div class="meta-item slots-left"><i class="ph-fill ph-clock"></i> 4 Slots Left</div>
-                    </div>
-
-                    <div class="price-highlight">Starting from <span>₹500</span> / hour</div>
-
-                    <div class="datetime-picker">
-                        <div class="dt-input">
-                            <label>Date</label>
-                            <input type="date" class="card-date" required>
+            <div class="slider-wrapper">
+                <button class="slider-btn prev-btn" onclick="slideLeft()"><i class="ph-bold ph-caret-left"></i></button>
+                <div class="slider-container" id="roomSlider">
+                    <!-- Room 1 -->
+                    <div class="card" data-name="Meeting Room" data-capacity="5" data-price="500">
+                        <div class="card-image-wrapper">
+                            <img src="{{ asset('assets/meeting.png') }}" alt="Meeting Room">
+                            <span class="badge status-available">Available</span>
                         </div>
-                        <div class="dt-input-group">
-                            <div class="dt-input">
-                                <label>Start</label>
-                                <input type="time" class="card-start" required>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h2>Meeting Room</h2>
+                                <div class="rating"><i class="ph-fill ph-star"></i> 4.8 <span>(124)</span></div>
                             </div>
-                            <div class="dt-input">
-                                <label>End</label>
-                                <input type="time" class="card-end" required>
+                            <p class="description">Ideal for small team discussions and focused brainstorming sessions.</p>
+                            <div class="amenities">
+                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
+                                <span title="Air Conditioning"><i class="ph ph-wind"></i> AC</span>
+                            </div>
+                            <div class="card-meta">
+                                <div class="meta-item"><i class="ph-fill ph-users"></i> 5 Seats</div>
+                            </div>
+                            <div class="price-highlight">Starting from <span>₹500</span> / hour</div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Meeting Room')">View Details</button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-actions">
-                        <button class="btn btn-outline" onclick="viewDetails('Meeting Room')">View Details</button>
-                        <button class="btn" onclick="openBookingPopup(this)">Book Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room 2: Conference Hall -->
-            <div class="card" data-name="Conference Hall" data-capacity="10" data-price="800">
-                <div class="card-image-wrapper">
-                    <img src="{{ asset('assets/conference.png') }}" alt="Conference Hall">
-                    <span class="badge status-few">2 Slots Left</span>
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <h2>Conference Hall</h2>
-                        <div class="rating"><i class="ph-fill ph-star"></i> 4.9 <span>(89)</span></div>
-                    </div>
-                    <p class="description">A premium extended hall with professional A/V equipment for corporate
-                        meetings.</p>
-
-                    <div class="amenities">
-                        <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                        <span title="Projector"><i class="ph ph-projector-screen"></i> Projector</span>
-                        <span title="AC"><i class="ph ph-wind"></i> AC</span>
-                    </div>
-
-                    <div class="card-meta">
-                        <div class="meta-item"><i class="ph-fill ph-users"></i> 10 Seats</div>
-                        <div class="meta-item slots-left warning"><i class="ph-fill ph-clock-countdown"></i> Limited
-                            slots</div>
-                    </div>
-
-                    <div class="price-highlight">Starting from <span>₹800</span> / hour</div>
-
-                    <div class="datetime-picker">
-                        <div class="dt-input">
-                            <label>Date</label>
-                            <input type="date" class="card-date" required>
+                    <!-- Room 2 -->
+                    <div class="card" data-name="Conference Hall" data-capacity="10" data-price="800">
+                        <div class="card-image-wrapper">
+                            <img src="{{ asset('assets/conference.png') }}" alt="Conference Hall">
+                            <span class="badge status-few">2 Slots Left</span>
                         </div>
-                        <div class="dt-input-group">
-                            <div class="dt-input">
-                                <label>Start</label>
-                                <input type="time" class="card-start" required>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h2>Conference Hall</h2>
+                                <div class="rating"><i class="ph-fill ph-star"></i> 4.9 <span>(89)</span></div>
                             </div>
-                            <div class="dt-input">
-                                <label>End</label>
-                                <input type="time" class="card-end" required>
+                            <p class="description">A premium extended hall with professional A/V equipment.</p>
+                            <div class="amenities">
+                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
+                                <span title="Projector"><i class="ph ph-projector-screen"></i> Projector</span>
+                            </div>
+                            <div class="card-meta">
+                                <div class="meta-item"><i class="ph-fill ph-users"></i> 10 Seats</div>
+                            </div>
+                            <div class="price-highlight">Starting from <span>₹800</span> / hour</div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Conference Hall')">View Details</button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-actions">
-                        <button class="btn btn-outline" onclick="viewDetails('Conference Hall')">View Details</button>
-                        <button class="btn" onclick="openBookingPopup(this)">Book Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Room 3: Training Room -->
-            <div class="card" data-name="Training Room" data-capacity="20" data-price="1000">
-                <div class="card-image-wrapper">
-                    <img src="{{ asset('assets/training.png') }}" alt="Training Room">
-                    <span class="badge status-booked">Fully Booked</span>
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <h2>Training Room</h2>
-                        <div class="rating"><i class="ph-fill ph-star"></i> 4.7 <span>(56)</span></div>
-                    </div>
-                    <p class="description">Spacious and well-lit workspace ideal for workshops, seminars, and group
-                        training.</p>
-
-                    <div class="amenities">
-                        <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                        <span title="Whiteboard"><i class="ph ph-presentation-chart"></i> Whiteboard</span>
-                        <span title="Projector"><i class="ph ph-projector-screen"></i> Projector</span>
-                        <span title="Mic"><i class="ph ph-microphone"></i> Audio</span>
-                    </div>
-
-                    <div class="card-meta">
-                        <div class="meta-item"><i class="ph-fill ph-users"></i> 20 Seats</div>
-                        <div class="meta-item slots-left danger"><i class="ph-fill ph-x-circle"></i> Not available today
+                    <!-- Room 3 -->
+                    <div class="card" data-name="Training Room" data-capacity="20" data-price="1000">
+                        <div class="card-image-wrapper">
+                            <img src="{{ asset('assets/training.png') }}" alt="Training Room">
+                            <span class="badge status-booked">Fully Booked</span>
                         </div>
-                    </div>
-
-                    <div class="price-highlight">Starting from <span>₹1000</span> / hour</div>
-
-                    <div class="datetime-picker">
-                        <div class="dt-input">
-                            <label>Date</label>
-                            <input type="date" class="card-date" required>
-                        </div>
-                        <div class="dt-input-group">
-                            <div class="dt-input">
-                                <label>Start</label>
-                                <input type="time" class="card-start" required>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h2>Training Room</h2>
+                                <div class="rating"><i class="ph-fill ph-star"></i> 4.7 <span>(56)</span></div>
                             </div>
-                            <div class="dt-input">
-                                <label>End</label>
-                                <input type="time" class="card-end" required>
+                            <p class="description">Spacious and well-lit workspace ideal for group training.</p>
+                            <div class="amenities">
+                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
+                                <span title="Whiteboard"><i class="ph ph-presentation-chart"></i> Whiteboard</span>
+                            </div>
+                            <div class="card-meta">
+                                <div class="meta-item"><i class="ph-fill ph-users"></i> 20 Seats</div>
+                            </div>
+                            <div class="price-highlight">Starting from <span>₹1000</span> / hour</div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Training Room')">View Details</button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-actions">
-                        <button class="btn btn-outline" onclick="viewDetails('Training Room')">View Details</button>
-                        <button class="btn" onclick="openBookingPopup(this)">Book Now</button>
+                    <!-- Room 4 -->
+                    <div class="card" data-name="Executive Suite" data-capacity="8" data-price="1200">
+                        <div class="card-image-wrapper">
+                            <img src="{{ asset('assets/meeting.png') }}" alt="Executive Suite">
+                            <span class="badge status-available">Available</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h2>Executive Suite</h2>
+                                <div class="rating"><i class="ph-fill ph-star"></i> 5.0 <span>(32)</span></div>
+                            </div>
+                            <p class="description">Luxury suite designed for high-profile executive meetings.</p>
+                            <div class="amenities">
+                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
+                                <span title="Refreshments"><i class="ph ph-coffee"></i> Coffee</span>
+                            </div>
+                            <div class="card-meta">
+                                <div class="meta-item"><i class="ph-fill ph-users"></i> 8 Seats</div>
+                            </div>
+                            <div class="price-highlight">Starting from <span>₹1200</span> / hour</div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Executive Suite')">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Room 5 -->
+                    <div class="card" data-name="Innovation Lab" data-capacity="15" data-price="900">
+                        <div class="card-image-wrapper">
+                            <img src="{{ asset('assets/training.png') }}" alt="Innovation Lab">
+                            <span class="badge status-available">Available</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-header">
+                                <h2>Innovation Lab</h2>
+                                <div class="rating"><i class="ph-fill ph-star"></i> 4.6 <span>(41)</span></div>
+                            </div>
+                            <p class="description">Creative environment equipped with modern tools for ideation.</p>
+                            <div class="amenities">
+                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
+                                <span title="Smart Board"><i class="ph ph-presentation-chart"></i> Smart Board</span>
+                            </div>
+                            <div class="card-meta">
+                                <div class="meta-item"><i class="ph-fill ph-users"></i> 15 Seats</div>
+                            </div>
+                            <div class="price-highlight">Starting from <span>₹900</span> / hour</div>
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Innovation Lab')">View Details</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <button class="slider-btn next-btn" onclick="slideRight()"><i class="ph-bold ph-caret-right"></i></button>
             </div>
         </div>
+
+        <!-- GUEST HOUSE DESCRIPTION SECTION -->
+        <div class="description-section">
+            <h2>About Our Guest House Booking</h2>
+            <div class="desc-content">
+                <p>Enjoy comfortable stays tailored perfectly to meet the demands of modern professionals. Our guest house comes equipped with all premium amenities aimed at making your experience relaxing and highly productive.</p>
+                <p>We believe in an easy booking process that respects your time. In just a few quick clicks, you can browse, confirm, and secure an accommodation that best matches your professional requirements.</p>
+                <p>Furthermore, our environment is ideal for meetings, training sessions, and visitors. With modern setups and top-notch facilities, your team interactions and corporate visits will flow seamlessly.</p>
+            </div>
+        </div>
+
     </main>
+
+    <!-- FOOTER SECTION -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Home</a></li>
+                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Spaces</a></li>
+                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li><i class="ph-fill ph-envelope-simple"></i> contact@mmip.example.com</li>
+                    <li><i class="ph-fill ph-phone"></i> +91 98765 43210</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Address</h4>
+                <p><i class="ph-fill ph-map-pin" style="margin-top: 0.3rem;"></i> <span>123 Innovation Drive,<br>Tech Park Sector,<br>Chennai 600001</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Design and Developed by MCC-MRF Innovation Park</p>
+        </div>
+    </footer>
 
     <!-- Modal confirmation overlay -->
     <div class="modal-overlay" id="bookingModal">
@@ -268,6 +274,28 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', initIndexPage);
+
+        function slideLeft() {
+            const slider = document.getElementById('roomSlider');
+            if (slider) {
+                const card = slider.querySelector('.card');
+                if (card) {
+                    const cardWidth = card.offsetWidth + 32; // Includes 2rem (32px) gap
+                    slider.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                }
+            }
+        }
+
+        function slideRight() {
+            const slider = document.getElementById('roomSlider');
+            if (slider) {
+                const card = slider.querySelector('.card');
+                if (card) {
+                    const cardWidth = card.offsetWidth + 32;
+                    slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                }
+            }
+        }
     </script>
 </body>
 

@@ -464,22 +464,3 @@ function fallbackTextDownload() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
-
-// --- HEADER DROPDOWN LOGIC ---
-function toggleDropdown(event) {
-    event.stopPropagation();
-    const menu = document.getElementById('profileMenu');
-    if (menu) {
-        menu.classList.toggle('show');
-    }
-}
-
-document.addEventListener('click', function(event) {
-    const menu = document.getElementById('profileMenu');
-    const btn = document.querySelector('.profile-btn');
-    if (menu && menu.classList.contains('show')) {
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-            menu.classList.remove('show');
-        }
-    }
-});

@@ -30,8 +30,11 @@ Route::get('/failure', function () {
     return view('failure');
 })->name('checkout.failure');
 
-// Admin Dashboard to see database data visually
-Route::get('/admin/bookings', function () {
-    $bookings = Booking::orderBy('created_at', 'desc')->get();
-    return view('admin_bookings', compact('bookings'));
-})->name('admin.bookings');
+// Admin Dashboard
+use App\Http\Controllers\AdminController;
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
+    Route::get('/bookings/{id}', [AdminController::class, 'show'])->name('admin.bookings.show');
+});
