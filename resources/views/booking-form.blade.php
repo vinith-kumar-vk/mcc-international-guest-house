@@ -157,7 +157,10 @@
                     </div>
                 </div>
 
-                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Booking details submitted. Redirecting to payment...'); window.location.href='{{ route('home') }}';">
+                <form action="{{ route('booking.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="room_name" value="{{ $roomId }}">
+                    
                     <div class="form-grid">
                         
                         <!-- SECTION: PROFILE DETAILS -->
@@ -177,7 +180,7 @@
                             <!-- User Type -->
                             <div class="form-group">
                                 <label class="form-label">User Type <span>*</span></label>
-                                <select class="form-select" id="userTypeSelect" onchange="toggleStudentFields()" required>
+                                <select class="form-select" id="userTypeSelect" name="user_type" onchange="toggleStudentFields()" required>
                                     <option value="" disabled selected>Select Current Status</option>
                                     <option value="Student">Student</option>
                                     <option value="Staff">Staff</option>
@@ -189,7 +192,7 @@
                             <!-- Name -->
                             <div class="form-group">
                                 <label class="form-label">Applicant Name <span>*</span></label>
-                                <input type="text" class="form-input" placeholder="Your full name as per official ID" required>
+                                <input type="text" name="name" class="form-input" placeholder="Your full name as per official ID" required>
                                 <div class="form-helper" style="visibility: hidden;">Placeholder helper</div>
                             </div>
                         </div>
@@ -205,7 +208,7 @@
 
                         <div class="form-group dynamic-field student-field" id="levelFieldGroup">
                             <label class="form-label">Level <span>*</span></label>
-                            <select class="form-select">
+                            <select class="form-select" name="level">
                                 <option value="" disabled selected>Select Degree Level</option>
                                 <option value="UG">Undergraduate (UG)</option>
                                 <option value="PG">Postgraduate (PG)</option>
@@ -216,13 +219,13 @@
 
                         <div class="form-group dynamic-field student-field full-width" id="departmentFieldGroup">
                             <label class="form-label">Department <span>*</span></label>
-                            <select class="form-select" id="departmentSelect" onchange="toggleOtherDepartment()">
+                            <select class="form-select" id="departmentSelect" name="department" onchange="toggleOtherDepartment()">
                                 <option value="" disabled selected>Select Stream First</option>
                             </select>
                             
                             <!-- Hidden Smooth "Other" Field -->
                             <div id="otherDepartmentWrapper" style="overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0.8rem;">
-                                <input type="text" class="form-input" id="otherDepartmentInput" placeholder="Enter Department Name" style="border-color: var(--primary-color);">
+                                <input type="text" class="form-input" id="otherDepartmentInput" name="department_other" placeholder="Enter Department Name" style="border-color: var(--primary-color);">
                             </div>
                         </div>
 
@@ -236,14 +239,14 @@
                             <!-- Email -->
                             <div class="form-group">
                                 <label class="form-label">Email Address <span>*</span></label>
-                                <input type="email" class="form-input" placeholder="you@domain.edu" required>
+                                <input type="email" name="email" class="form-input" placeholder="you@domain.edu" required>
                                 <div class="form-helper">Enter valid email for confirmation</div>
                             </div>
 
                             <!-- Contact -->
                             <div class="form-group">
                                 <label class="form-label">Contact Number <span>*</span></label>
-                                <input type="tel" class="form-input" placeholder="+91 xxxxx xxxxx" required>
+                                <input type="tel" name="phone" class="form-input" placeholder="+91 xxxxx xxxxx" required>
                                 <div class="form-helper">For booking updates</div>
                             </div>
                         </div>
@@ -251,24 +254,24 @@
                         <!-- Primary Guest -->
                         <div class="form-group full-width">
                             <label class="form-label">Primary Guest Name</label>
-                            <input type="text" class="form-input" placeholder="Guest full name (Leave blank if self)">
+                            <input type="text" name="primary_guest_name" class="form-input" placeholder="Guest full name (Leave blank if self)">
                             <div class="form-helper">Enter the name of the guest staying if different from applicant</div>
                         </div>
 
                         <div class="form-group full-width">
                             <label class="form-label">Number of Persons <span>*</span></label>
-                            <input type="number" min="1" max="4" class="form-input" placeholder="e.g. 2" required>
+                            <input type="number" name="no_of_persons" min="1" max="4" class="form-input" placeholder="e.g. 2" required>
                         </div>
 
                         <!-- DYNAMIC: Non-Indian Fields -->
                         <div class="form-group dynamic-field non-indian-field full-width" id="passportFieldGroup" style="grid-column: 1/-1;">
                             <label class="form-label">Passport Number <span>*</span></label>
-                            <input type="text" class="form-input" placeholder="Required for Non-Indian guests" id="passportInput">
+                            <input type="text" name="passport_number" class="form-input" placeholder="Required for Non-Indian guests" id="passportInput">
                         </div>
                         
                         <div class="form-group dynamic-field non-indian-field full-width" id="gstFieldGroup" style="grid-column: 1/-1;">
                             <label class="form-label">GST Number</label>
-                            <input type="text" class="form-input" placeholder="If applicable for corporate booking (Optional)">
+                            <input type="text" name="gst_id" class="form-input" placeholder="If applicable for corporate booking (Optional)">
                         </div>
 
                         <!-- SECTION: STAY DETAILS -->
@@ -279,13 +282,13 @@
                         <div class="paired-row">
                             <div class="form-group">
                                 <label class="form-label">Clock In Date & Time <span>*</span></label>
-                                <input type="datetime-local" class="form-input" required>
+                                <input type="datetime-local" name="clock_in" class="form-input" required>
                                 <div class="form-helper">Select your intended arrival</div>
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">Clock Out Date & Time <span>*</span></label>
-                                <input type="datetime-local" class="form-input" required>
+                                <input type="datetime-local" name="clock_out" class="form-input" required>
                                 <div class="form-helper">Select your intended departure</div>
                             </div>
                         </div>

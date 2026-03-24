@@ -36,9 +36,19 @@
     <main style="padding: 2rem 1rem;">
         <div class="success-wrapper">
             <div class="success-header">
-                <i class="ph-fill ph-check-circle success-icon-large"></i>
-                <h2>Payment Successful!</h2>
-                <p>Your space booking has been confirmed.</p>
+                @if($booking->approval_status === 'Pending')
+                    <i class="ph-fill ph-clock-countdown success-icon-large"></i>
+                    <h2>Booking Received!</h2>
+                    <p>Your booking request has been received and is <strong>waiting for approval</strong>.</p>
+                @elseif($booking->approval_status === 'Rejected')
+                    <i class="ph-fill ph-x-circle success-icon-large"></i>
+                    <h2>Booking Rejected</h2>
+                    <p>Unfortunately, your booking request has been rejected.</p>
+                @else
+                    <i class="ph-fill ph-check-circle success-icon-large"></i>
+                    <h2>Booking Confirmed!</h2>
+                    <p>Your space booking has been confirmed.</p>
+                @endif
             </div>
 
             <div class="success-body">
@@ -70,7 +80,7 @@
                         </tr>
                         <tr>
                             <th>Guests</th>
-                            <td id="recGuests">N/A (Stored in DB)</td>
+                            <td id="recGuests">{{ $booking->primary_guest_name ?: $booking->name }} ({{ $booking->no_of_persons }} {{ Str::plural('Person', $booking->no_of_persons) }})</td>
                         </tr>
                         <tr>
                             <th>Room Name</th>
@@ -81,13 +91,19 @@
                             <td id="recDateTime">{{ \Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}</td>
                         </tr>
                         <tr>
-                            <th>Total Amount Paid</th>
-                            <td id="recAmount" style="color: #28a745; font-size: 1.1rem;">₹{{ number_format($booking->total_price, 2) }}</td>
+                            <th>{{ $booking->payment_status === 'Paid' ? 'Total Amount Paid' : 'Total Amount to be Paid' }}</th>
+                            <td id="recAmount" style="color: var(--primary-color); font-size: 1.1rem;">₹{{ number_format($booking->total_price, 2) }}</td>
                         </tr>
                         <tr>
                             <th>Status</th>
-                            <td><span
-                                    style="background: #d4edda; color: #155724; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">Completed</span>
+                            <td>
+                                @if($booking->approval_status === 'Pending')
+                                    <span style="background: #fff3cd; color: #856404; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">Waiting for Approval</span>
+                                @elseif($booking->approval_status === 'Rejected')
+                                    <span style="background: #f8d7da; color: #721c24; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">Rejected</span>
+                                @else
+                                    <span style="background: rgba(255, 122, 0, 0.1); color: var(--primary-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 700;">Approved</span>
+                                @endif
                             </td>
                         </tr>
                     </tbody>

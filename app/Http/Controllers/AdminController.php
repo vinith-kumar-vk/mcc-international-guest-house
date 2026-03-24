@@ -20,6 +20,7 @@ class AdminController extends Controller
         
         // Status Counts
         $pendingBookings = Booking::where('payment_status', 'Pending')->count();
+        $pendingApprovals = Booking::where('approval_status', 'Pending')->count();
         $completedBookings = Booking::where('payment_status', 'Paid')->count();
         $cancelledBookings = Booking::where('payment_status', 'Failed')->count();
 
@@ -83,7 +84,7 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact(
             'totalBookings', 'todayBookings', 'totalRevenue', 'todayRevenue', 
-            'pendingBookings', 'completedBookings', 'cancelledBookings', 'activeWorkspaces',
+            'pendingBookings', 'pendingApprovals', 'completedBookings', 'cancelledBookings', 'activeWorkspaces',
             'recentBookings', 'upcomingBookings', 'dailyRevenue', 'monthlyRevenue', 'workspaceData', 'insights'
         ));
     }
@@ -126,5 +127,21 @@ class AdminController extends Controller
     {
         $booking = Booking::findOrFail($id);
         return view('admin.booking_details', compact('booking'));
+    }
+
+    public function approve($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->update(['approval_status' => 'Approved']);
+        
+        return back()->with('success', 'Booking approved successfully.');
+    }
+
+    public function reject($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->update(['approval_status' => 'Rejected']);
+        
+        return back()->with('success', 'Booking rejected successfully.');
     }
 }

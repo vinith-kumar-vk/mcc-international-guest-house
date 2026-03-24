@@ -21,6 +21,10 @@
             --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--admin-bg);
             display: flex;
@@ -41,6 +45,11 @@
             position: fixed;
             height: 100vh;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.open {
+            transform: translateX(0) !important;
         }
 
         .sidebar-header {
@@ -72,8 +81,14 @@
 
         /* Main Content */
         .admin-main {
-            margin-left: var(--sidebar-width); flex: 1; padding: 0;
-            display: flex; flex-direction: column;
+            margin-left: var(--sidebar-width); 
+            flex: 1; 
+            padding: 0;
+            display: flex; 
+            flex-direction: column;
+            width: calc(100% - var(--sidebar-width));
+            min-width: 0;
+            transition: all 0.3s ease;
         }
 
         .top-navbar {
@@ -96,24 +111,53 @@
         }
 
         .admin-body {
-            padding: 1.5rem 2rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
+            padding: 1.5rem 2.5rem 3rem 2rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         /* Stats Cards */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1.25rem; 
+            margin-bottom: 2rem;
+            width: 100%;
         }
 
         .stat-card {
-            background: white; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border);
-            display: flex; flex-direction: column; gap: 0.25rem; box-shadow: var(--card-shadow);
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 16px; 
+            border: 1px solid var(--border);
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.5rem; 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            min-width: 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .stat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .stat-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 0.5rem;
+            gap: 0.5rem;
+        }
 
         .stat-icon {
-            width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.15rem;
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            font-size: 1.25rem;
+            flex-shrink: 0;
         }
 
         .icon-blue { background: #eff6ff; color: #3b82f6; }
@@ -122,13 +166,33 @@
         .icon-purple { background: #faf5ff; color: #a855f7; }
         .icon-red { background: #fef2f2; color: #ef4444; }
 
-        .stat-value { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
-        .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; }
+        .stat-value { 
+            font-size: 1.75rem; 
+            font-weight: 700; 
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .stat-label { 
+            font-size: 0.7rem; 
+            color: #64748b; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+            word-break: break-all;
+            display: block;
+        }
 
         /* Generic Section Card */
         .dashboard-section {
-            background: white; border-radius: 10px; border: 1px solid var(--border); padding: 1.25rem;
-            box-shadow: var(--card-shadow); height: 100%; box-sizing: border-box;
+            background: white; 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); 
+            height: 100%; 
+            box-sizing: border-box;
         }
 
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
@@ -200,16 +264,25 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .row-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .admin-main { margin-left: 0; }
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            #sidebarToggle {
+                display: flex !important;
+            }
+            .admin-main { 
+                margin-left: 0; 
+                width: 100%;
+            }
+            .sidebar { transform: translateX(-100%); }
             .top-navbar { padding: 0 1rem; }
             .admin-body { padding: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .nav-right .user-info div:first-child { display: none; }
         }
     </style>
 </head>
@@ -225,9 +298,6 @@
             <a href="{{ route('admin.bookings') }}" class="menu-item">
                 <i class="ph ph-calendar-check"></i> Bookings
             </a>
-            <a href="{{ route('admin.bookings') }}" class="menu-item">
-                <i class="ph ph-users-three"></i> Customers
-            </a>
             <a href="{{ route('home') }}" class="menu-item">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
@@ -241,7 +311,12 @@
 
     <main class="admin-main">
         <div class="top-navbar">
-            <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">Dashboard Overview</div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center;">
+                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                </button>
+                <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">Dashboard Overview</div>
+            </div>
             <div class="nav-right">
                 <div class="notification-bell">
                     <i class="ph ph-bell"></i>
@@ -287,17 +362,17 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span class="stat-label">Pending</span>
-                        <div class="stat-icon icon-purple"><i class="ph ph-clock"></i></div>
+                        <span class="stat-label">Pending Approval</span>
+                        <div class="stat-icon icon-purple"><i class="ph ph-hand-pointing"></i></div>
                     </div>
-                    <div class="stat-value">{{ $pendingBookings }}</div>
+                    <div class="stat-value">{{ $pendingApprovals }}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span class="stat-label">Cancelled</span>
-                        <div class="stat-icon icon-red"><i class="ph ph-x-circle"></i></div>
+                        <span class="stat-label">Pending Payment</span>
+                        <div class="stat-icon icon-orange"><i class="ph ph-clock"></i></div>
                     </div>
-                    <div class="stat-value">{{ $cancelledBookings }}</div>
+                    <div class="stat-value">{{ $pendingBookings }}</div>
                 </div>
             </div>
 
@@ -373,7 +448,7 @@
                         <h3><i class="ph-bold ph-calendar-check" style="color: var(--info);"></i> Upcoming Reservations</h3>
                         <a href="{{ route('admin.bookings') }}" style="font-size: 0.75rem; color: var(--primary-color); text-decoration: none; font-weight: 600;">View Full</a>
                     </div>
-                    <div style="overflow-x: auto;">
+                    <div style="overflow-x: auto; padding: 0 1px;">
                         <table class="mini-table">
                             <thead>
                                 <tr>
@@ -439,7 +514,7 @@
                         <a href="{{ route('admin.bookings') }}" style="font-size: 0.8rem; color: var(--primary-color); text-decoration: none; font-weight: 600;">View All</a>
                     </div>
                 </div>
-                <div style="overflow-x: auto;">
+                <div style="overflow-x: auto; padding: 0 1px;">
                     <table class="mini-table">
                         <thead>
                             <tr>
@@ -476,7 +551,7 @@
                 <div class="section-header">
                     <h3><i class="ph-bold ph-calendar-check" style="color: var(--info);"></i> Detailed Upcoming Bookings</h3>
                 </div>
-                <div style="overflow-x: auto;">
+                <div style="overflow-x: auto; padding: 0 1px;">
                     <table class="mini-table">
                         <thead>
                             <tr>
@@ -545,6 +620,23 @@
     </main>
 
     <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+
+        // Close sidebar if clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 768 && 
+                sidebar && toggle &&
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
         let revenueChart;
         const dailyData = {
             labels: {!! json_encode($dailyRevenue->pluck('date')->map(function($date) { return \Carbon\Carbon::parse($date)->format('d M'); })) !!},

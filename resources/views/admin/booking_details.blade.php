@@ -11,6 +11,10 @@
         :root {
             --sidebar-width: 260px;
             --admin-bg: #f4f7fa;
+            --primary-color: #ff7a00;
+            --border: #e2e8f0;
+            --text-color: #1e293b;
+            --text-light: #64748b;
         }
 
         body {
@@ -20,6 +24,11 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         /* Sidebar Styles */
@@ -32,6 +41,16 @@
             position: fixed;
             height: 100vh;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
         }
 
         .sidebar-header {
@@ -75,6 +94,16 @@
             margin-left: var(--sidebar-width);
             flex: 1;
             padding: 2rem;
+            width: calc(100% - var(--sidebar-width));
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
         }
 
         .admin-header {
@@ -82,6 +111,7 @@
             align-items: center;
             gap: 1rem;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .btn-back {
@@ -108,6 +138,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-color);
+            margin: 0;
         }
 
         /* Details Layout */
@@ -115,6 +146,12 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .details-card {
@@ -125,6 +162,12 @@
             margin-bottom: 1.5rem;
         }
 
+        @media (max-width: 640px) {
+            .details-card {
+                padding: 1.25rem;
+            }
+        }
+
         .details-section-header {
             display: flex;
             justify-content: space-between;
@@ -132,18 +175,28 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .details-section-header h3 {
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-color);
+            margin: 0;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
+        }
+
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
         }
 
         .info-item {
@@ -179,6 +232,41 @@
         .badge-paid { background: #dcfce7; color: #166534; }
         .badge-pending { background: #fef9c3; color: #854d0e; }
         .badge-failed { background: #fee2e2; color: #991b1b; }
+        .badge-approved { background: #dcfce7; color: #166534; }
+        .badge-rejected { background: #fee2e2; color: #991b1b; }
+
+        .btn-approve {
+            padding: 0.65rem 1.25rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .btn-reject {
+            padding: 0.65rem 1.25rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .btn-approve:hover { background: #218838; }
+        .btn-reject:hover { background: #c82333; }
 
         /* Payment Summary */
         .payment-summary {
@@ -267,6 +355,9 @@
 
     <main class="admin-main">
         <div class="admin-header">
+            <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center; margin-right: 0.5rem;">
+                <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+            </button>
             <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             <div>
                 <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem;">Back to list</div>
@@ -274,14 +365,28 @@
             </div>
         </div>
 
+        <style>
+            @media (max-width: 768px) {
+                #sidebarToggle {
+                    display: flex !important;
+                }
+            }
+        </style>
+
         <div class="details-grid">
             <div class="grid-left">
                 <div class="details-card">
                     <div class="details-section-header">
                         <h3>Customer Information</h3>
-                        <div class="status-badge badge-{{ strtolower($booking->payment_status) }}">
-                            <i class="ph-fill ph-{{ $booking->payment_status == 'Paid' ? 'check-circle' : ($booking->payment_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
-                            {{ $booking->payment_status }}
+                        <div style="display: flex; gap: 0.75rem;">
+                            <div class="status-badge badge-{{ strtolower($booking->approval_status) }}">
+                                <i class="ph-fill ph-{{ $booking->approval_status == 'Approved' ? 'check-circle' : ($booking->approval_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
+                                Approval: {{ $booking->approval_status }}
+                            </div>
+                            <div class="status-badge badge-{{ strtolower($booking->payment_status) }}">
+                                <i class="ph-fill ph-{{ $booking->payment_status == 'Paid' ? 'check-circle' : ($booking->payment_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
+                                Payment: {{ $booking->payment_status }}
+                            </div>
                         </div>
                     </div>
                     
@@ -291,6 +396,25 @@
                             <span class="info-value">{{ $booking->name }}</span>
                         </div>
                         <div class="info-item">
+                            <span class="info-label">Nationality</span>
+                            <span class="info-value">{{ $booking->nationality }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">User Type</span>
+                            <span class="info-value">{{ $booking->user_type }}</span>
+                        </div>
+                        @if($booking->user_type === 'Student')
+                        <div class="info-item">
+                            <span class="info-label">Academic Details</span>
+                            <span class="info-value">{{ $booking->level }} | {{ $booking->stream }} | {{ $booking->department }}</span>
+                        </div>
+                        @else
+                        <div class="info-item">
+                            <span class="info-label">Department/Unit</span>
+                            <span class="info-value">{{ $booking->department ?: 'N/A' }}</span>
+                        </div>
+                        @endif
+                        <div class="info-item">
                             <span class="info-label">Email Address</span>
                             <span class="info-value">{{ $booking->email }}</span>
                         </div>
@@ -299,8 +423,12 @@
                             <span class="info-value">{{ $booking->phone }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">GST ID (if any)</span>
-                            <span class="info-value">{{ $booking->gst_id ?: 'Not Provided' }}</span>
+                            <span class="info-label">Primary Guest</span>
+                            <span class="info-value">{{ $booking->primary_guest_name ?: 'Self' }} ({{ $booking->no_of_persons }} {{ Str::plural('Person', $booking->no_of_persons) }})</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">ID / GST</span>
+                            <span class="info-value">PP: {{ $booking->passport_number ?: 'N/A' }} | GST: {{ $booking->gst_id ?: 'N/A' }}</span>
                         </div>
                     </div>
                 </div>
@@ -359,7 +487,7 @@
                             <span>₹{{ number_format($booking->total_price - ($booking->total_price / 1.18), 2) }}</span>
                         </div>
                         <div class="summary-row total">
-                            <span>Amount Paid</span>
+                            <span>{{ $booking->payment_status === 'Paid' ? 'Amount Paid' : 'Amount to be Paid' }}</span>
                             <span>₹{{ number_format($booking->total_price, 2) }}</span>
                         </div>
                     </div>
@@ -386,6 +514,20 @@
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    @if($booking->approval_status === 'Pending')
+                        <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-approve" style="width: 100%; justify-content: center;">
+                                <i class="ph-bold ph-check"></i> Approve Proposal
+                            </button>
+                        </form>
+                        <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-reject" style="width: 100%; justify-content: center;">
+                                <i class="ph-bold ph-x"></i> Reject Proposal
+                            </button>
+                        </form>
+                    @endif
                     <button class="btn"><i class="ph ph-printer"></i> Print Invoice</button>
                     <button class="btn btn-outline"><i class="ph ph-envelope"></i> Resend Confirmation</button>
                     @if($booking->payment_status == 'Pending')
@@ -398,5 +540,22 @@
             </div>
         </div>
     </main>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+
+        // Close sidebar if clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>

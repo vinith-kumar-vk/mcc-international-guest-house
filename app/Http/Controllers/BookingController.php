@@ -22,22 +22,36 @@ class BookingController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:255',
+            'nationality' => 'required|string',
+            'user_type' => 'required|string',
+            'stream' => 'nullable|string',
+            'level' => 'nullable|string',
+            'department' => 'nullable|string',
+            'primary_guest_name' => 'nullable|string',
+            'no_of_persons' => 'required|integer|min:1',
+            'passport_number' => 'nullable|string',
             'gst_id' => 'nullable|string|max:50',
             'room_name' => 'required|string',
-            'booking_date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'total_price' => 'required|numeric',
+            'clock_in' => 'required|date',
+            'clock_out' => 'required|date|after:clock_in',
         ]);
+
+        $clockIn = \Carbon\Carbon::parse($validated['clock_in']);
+        $clockOut = \Carbon\Carbon::parse($validated['clock_out']);
+        
+        // Calculate hours and price
+        $durationHours = $clockIn->diffInHours($clockOut);
+        if ($durationHours == 0) $durationHours = 1;
+        $totalPrice = $durationHours > 4 ? 5000 : 2000;
 
         // Double booking check
         $exists = Booking::where('room_name', $validated['room_name'])
-            ->where('booking_date', $validated['booking_date'])
-            ->where('payment_status', 'Paid')
-            ->where(function ($query) use ($validated) {
-                $query->where(function ($q) use ($validated) {
-                    $q->where('start_time', '<', $validated['end_time'])
-                        ->where('end_time', '>', $validated['start_time']);
+            ->where('booking_date', $clockIn->toDateString())
+            ->where('approval_status', '!=', 'Rejected')
+            ->where(function ($query) use ($clockIn, $clockOut) {
+                $query->where(function ($q) use ($clockIn, $clockOut) {
+                    $q->where('start_time', '<', $clockOut->toTimeString())
+                        ->where('end_time', '>', $clockIn->toTimeString());
                 });
             })->exists();
 
@@ -47,11 +61,16 @@ class BookingController extends Controller
 
         // 2. Create the booking locally
         $booking = Booking::create(array_merge($validated, [
-            'payment_status' => 'Pending'
+            'booking_date' => $clockIn->toDateString(),
+            'start_time' => $clockIn->toTimeString(),
+            'end_time' => $clockOut->toTimeString(),
+            'total_price' => $totalPrice,
+            'payment_status' => 'Pending',
+            'approval_status' => 'Pending'
         ]));
 
-        // 3. Redirect to the dummy payment page with the booking ID
-        return redirect()->route('payment.page', $booking->id);
+        // 3. Redirect to the success page (waiting for approval)
+        return redirect()->route('checkout.success')->with('success', 'Booking submitted and waiting for approval!');
     }
 
     public function simulateSuccess($id)

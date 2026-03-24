@@ -57,4 +57,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
     Route::get('/bookings/{id}', [AdminController::class, 'show'])->name('admin.bookings.show');
+    Route::post('/bookings/{id}/approve', [AdminController::class, 'approve'])->name('admin.bookings.approve');
+    Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
 });

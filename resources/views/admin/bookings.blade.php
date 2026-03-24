@@ -11,6 +11,10 @@
         :root {
             --sidebar-width: 260px;
             --admin-bg: #f4f7fa;
+            --primary-color: #ff7a00;
+            --border: #e2e8f0;
+            --text-color: #1e293b;
+            --text-light: #64748b;
         }
 
         body {
@@ -20,6 +24,11 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         /* Sidebar Styles */
@@ -32,6 +41,16 @@
             position: fixed;
             height: 100vh;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
         }
 
         .sidebar-header {
@@ -84,6 +103,16 @@
             margin-left: var(--sidebar-width);
             flex: 1;
             padding: 2rem;
+            width: calc(100% - var(--sidebar-width));
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
         }
 
         .admin-header {
@@ -91,12 +120,15 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .admin-header h1 {
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-color);
+            margin: 0;
         }
 
         /* Content Card */
@@ -104,8 +136,8 @@
             background: white;
             border-radius: 12px;
             border: 1px solid var(--border);
-            overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            margin-bottom: 2rem;
         }
 
         /* Filter Section */
@@ -114,9 +146,15 @@
             background: #fff;
             border-bottom: 1px solid var(--border);
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
             align-items: end;
+        }
+
+        @media (max-width: 640px) {
+            .filter-section {
+                grid-template-columns: 1fr;
+            }
         }
 
         .filter-group {
@@ -196,6 +234,39 @@
         .pill-paid { background: #dcfce7; color: #166534; }
         .pill-pending { background: #fef9c3; color: #854d0e; }
         .pill-failed { background: #fee2e2; color: #991b1b; }
+        .pill-approved { background: #dcfce7; color: #166534; }
+        .pill-rejected { background: #fee2e2; color: #991b1b; }
+
+        .btn-approve {
+            padding: 0.5rem 0.75rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-reject {
+            padding: 0.5rem 0.75rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-approve:hover { background: #218838; }
+        .btn-reject:hover { background: #c82333; }
 
         .btn-view {
             padding: 0.5rem 1rem;
@@ -255,7 +326,6 @@
             color: white;
             border-color: var(--primary-color);
         }
-
     </style>
 </head>
 <body>
@@ -283,11 +353,30 @@
 
     <main class="admin-main">
         <div class="admin-header">
-            <h1>Booking Management</h1>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center;">
+                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                </button>
+                <h1>Booking Management</h1>
+            </div>
             <div style="display: flex; gap: 1rem;">
                 <button class="btn btn-outline" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.85rem;"><i class="ph ph-file-arrow-down"></i> Export CSV</button>
             </div>
         </div>
+
+        <style>
+            @media (max-width: 768px) {
+                #sidebarToggle {
+                    display: flex !important;
+                }
+            }
+        </style>
+
+        @if(session('success'))
+            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="content-card">
             <form action="{{ route('admin.bookings') }}" method="GET" class="filter-section">
@@ -323,7 +412,7 @@
                 </div>
             </form>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto; padding: 0 1px;">
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -331,9 +420,8 @@
                             <th>Customer</th>
                             <th>Workspace</th>
                             <th>Date / Time Slot</th>
-                            <th>Duration</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
+                            <th>Approval Status</th>
+                            <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -351,23 +439,35 @@
                                 <div style="font-size: 0.75rem; color: #64748b;">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</div>
                             </td>
                             <td>
-                                @php
-                                    $start = \Carbon\Carbon::parse($booking->start_time);
-                                    $end = \Carbon\Carbon::parse($booking->end_time);
-                                    $hours = $start->diffInHours($end);
-                                @endphp
-                                {{ $hours }} {{ Str::plural('Hour', $hours) }}
+                                <span class="status-pill pill-{{ strtolower($booking->approval_status) }}">
+                                    {{ $booking->approval_status }}
+                                </span>
                             </td>
-                            <td style="font-weight: 600;">₹{{ number_format($booking->total_price, 2) }}</td>
                             <td>
                                 <span class="status-pill pill-{{ strtolower($booking->payment_status) }}">
                                     {{ $booking->payment_status }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view">
-                                    <i class="ph ph-eye"></i> View Details
-                                </a>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    @if($booking->approval_status === 'Pending')
+                                        <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn-approve">
+                                                <i class="ph-bold ph-check"></i> Approve
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn-reject">
+                                                <i class="ph-bold ph-x"></i> Reject
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view">
+                                        <i class="ph ph-eye"></i> View
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -394,5 +494,22 @@
             @endif
         </div>
     </main>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        });
+
+        // Close sidebar if clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>
