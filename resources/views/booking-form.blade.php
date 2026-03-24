@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form - MCC IGH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        .page-header-banner {
+            background: #ffffff;
+            padding: 4rem 1rem 7rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eaedf0;
+        }
+        .form-container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06); 
+            padding: 2rem 2.25rem; /* Clean ~32px padding */
+            width: 100%;
+            position: relative;
+            z-index: 5;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .form-container:hover {
+            transform: translateY(-2px); /* Very subtle card lift */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* 2 equal columns */
+            gap: 20px; /* Perfect 20px spacing */
+            align-items: end; /* CRITICAL FIX: Base-aligns all inputs flawlessly to the exact same horizontal baseline irrespective of label wrapping above them */
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; gap: 16px; }
+            .form-container { padding: 1.5rem; }
+        }
+        
+        .form-group { display: flex; flex-direction: column; position: relative; justify-content: flex-end; height: 100%; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        
+        .paired-row {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            align-items: end; 
+            grid-column: 1 / -1; /* Forces row to span full width securely isolating inside grids */
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .paired-row { grid-template-columns: 1fr; gap: 16px; }
+        }
+        
+        .form-label { font-size: 0.9rem; font-weight: 600; color: var(--text-color); margin-bottom: 0.4rem; display: block; min-height: 1.1rem; }
+        .form-label span { color: #e53e3e; margin-left: 2px; }
+        .form-helper { font-size: 0.8rem; color: #64748b; font-weight: 500; margin-top: 0.3rem; display: block; min-height: 1rem; }
+        
+        .form-input, .form-select { 
+            height: 44px; /* Perfect normalized 44px field height */
+            padding: 0 1rem; border: 1px solid #d1d5db; border-radius: 8px; 
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: all 0.2s ease;
+            background: #ffffff; width: 100%; box-sizing: border-box;
+            color: var(--text-color);
+        }
+        .form-input:hover, .form-select:hover { border-color: #cbd5e1; }
+        .form-input:focus, .form-select:focus { 
+            outline: none; border-color: var(--primary-color); background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15); /* Clean orange glow */
+        }
+        
+        .form-radio-group { display: flex; gap: 1.5rem; align-items: center; padding: 0.3rem 0; }
+        .radio-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; cursor: pointer; color: var(--text-color); font-weight: 500; }
+        .radio-label input[type="radio"] { accent-color: var(--primary-color); width: 18px; height: 18px; cursor: pointer; }
+
+        .breadcrumb { font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem; font-weight: 500;}
+        .breadcrumb a { color: var(--primary-color); text-decoration: none; transition: 0.2s; }
+        .breadcrumb a:hover { text-decoration: underline; color: #cc4800; }
+        
+        .submit-btn {
+            background: var(--primary-color); color: white; border: none; padding: 0.9rem;
+            font-size: 1.1rem; font-weight: 700; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease; display: block; width: 100%; margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15);
+            text-align: center;
+        }
+        .submit-btn:hover { background: #e66b00; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 122, 0, 0.25); }
+
+        .form-section-title { font-size: 1.15rem; font-weight: 700; color: var(--primary-color); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; gap: 0.5rem; margin-top: 10px; margin-bottom: 5px; }
+        .section-divider { display: none; }
+        
+        .dynamic-field { 
+            opacity: 0; max-height: 0; overflow: hidden; transform: translateY(-10px);
+            transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease;
+        }
+        .dynamic-field.show { opacity: 1; max-height: 200px; transform: translateY(0); overflow: visible; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-banner {
+            background: rgba(255, 122, 0, 0.04); border: 1px solid rgba(255, 122, 0, 0.15); border-radius: 8px; 
+            padding: 1rem 1.25rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .summary-banner h3 { color: var(--text-color); font-size: 1.15rem; font-weight: 700; margin: 0; }
+        .summary-banner p { color: var(--text-light); font-size: 0.9rem; margin: 0; margin-top: 5px; }
+    </style>
+</head>
+<body style="background: var(--bg-color);">
+    <header>
+        <div class="header-left">
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo">
+            </a>
+        </div>
+        <div class="header-center">
+            <h1>MCC IGH</h1>
+        </div>
+        <div class="header-right">
+            <a href="{{ route('home') }}" class="btn btn-outline" style="text-decoration: none;">Dashboard</a>
+        </div>
+    </header>
+
+    <main style="padding-bottom: 60px; padding-left: 1rem; padding-right: 1rem;">
+        <div style="max-width: 820px; margin: 2rem auto;">
+            
+            <!-- Breadcrumbs ALIGNED EXACTLY WITH HEADER & FORM -->
+            <div class="breadcrumb">
+                <a href="{{ route('home') }}">Dashboard</a> &gt; 
+                <a href="{{ route('standard.rooms') }}">Rooms</a> &gt; 
+                <span style="color: var(--text-color);">Booking Form</span>
+            </div>
+
+            <!-- Page Header Aligned Correctly -->
+            <div style="margin-bottom: 1.5rem; animation: fadeInDown 0.4s ease-out;">
+                <h2 style="font-size: 2.2rem; color: var(--text-color); font-weight: 800; letter-spacing: -1px; margin-bottom: 0.25rem;">IGH Booking</h2>
+                <p style="color: var(--text-light); font-size: 1rem; font-weight: 500; margin: 0;">Secure your accommodation efficiently for <strong style="color: var(--primary-color);">Room {{ $roomId ?? 'Selected' }}</strong></p>
+            </div>
+
+            <div class="form-container">
+                <div class="summary-banner">
+                    <div>
+                        <h3>Selected: Room {{ $roomId ?? 'Pending' }}</h3>
+                        <p>Standard amenities included</p>
+                    </div>
+                </div>
+
+                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Booking details submitted. Redirecting to payment...'); window.location.href='{{ route('home') }}';">
+                    <div class="form-grid">
+                        
+                        <!-- SECTION: PROFILE DETAILS -->
+                        <div class="form-section-title full-width"><i class="ph-bold ph-identification-card"></i> Personal Details</div>
+                        
+                        <!-- Nationality -->
+                        <div class="form-group full-width" style="margin-bottom: 0.5rem;">
+                            <label class="form-label">Nationality <span>*</span></label>
+                            <div class="form-radio-group">
+                                <label class="radio-label"><input type="radio" name="nationality" value="Indian" onchange="toggleNationalityFields()" checked> Indian</label>
+                                <label class="radio-label"><input type="radio" name="nationality" value="Non-Indian" onchange="toggleNationalityFields()"> Non-Indian</label>
+                            </div>
+                        </div>
+
+                        <!-- ISOLATED ROW 1: User Type (Left) | Applicant Name (Right) -->
+                        <div class="paired-row">
+                            <!-- User Type -->
+                            <div class="form-group">
+                                <label class="form-label">User Type <span>*</span></label>
+                                <select class="form-select" id="userTypeSelect" onchange="toggleStudentFields()" required>
+                                    <option value="" disabled selected>Select Current Status</option>
+                                    <option value="Student">Student</option>
+                                    <option value="Staff">Staff</option>
+                                    <option value="Alumni">Alumni</option>
+                                </select>
+                                <div class="form-helper">Your formal association with the institution</div>
+                            </div>
+
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label class="form-label">Applicant Name <span>*</span></label>
+                                <input type="text" class="form-input" placeholder="Your full name as per official ID" required>
+                                <div class="form-helper" style="visibility: hidden;">Placeholder helper</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group dynamic-field student-field full-width" id="streamFieldGroup" style="margin-top: -0.5rem;">
+                            <label class="form-label">Stream <span>*</span></label>
+                            <div class="form-radio-group">
+                                <label class="radio-label"><input type="radio" name="stream" value="Aided" onchange="updateDepartments('Aided')"> Aided</label>
+                                <label class="radio-label"><input type="radio" name="stream" value="SFS" onchange="updateDepartments('SFS')"> SFS</label>
+                            </div>
+                            <div class="form-helper">Select academic stream</div>
+                        </div>
+
+                        <div class="form-group dynamic-field student-field" id="levelFieldGroup">
+                            <label class="form-label">Level <span>*</span></label>
+                            <select class="form-select">
+                                <option value="" disabled selected>Select Degree Level</option>
+                                <option value="UG">Undergraduate (UG)</option>
+                                <option value="PG">Postgraduate (PG)</option>
+                                <option value="MPhil">Master of Philosophy (MPhil)</option>
+                                <option value="PhD">Doctorate (PhD)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group dynamic-field student-field full-width" id="departmentFieldGroup">
+                            <label class="form-label">Department <span>*</span></label>
+                            <select class="form-select" id="departmentSelect" onchange="toggleOtherDepartment()">
+                                <option value="" disabled selected>Select Stream First</option>
+                            </select>
+                            
+                            <!-- Hidden Smooth "Other" Field -->
+                            <div id="otherDepartmentWrapper" style="overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0.8rem;">
+                                <input type="text" class="form-input" id="otherDepartmentInput" placeholder="Enter Department Name" style="border-color: var(--primary-color);">
+                            </div>
+                        </div>
+
+                        <!-- SECTION: CONTACT & GUEST -->
+                        <!-- SECTION: CONTACT DETAILS -->
+                        <div class="section-divider"></div>
+                        <div class="form-section-title full-width"><i class="ph-bold ph-address-book"></i> Contact Details</div>
+
+                        <!-- ISOLATED ROW 2: Email (Left) | Contact (Right) -->
+                        <div class="paired-row">
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label class="form-label">Email Address <span>*</span></label>
+                                <input type="email" class="form-input" placeholder="you@domain.edu" required>
+                                <div class="form-helper">Enter valid email for confirmation</div>
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="form-group">
+                                <label class="form-label">Contact Number <span>*</span></label>
+                                <input type="tel" class="form-input" placeholder="+91 xxxxx xxxxx" required>
+                                <div class="form-helper">For booking updates</div>
+                            </div>
+                        </div>
+
+                        <!-- Primary Guest -->
+                        <div class="form-group full-width">
+                            <label class="form-label">Primary Guest Name</label>
+                            <input type="text" class="form-input" placeholder="Guest full name (Leave blank if self)">
+                            <div class="form-helper">Enter the name of the guest staying if different from applicant</div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">Number of Persons <span>*</span></label>
+                            <input type="number" min="1" max="4" class="form-input" placeholder="e.g. 2" required>
+                        </div>
+
+                        <!-- DYNAMIC: Non-Indian Fields -->
+                        <div class="form-group dynamic-field non-indian-field full-width" id="passportFieldGroup" style="grid-column: 1/-1;">
+                            <label class="form-label">Passport Number <span>*</span></label>
+                            <input type="text" class="form-input" placeholder="Required for Non-Indian guests" id="passportInput">
+                        </div>
+                        
+                        <div class="form-group dynamic-field non-indian-field full-width" id="gstFieldGroup" style="grid-column: 1/-1;">
+                            <label class="form-label">GST Number</label>
+                            <input type="text" class="form-input" placeholder="If applicable for corporate booking (Optional)">
+                        </div>
+
+                        <!-- SECTION: STAY DETAILS -->
+                        <div class="section-divider"></div>
+                        <div class="form-section-title full-width"><i class="ph-bold ph-calendar-check"></i> Booking Details</div>
+
+                        <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
+                        <div class="paired-row">
+                            <div class="form-group">
+                                <label class="form-label">Clock In Date & Time <span>*</span></label>
+                                <input type="datetime-local" class="form-input" required>
+                                <div class="form-helper">Select your intended arrival</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Clock Out Date & Time <span>*</span></label>
+                                <input type="datetime-local" class="form-input" required>
+                                <div class="form-helper">Select your intended departure</div>
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="form-group full-width" style="margin-top: 10px;">
+                            <button type="submit" class="submit-btn"><i class="ph-bold ph-check-circle" style="vertical-align: middle; margin-right: 8px;"></i> Confirm Booking</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleStudentFields() {
+            const userType = document.getElementById('userTypeSelect').value;
+            const studentFields = document.querySelectorAll('.student-field');
+            
+            studentFields.forEach(field => {
+                if (userType === 'Student') {
+                    field.classList.add('show');
+                    // Add required securely to dynamic inputs, explicitly excluding "Other" handler
+                    const inputs = field.querySelectorAll('input:not(#otherDepartmentInput), select');
+                    inputs.forEach(input => input.setAttribute('required', 'true'));
+                } else {
+                    field.classList.remove('show');
+                    // Remove required
+                    const inputs = field.querySelectorAll('input, select');
+                    inputs.forEach(input => input.removeAttribute('required'));
+                }
+            });
+            
+            // Refresh Other Dept logic on toggle
+            if (userType === 'Student') toggleOtherDepartment();
+        }
+
+        const aidedDepartments = [
+            "English", "Tamil", "Languages", "History", "Political Science", 
+            "Public Administration", "Economics", "Philosophy", "Commerce", 
+            "Social Work", "Mathematics", "Statistics", "Physics", "Chemistry", 
+            "Botany", "Zoology", "Physical Education"
+        ];
+
+        const sfsDepartments = [
+            "English", "Tamil", "Languages", "Journalism", "Social Work", 
+            "Commerce", "Business Administration", "Communication", "Geography", 
+            "Tourism Studies", "Mathematics", "Physics", "Chemistry", "Microbiology", 
+            "Computer Application (BCA)", "Computer Science (B.Sc)", 
+            "Computer Science (MCA)", "Visual Communication", 
+            "Physical Education, Health Education and Sports", "Psychology", "Data Science"
+        ];
+
+        function updateDepartments(stream) {
+            const deptSelect = document.getElementById('departmentSelect');
+            
+            // Clean slate -> Resets selection smoothly on change
+            deptSelect.innerHTML = '<option value="" disabled selected>Select Department</option>';
+            
+            let options = stream === 'Aided' ? aidedDepartments : sfsDepartments;
+            
+            options.forEach(dept => {
+                let opt = document.createElement('option');
+                opt.value = dept;
+                opt.innerHTML = dept;
+                deptSelect.appendChild(opt);
+            });
+            
+            // Attach "Other"
+            let otherOpt = document.createElement('option');
+            otherOpt.value = 'Other';
+            otherOpt.innerHTML = 'Other';
+            deptSelect.appendChild(otherOpt);
+            
+            // Trigger cleanly
+            toggleOtherDepartment();
+        }
+
+        function toggleOtherDepartment() {
+            const deptSelect = document.getElementById('departmentSelect');
+            const otherWrapper = document.getElementById('otherDepartmentWrapper');
+            const otherInput = document.getElementById('otherDepartmentInput');
+            const isStudent = document.getElementById('userTypeSelect').value === 'Student';
+            
+            if (deptSelect.value === 'Other' && isStudent) {
+                otherWrapper.style.maxHeight = '100px';
+                otherWrapper.style.opacity = '1';
+                otherInput.setAttribute('required', 'true');
+            } else {
+                otherWrapper.style.maxHeight = '0';
+                otherWrapper.style.opacity = '0';
+                otherInput.removeAttribute('required');
+            }
+        }
+
+        function toggleNationalityFields() {
+            const isNonIndian = document.querySelector('input[name="nationality"][value="Non-Indian"]').checked;
+            const nonIndianFields = document.querySelectorAll('.non-indian-field');
+            const passportInput = document.getElementById('passportInput');
+            
+            nonIndianFields.forEach(field => {
+                if (isNonIndian) {
+                    field.classList.add('show');
+                } else {
+                    field.classList.remove('show');
+                }
+            });
+            
+            if (isNonIndian) {
+                passportInput.setAttribute('required', 'true');
+            } else {
+                passportInput.removeAttribute('required');
+            }
+        }
+
+        // Initialize state natively on load to prevent glitch rendering
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleStudentFields();
+            toggleNationalityFields();
+        });
+    </script>
+</body>
+</html>

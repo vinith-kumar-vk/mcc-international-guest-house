@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MMIP Room Booking</title>
+    <title>MCC IGH</title>
     <!-- Modern Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Phosphor Icons for Modern Aesthetics -->
@@ -15,10 +15,12 @@
 <body>
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo">
+            </a>
         </div>
         <div class="header-center">
-            <h1>MMIP Room Booking</h1>
+            <h1>MCC IGH</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
@@ -29,7 +31,7 @@
                     @auth
                         <a href="#" class="dropdown-item logout">Logout</a>
                     @else
-                        <a href="#" class="dropdown-item">Login</a>
+                        <a href="{{ route('login') }}" class="dropdown-item">Login</a>
                     @endauth
                 </div>
             </div>
@@ -37,155 +39,174 @@
     </header>
 
     <main>
-        <!-- SLIDER SECTION (Room Carousel) -->
-        <div class="slider-section">
-            <div class="title-section">
-                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Explore More Spaces</h2>
-                <p>Browse through our collection of premium rooms</p>
+        <!-- HERO SECTION -->
+        <section class="hero-section" style="text-align: center; padding: 2.5rem 1rem; background: var(--bg-color); margin-bottom: 1.5rem;">
+            <h1 class="welcome-animate" style="font-size: 3rem; font-weight: 800; color: var(--text-color); margin-bottom: 1rem; letter-spacing: -1.5px; position: relative; display: inline-block;">Welcome to MCC IGH
+                <span style="position: absolute; width: 35%; height: 5px; bottom: -8px; left: 32.5%; background-color: var(--primary-color); border-radius: 4px;"></span>
+            </h1>
+            <p class="welcome-animate" style="font-size: 1.15rem; font-weight: 500; color: var(--text-light); max-width: 650px; margin: 1.5rem auto 0; line-height: 1.6; animation-delay: 0.15s;">Book comfortable guest house rooms effortlessly and manage your professional stay with ease.</p>
+        </section>
+
+        <!-- EXPLORE OUR ROOMS AUTO-SLIDER -->
+        <section class="explore-rooms-slider-section" style="max-width: 1250px; margin: 0 auto 3.5rem auto; padding: 0 1rem; position: relative;">
+            <div class="title-section" style="text-align: center; margin-bottom: 2.5rem;">
+                <h2 style="font-size: 2.2rem; font-weight: 700; color: var(--text-color);">Explore Our Rooms</h2>
             </div>
-            <div class="slider-wrapper">
-                <button class="slider-btn prev-btn" onclick="slideLeft()"><i class="ph-bold ph-caret-left"></i></button>
-                <div class="slider-container" id="roomSlider">
-                    <!-- Room 1 -->
-                    <div class="card" data-name="Meeting Room" data-capacity="5" data-price="500">
+
+            <!-- Arrows -->
+            <button id="sliderPrevBtn" class="btn btn-outline" style="position: absolute; left: 0px; top: 60%; transform: translateY(-50%); z-index: 10; width: 45px; height: 45px; border-radius: 50%; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: white;"><i class="ph-bold ph-caret-left" style="font-size: 1.5rem;"></i></button>
+            <button id="sliderNextBtn" class="btn btn-outline" style="position: absolute; right: 0px; top: 60%; transform: translateY(-50%); z-index: 10; width: 45px; height: 45px; border-radius: 50%; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: white;"><i class="ph-bold ph-caret-right" style="font-size: 1.5rem;"></i></button>
+
+            <!-- Container -->
+            <div id="sliderViewport" style="overflow: hidden; width: calc(100% - 70px); margin: 0 auto; padding: 2rem 0;">
+                <div id="sliderTrack" style="display: flex; gap: 2.5rem; transition: transform 0.4s ease-out; width: max-content;">
+                    <!-- Card 1 -->
+                    <div class="card premium-card" style="width: 320px; flex-shrink: 0;">
                         <div class="card-image-wrapper">
-                            <img src="{{ asset('assets/meeting.png') }}" alt="Meeting Room">
-                            <span class="badge status-available">Available</span>
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Standard Rooms" style="height: 220px; object-fit: cover;">
                         </div>
                         <div class="card-content">
-                            <div class="card-header">
-                                <h2>Meeting Room</h2>
-                                <div class="rating"><i class="ph-fill ph-star"></i> 4.8 <span>(124)</span></div>
-                            </div>
-                            <p class="description">Ideal for small team discussions and focused brainstorming sessions.</p>
-                            <div class="amenities">
-                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                                <span title="Air Conditioning"><i class="ph ph-wind"></i> AC</span>
-                            </div>
-                            <div class="card-meta">
-                                <div class="meta-item"><i class="ph-fill ph-users"></i> 5 Seats</div>
-                            </div>
-                            <div class="price-highlight">Starting from <span>₹500</span> / hour</div>
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Meeting Room')">View Details</button>
-                            </div>
+                            <h2>Standard Rooms</h2>
+                            <p class="description">Comfortable accommodations designed for short and efficient stays.</p>
+                            <a href="{{ route('standard.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Standard</a>
                         </div>
                     </div>
-                    <!-- Room 2 -->
-                    <div class="card" data-name="Conference Hall" data-capacity="10" data-price="800">
+                    <!-- Card 2 -->
+                    <div class="card premium-card" style="width: 320px; flex-shrink: 0;">
                         <div class="card-image-wrapper">
-                            <img src="{{ asset('assets/conference.png') }}" alt="Conference Hall">
-                            <span class="badge status-few">2 Slots Left</span>
+                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Advance Rooms" style="height: 220px; object-fit: cover;">
                         </div>
                         <div class="card-content">
-                            <div class="card-header">
-                                <h2>Conference Hall</h2>
-                                <div class="rating"><i class="ph-fill ph-star"></i> 4.9 <span>(89)</span></div>
-                            </div>
-                            <p class="description">A premium extended hall with professional A/V equipment.</p>
-                            <div class="amenities">
-                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                                <span title="Projector"><i class="ph ph-projector-screen"></i> Projector</span>
-                            </div>
-                            <div class="card-meta">
-                                <div class="meta-item"><i class="ph-fill ph-users"></i> 10 Seats</div>
-                            </div>
-                            <div class="price-highlight">Starting from <span>₹800</span> / hour</div>
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Conference Hall')">View Details</button>
-                            </div>
+                            <h2>Advance Rooms</h2>
+                            <p class="description">Premium guest rooms tailored for extended comfort and specific reservations.</p>
+                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Advance</a>
                         </div>
                     </div>
-                    <!-- Room 3 -->
-                    <div class="card" data-name="Training Room" data-capacity="20" data-price="1000">
+                    <!-- Card 3 -->
+                    <div class="card premium-card" style="width: 320px; flex-shrink: 0;">
                         <div class="card-image-wrapper">
-                            <img src="{{ asset('assets/training.png') }}" alt="Training Room">
-                            <span class="badge status-booked">Fully Booked</span>
+                            <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Conference Hall" style="height: 220px; object-fit: cover;">
                         </div>
                         <div class="card-content">
-                            <div class="card-header">
-                                <h2>Training Room</h2>
-                                <div class="rating"><i class="ph-fill ph-star"></i> 4.7 <span>(56)</span></div>
-                            </div>
-                            <p class="description">Spacious and well-lit workspace ideal for group training.</p>
-                            <div class="amenities">
-                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                                <span title="Whiteboard"><i class="ph ph-presentation-chart"></i> Whiteboard</span>
-                            </div>
-                            <div class="card-meta">
-                                <div class="meta-item"><i class="ph-fill ph-users"></i> 20 Seats</div>
-                            </div>
-                            <div class="price-highlight">Starting from <span>₹1000</span> / hour</div>
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Training Room')">View Details</button>
-                            </div>
+                            <h2>Conference Hall</h2>
+                            <p class="description">Dedicated interactive halls for large meetings and corporate events.</p>
+                            <a href="{{ route('conference.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Halls</a>
                         </div>
                     </div>
-                    <!-- Room 4 -->
-                    <div class="card" data-name="Executive Suite" data-capacity="8" data-price="1200">
+                    <!-- Card 4 -->
+                    <div class="card premium-card" style="width: 320px; flex-shrink: 0;">
                         <div class="card-image-wrapper">
-                            <img src="{{ asset('assets/meeting.png') }}" alt="Executive Suite">
-                            <span class="badge status-available">Available</span>
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Glass Room" style="height: 220px; object-fit: cover;">
                         </div>
                         <div class="card-content">
-                            <div class="card-header">
-                                <h2>Executive Suite</h2>
-                                <div class="rating"><i class="ph-fill ph-star"></i> 5.0 <span>(32)</span></div>
-                            </div>
-                            <p class="description">Luxury suite designed for high-profile executive meetings.</p>
-                            <div class="amenities">
-                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                                <span title="Refreshments"><i class="ph ph-coffee"></i> Coffee</span>
-                            </div>
-                            <div class="card-meta">
-                                <div class="meta-item"><i class="ph-fill ph-users"></i> 8 Seats</div>
-                            </div>
-                            <div class="price-highlight">Starting from <span>₹1200</span> / hour</div>
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Executive Suite')">View Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Room 5 -->
-                    <div class="card" data-name="Innovation Lab" data-capacity="15" data-price="900">
-                        <div class="card-image-wrapper">
-                            <img src="{{ asset('assets/training.png') }}" alt="Innovation Lab">
-                            <span class="badge status-available">Available</span>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-header">
-                                <h2>Innovation Lab</h2>
-                                <div class="rating"><i class="ph-fill ph-star"></i> 4.6 <span>(41)</span></div>
-                            </div>
-                            <p class="description">Creative environment equipped with modern tools for ideation.</p>
-                            <div class="amenities">
-                                <span title="WiFi"><i class="ph ph-wifi-high"></i> WiFi</span>
-                                <span title="Smart Board"><i class="ph ph-presentation-chart"></i> Smart Board</span>
-                            </div>
-                            <div class="card-meta">
-                                <div class="meta-item"><i class="ph-fill ph-users"></i> 15 Seats</div>
-                            </div>
-                            <div class="price-highlight">Starting from <span>₹900</span> / hour</div>
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <button class="btn btn-outline" style="width: 100%;" onclick="viewDetails('Innovation Lab')">View Details</button>
-                            </div>
+                            <h2>Glass Room</h2>
+                            <p class="description">Premium transparent facility for collaborative interactive sessions.</p>
+                            <a href="{{ route('conference.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Halls</a>
                         </div>
                     </div>
                 </div>
-                <button class="slider-btn next-btn" onclick="slideRight()"><i class="ph-bold ph-caret-right"></i></button>
             </div>
-        </div>
 
-        <!-- GUEST HOUSE DESCRIPTION SECTION -->
-        <div class="description-section">
-            <h2>About Our Guest House Booking</h2>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const track = document.getElementById('sliderTrack');
+                    const cards = Array.from(track.children);
+                    
+                    // Clone cards to create infinite scroll illusion
+                    cards.forEach(card => {
+                        let clone = card.cloneNode(true);
+                        track.appendChild(clone);
+                    });
+                    
+                    let position = 0;
+                    let animationFrameId;
+                    let speed = 0.4; // Exceedingly smooth, much slower scroll speed (linear velocity)
+                    let isHovered = false;
+                    
+                    function animate() {
+                        if (!isHovered) {
+                            position -= speed;
+                            // Reset position when halfway through duplicated track
+                            if (Math.abs(position) >= track.scrollWidth / 2) {
+                                position = 0;
+                            }
+                            track.style.transform = `translateX(${position}px)`;
+                        }
+                        animationFrameId = requestAnimationFrame(animate);
+                    }
+                    
+                    // Start animation
+                    animationFrameId = requestAnimationFrame(animate);
+                    
+                    // Stop on hover
+                    const viewport = document.getElementById('sliderViewport');
+                    viewport.addEventListener('mouseenter', () => isHovered = true);
+                    viewport.addEventListener('mouseleave', () => isHovered = false);
+                    
+                    // Manual controls
+                    document.getElementById('sliderPrevBtn').addEventListener('click', () => {
+                        position += 320 + 32; // card width + gap
+                        if (position > 0) position = -(track.scrollWidth / 2) + Math.abs(position);
+                        track.style.transform = `translateX(${position}px)`;
+                    });
+                    
+                    document.getElementById('sliderNextBtn').addEventListener('click', () => {
+                        position -= 320 + 32;
+                        if (Math.abs(position) >= track.scrollWidth / 2) position = 0;
+                        track.style.transform = `translateX(${position}px)`;
+                    });
+                });
+            </script>
+        </section>
+
+        <!-- CATEGORY SELECTION -->
+        <section style="max-width: 1250px; margin: 0 auto; padding: 0 1rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+                <!-- Standard Rooms -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Standard Rooms" style="height: 220px; object-fit: cover;">
+                    </div>
+                    <div class="card-content">
+                        <h2>Standard Rooms</h2>
+                        <p class="description" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">Comfortable accommodations designed for short and efficient stays with essential amenities.</p>
+                        <a href="{{ route('standard.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Standard</a>
+                    </div>
+                </div>
+
+                <!-- Advance Rooms -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Advance Rooms" style="height: 220px; object-fit: cover;">
+                    </div>
+                    <div class="card-content">
+                        <h2>Advance Rooms</h2>
+                        <p class="description" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">Premium guest rooms tailored for extended comfort, delegates, and specific reservations.</p>
+                        <a href="{{ route('advance.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Advance</a>
+                    </div>
+                </div>
+
+                <!-- Conference / Glass Rooms -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Conference Rooms" style="height: 220px; object-fit: cover;">
+                    </div>
+                    <div class="card-content">
+                        <h2>Conference / Glass Rooms</h2>
+                        <p class="description" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
+                        <a href="{{ route('conference.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block; text-decoration: none;">Explore Halls</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GUEST HOUSE DESCRIPTION -->
+        <section class="description-section" style="margin-top: 4rem; max-width: 800px; margin-left: auto; margin-right: auto; text-align: center;">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">About Our Facilities</h2>
             <div class="desc-content">
                 <p>Enjoy comfortable stays tailored perfectly to meet the demands of modern professionals. Our guest house comes equipped with all premium amenities aimed at making your experience relaxing and highly productive.</p>
-                <p>We believe in an easy booking process that respects your time. In just a few quick clicks, you can browse, confirm, and secure an accommodation that best matches your professional requirements.</p>
-                <p>Furthermore, our environment is ideal for meetings, training sessions, and visitors. With modern setups and top-notch facilities, your team interactions and corporate visits will flow seamlessly.</p>
             </div>
-        </div>
-
+        </section>
     </main>
 
     <!-- FOOTER SECTION -->
@@ -280,6 +301,22 @@
                     slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
                 }
             }
+        }
+
+        function calcSpecialPrice(roomId) {
+            const hoursInput = document.getElementById('hours-' + roomId);
+            const priceDisplay = document.getElementById('price-' + roomId);
+            const timeTextDisplay = document.getElementById('time-text-' + roomId);
+            
+            let hours = parseFloat(hoursInput.value);
+            if (isNaN(hours) || hours <= 0) {
+                priceDisplay.innerHTML = '₹0';
+                timeTextDisplay.innerHTML = '0 hours';
+                return;
+            }
+            let finalPrice = hours > 4 ? 5000 : 2000;
+            priceDisplay.innerHTML = '₹' + finalPrice;
+            timeTextDisplay.innerHTML = hours + (hours === 1 ? ' hour' : ' hours');
         }
     </script>
 </body>

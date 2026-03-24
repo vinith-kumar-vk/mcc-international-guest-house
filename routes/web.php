@@ -4,9 +4,29 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
 use App\Models\Booking;
 
+Route::get('/login', function () { return view('login'); })->name('login');
+Route::get('/register', function () { return view('register'); })->name('register');
+
 Route::get('/', function () {
     return view('index');
 })->name('home');
+
+Route::get('/standard-rooms', function () {
+    return view('standard-rooms');
+})->name('standard.rooms');
+
+Route::get('/booking-form', function () {
+    $roomId = request('room', '1');
+    return view('booking-form', compact('roomId'));
+})->name('booking.form.full');
+
+Route::get('/advance-rooms', function () {
+    return view('advance-rooms');
+})->name('advance.rooms');
+
+Route::get('/conference-rooms', function () {
+    return view('conference-rooms');
+})->name('conference.rooms');
 
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
 Route::post('/booking', [BookingController::class, 'storeBooking'])->name('booking.store');

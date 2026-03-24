@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Failure - MMIP Room Booking</title>
+    <title>Failure - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
@@ -15,7 +15,7 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
         </div>
         <div class="header-center">
-            <h1>MMIP Room Booking</h1>
+            <h1>MCC IGH</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">

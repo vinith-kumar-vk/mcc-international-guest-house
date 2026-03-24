@@ -34,9 +34,9 @@ body {
 header {
     background-color: var(--card-bg);
     color: var(--primary-color);
-    padding: 1.5rem 2rem;
+    padding: 0.75rem 1.5rem; /* Clean vertical spacing */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space out left logo and right button */
     align-items: center;
     position: relative;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -53,22 +53,30 @@ header {
 }
 
 .header-logo {
-    height: 40px;
+    height: 48px; /* Significantly reduced to scale down the wide MRF logo neatly */
     width: auto;
     object-fit: contain;
+    mix-blend-mode: multiply; /* Removes grey background on white header */
+    background: transparent;
+    transition: transform 0.3s ease;
+    margin-left: 0; 
+}
+
+.header-logo:hover {
+    transform: scale(1.05); /* Neat hover effect */
 }
 
 .header-center {
-    position: absolute;
+    position: absolute; /* Lock precisely to the middle of the screen */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1;
     text-align: center;
-    width: max-content;
+    margin-left: 0; 
+    z-index: 1;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
 }
@@ -77,6 +85,7 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-left: 0; 
 }
 
 /* Profile Dropdown */
@@ -89,7 +98,7 @@ header h1 {
     background: transparent;
     border: none;
     color: var(--primary-color);
-    font-size: 2.2rem;
+    font-size: 2.8rem; /* Increased size for better visibility */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -153,9 +162,18 @@ header h1 {
 main {
     flex: 1;
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1440px; /* Increased to reduce left/right empty space on wide screens */
     margin: 0 auto;
     width: 100%;
+}
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(25px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.welcome-animate {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .title-section {
@@ -281,17 +299,17 @@ main {
 .card {
     background: var(--card-bg);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Soft shadow */
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255, 122, 0, 0.15); /* Premium orange soft shadow */
 }
 
 .card-image-wrapper {
@@ -505,12 +523,12 @@ main {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1.25rem;
     border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     text-align: center;
     text-decoration: none;
     display: flex;
@@ -518,11 +536,13 @@ main {
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.15);
 }
 
 .btn:hover {
     background-color: var(--primary-hover);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
 }
 
 .btn:active {
@@ -1446,40 +1466,71 @@ main {
     position: relative;
     display: flex;
     align-items: center;
-    margin-top: 2rem;
-    padding: 0 60px; /* Add horizontal spacing for outside arrows */
+    margin-top: 1rem;
+    padding: 0 35px; /* Tighter padding for arrows to reduce side space */
+}
+
+/* Category Filter Buttons */
+.category-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cat-btn {
+    padding: 0.6rem 1.8rem;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cat-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.cat-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
 }
 
 .slider-container {
     display: flex;
-    gap: 2rem;
+    gap: 1.25rem; /* Slightly tighter gap for more compact look */
     overflow-x: hidden;
     scroll-behavior: smooth;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     width: 100%;
 }
 
 .slider-container .card {
-    min-width: calc(25% - 1.5rem);
-    flex-shrink: 0;
+    flex: 0 0 calc(25% - 0.95rem); /* Wider cards now that side padding is reduced */
     margin-bottom: 0;
 }
 
 @media (max-width: 1200px) {
     .slider-container .card {
-        min-width: calc(33.333% - 1.33rem);
+        flex: 0 0 calc(33.333% - 1rem);
     }
 }
 
 @media (max-width: 992px) {
     .slider-container .card {
-        min-width: calc(50% - 1rem);
+        flex: 0 0 calc(50% - 0.75rem);
     }
 }
 
 @media (max-width: 768px) {
     .slider-container .card {
-        min-width: 100%;
+        flex: 0 0 100%;
     }
 }
 
@@ -1520,7 +1571,7 @@ main {
 
 @media (max-width: 768px) {
     .slider-wrapper {
-        padding: 0 40px;
+        padding: 0 35px; /* Compact mobile spacing */
     }
     .prev-btn { left: 0; }
     .next-btn { right: 0; }
@@ -1640,4 +1691,131 @@ main {
 .footer-bottom p:hover {
     background: rgba(255, 122, 0, 0.1);
     transform: translateY(-2px);
+}
+
+/* --- AUTH PAGES (Login/Register) --- */
+.auth-page {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.auth-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+    min-height: calc(100vh - 120px);
+}
+
+.auth-card {
+    background: white;
+    width: 100%;
+    max-width: 440px;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 1.2rem;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+}
+
+.auth-utils {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.forgot-link, .auth-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-link:hover, .auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.auth-btn {
+    width: 100%;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+.auth-footer {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text-light);
 }
