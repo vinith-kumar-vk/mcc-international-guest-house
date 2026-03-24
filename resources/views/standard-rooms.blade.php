@@ -10,23 +10,64 @@
     <style>
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
+            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(4px);
         }
         .modal-overlay.active { display: flex; }
         .modal-card {
-            background: white; border-radius: 12px; padding: 2.5rem; width: 90%; max-width: 650px; 
-            max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: white; border-radius: 16px; padding: 1.75rem; width: 90%; max-width: 580px; 
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden; 
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .modal-close {
-            position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #555; transition: 0.2s;
+            position: absolute; top: 1rem; right: 1rem; background: white; border: none; 
+            width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; color: #555; transition: 0.2s; z-index: 20;
         }
-        .modal-close:hover { color: var(--primary-color); transform: scale(1.1); }
-        .room-img-modal { width: 100%; height: 260px; object-fit: cover; border-radius: 8px; margin-bottom: 1.5rem; }
-        .form-input { padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: border-color 0.2s; width: 100%; }
-        .form-input:focus { outline: none; border-color: var(--primary-color); }
-        .breadcrumb { font-size: 0.95rem; color: var(--text-light); margin-bottom: 2rem; font-weight: 500; }
-        .breadcrumb a { color: var(--primary-color); text-decoration: none; transition: 0.2s; }
-        .breadcrumb a:hover { text-decoration: underline; color: #cc4800; }
+        .modal-close:hover { color: var(--primary-color); transform: rotate(90deg); }
+        .modal-img-container { position: relative; width: 100%; height: 180px; margin-bottom: 1.25rem; overflow: hidden; border-radius: 10px; }
+        .room-img-modal { width: 100%; height: 100%; object-fit: cover; }
+        .modal-work-desk-badge {
+            position: absolute; top: 12px; left: 12px;
+            background: #ffffff; color: var(--primary-color);
+            padding: 5px 12px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            z-index: 10; display: flex; align-items: center; gap: 5px;
+        }
+        .form-input { 
+            height: 44px; padding: 10px 40px 10px 14px; border: 1px solid var(--border-color); 
+            border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; 
+            transition: all 0.2s; width: 100%; max-width: 100%; line-height: 1.2; box-sizing: border-box !important;
+            appearance: none; -webkit-appearance: none; min-width: 0;
+        }
+        .form-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1); }
+        .datetime-wrapper { position: relative; width: 100%; }
+        .datetime-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            color: var(--text-light); font-size: 1.2rem; pointer-events: none; z-index: 5;
+        }
+        /* Removes default browser icon to allow our custom one to shine */
+        .form-input::-webkit-calendar-picker-indicator { 
+            position: absolute; right: 0; top: 0; width: 100%; height: 100%;
+            margin: 0; padding: 0; opacity: 0; cursor: pointer;
+        }
+        .line-clamp-2 {
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;  
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .facility-compact {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: #f8f9fa; color: var(--text-light);
+            padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 500;
+        }
     </style>
 </head>
 <body style="background: #fbfbfb;">
@@ -47,13 +88,15 @@
     <main style="padding-top: 100px; padding-bottom: 80px;">
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
             <!-- Breadcrumbs -->
-            <div class="breadcrumb">
-                <a href="{{ route('home') }}">Dashboard</a> &gt; <span style="color: var(--text-color);">Standard Rooms</span>
+            <div class="breadcrumb" style="font-size: 1rem; margin-bottom: 1.5rem;">
+                <a href="{{ route('home') }}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Dashboard</a> 
+                <span style="color: #333; margin: 0 8px;">></span> 
+                <span style="color: var(--text-color); font-weight: 500;">Standard Rooms</span>
             </div>
 
-            <div class="title-section" style="margin: 0rem 0 3rem 0; text-align: left;">
-                <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--text-color);">Standard Rooms</h2>
-                <p style="color: var(--text-light); font-size: 1.05rem;">Comfortable stays equipped with all essential amenities for your visit.</p>
+            <div class="title-section" style="margin: 0rem 0 3.5rem 0; text-align: left;">
+                <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.6rem; color: #222; letter-spacing: -1px;">Standard Rooms</h1>
+                <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">Comfortable stays equipped with all essential amenities for your visit.</p>
             </div>
 
             <!-- Room Grid -->
@@ -75,14 +118,20 @@
                         <p style="font-size: 0.8rem; color: #888; margin-top: 2px; font-weight: 500;">+ 5% GST applicable</p>
                         
                         <!-- Quick Schedule -->
-                        <div style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center; background: #fafafa; padding: 1rem; border-radius: 8px; border: 1px solid #f0f0f0;">
-                            <div style="flex:1;">
-                                <label style="font-size: 0.75rem; font-weight:600; display:block; margin-bottom:4px; color: var(--text-light);">Clock In</label>
-                                <input type="datetime-local" class="form-input" style="padding:0.5rem; font-size:0.8rem; background: white;">
+                        <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: center; background: #fbfbfb; padding: 1.15rem; border-radius: 10px; border: 1px solid #eeeeee; width: 100%; box-sizing: border-box; overflow: hidden;">
+                            <div style="min-width: 0;">
+                                <label style="font-size: 0.7rem; font-weight:700; text-transform: uppercase; display:block; margin-bottom:6px; color: #888; letter-spacing: 0.5px;">Clock In</label>
+                                <div class="datetime-wrapper" style="width: 100%;">
+                                    <i class="ph ph-calendar-blank datetime-icon"></i>
+                                    <input type="datetime-local" class="form-input" style="background: white; border: 1px solid #ddd;">
+                                </div>
                             </div>
-                            <div style="flex:1;">
-                                <label style="font-size: 0.75rem; font-weight:600; display:block; margin-bottom:4px; color: var(--text-light);">Clock Out</label>
-                                <input type="datetime-local" class="form-input" style="padding:0.5rem; font-size:0.8rem; background: white;">
+                            <div style="min-width: 0;">
+                                <label style="font-size: 0.7rem; font-weight:700; text-transform: uppercase; display:block; margin-bottom:6px; color: #888; letter-spacing: 0.5px;">Clock Out</label>
+                                <div class="datetime-wrapper" style="width: 100%;">
+                                    <i class="ph ph-calendar-blank datetime-icon"></i>
+                                    <input type="datetime-local" class="form-input" style="background: white; border: 1px solid #ddd;">
+                                </div>
                             </div>
                         </div>
 
@@ -102,22 +151,23 @@
     <div class="modal-overlay" id="detailsModal">
         <div class="modal-card">
             <button class="modal-close" onclick="closeModal('detailsModal')"><i class="ph-bold ph-x"></i></button>
-            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Room" class="room-img-modal">
-            
-            <h2 style="font-size:1.8rem; margin-bottom: 0.5rem; color: var(--text-color);">Standard Room <span id="detailsRoomNo"></span></h2>
-            <div class="price-highlight" style="font-size: 1.4rem; margin-bottom: 1rem; color: var(--primary-color); font-weight: 700;">₹1400 <span style="font-size:0.95rem; color: var(--text-light); font-weight: 500;">/ 12 hrs</span> <span style="font-size:0.85rem; color:#888; font-weight: 500; margin-left: 0.5rem;">+ 5% GST</span></div>
-            
-            <p style="color:var(--text-light); margin-bottom:1.5rem; line-height:1.7; font-size: 1.05rem;">A clean, spacious, and comfortable room tailored ideally for short to mid-length stays. Furnished with fresh bedding and essential conveniences to ensure maximum rest and productivity during your visit.</p>
-            
-            <h4 style="margin-bottom:1rem; font-size: 1.1rem; color: var(--text-color);">Room Facilities</h4>
-            <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom: 2.5rem;">
-                <span class="badge" style="background:#fff4ed; color:var(--primary-color); padding: 0.6rem 1rem; border: 1px solid rgba(230, 81, 0, 0.1); font-size: 0.9rem;"><i class="ph ph-wifi-high" style="margin-right:4px;"></i> High-Speed WiFi</span>
-                <span class="badge" style="background:#fff4ed; color:var(--primary-color); padding: 0.6rem 1rem; border: 1px solid rgba(230, 81, 0, 0.1); font-size: 0.9rem;"><i class="ph ph-wind" style="margin-right:4px;"></i> Air Conditioning</span>
-                <span class="badge" style="background:#fff4ed; color:var(--primary-color); padding: 0.6rem 1rem; border: 1px solid rgba(230, 81, 0, 0.1); font-size: 0.9rem;"><i class="ph ph-bed" style="margin-right:4px;"></i> Comfort Bed</span>
-                <span class="badge" style="background:#fff4ed; color:var(--primary-color); padding: 0.6rem 1rem; border: 1px solid rgba(230, 81, 0, 0.1); font-size: 0.9rem;"><i class="ph ph-desktop" style="margin-right:4px;"></i> Work Desk</span>
+            <div class="modal-img-container">
+                <div class="modal-work-desk-badge"><i class="ph-bold ph-desktop"></i> Work Desk</div>
+                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Room" class="room-img-modal">
             </div>
             
-            <a id="modalBookNowBtn" href="#" class="btn" style="width:100%; padding: 1.2rem; font-size: 1.1rem; font-weight: 600; text-align: center; text-decoration: none; display: block; box-sizing: border-box; box-shadow: 0 6px 15px rgba(230, 81, 0, 0.2);">Proceed to Booking Form</a>
+            <h2 style="font-size:1.5rem; margin-bottom: 0.25rem; color: var(--text-color);">Standard Room <span id="detailsRoomNo"></span></h2>
+            <div class="price-highlight" style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--primary-color); font-weight: 700;">₹1400 <span style="font-size:0.85rem; color: var(--text-light); font-weight: 500;">/ 12 hrs</span></div>
+            
+            <p class="line-clamp-2" style="color:var(--text-light); margin-bottom:1rem; line-height:1.5; font-size: 0.95rem;">A clean, spacious, and comfortable room tailored ideally for short to mid-length stays. Furnished with fresh bedding and essential conveniences to ensure maximum rest and productivity during your visit.</p>
+            
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom: 1.25rem;">
+                <span class="facility-compact"><i class="ph ph-wifi-high"></i> WiFi</span>
+                <span class="facility-compact"><i class="ph ph-wind"></i> AC</span>
+                <span class="facility-compact"><i class="ph ph-bed"></i> Comfort Bed</span>
+            </div>
+            
+            <a id="modalBookNowBtn" href="#" class="btn" style="width:100%; padding: 1rem; font-size: 1rem; font-weight: 600; text-align: center; text-decoration: none; display: block; box-sizing: border-box; margin-top: 12px;">Proceed to Booking Form</a>
         </div>
     </div>
 
