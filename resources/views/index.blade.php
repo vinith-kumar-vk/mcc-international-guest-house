@@ -22,7 +22,8 @@
         <div class="header-center">
             <h1>MCC IGH</h1>
         </div>
-        <div class="header-right">
+        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+            <button class="help-btn" onclick="openHelpModal()">Help</button>
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
                     <i class="ph-fill ph-user-circle"></i>
@@ -98,6 +99,88 @@
         .hero-slide .slide-subtitle { transform: translateY(20px); opacity: 0; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s; }
         .hero-slide.active-slide .slide-title, .hero-slide.active-slide .slide-subtitle { transform: translateY(0); opacity: 1; }
 
+        /* Help Modal Styles */
+        .help-btn {
+            background: none; border: none; font-family: 'Inter', sans-serif;
+            font-size: 0.95rem; font-weight: 600; color: #444; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; transition: color 0.3s;
+        }
+        .help-btn:hover { color: var(--primary-color); }
+
+        .help-modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 6000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .help-modal-overlay.active { display: flex; opacity: 1; visibility: visible; }
+        .help-modal-card {
+            background: white; border-radius: 16px; width: 100%; max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); position: relative;
+            padding: 40px; animation: modalSlideUp 0.4s ease; margin: 20px;
+        }
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .help-modal-close {
+            position: absolute; top: 20px; right: 20px; left: auto; background: none; border: none;
+            font-size: 1.5rem; color: #999; cursor: pointer; transition: color 0.3s;
+            display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+            z-index: 10;
+        }
+        .help-modal-close:hover { color: #333; }
+        .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
+        .help-form { display: flex; flex-direction: column; gap: 20px; }
+        .help-form-row { display: flex; gap: 20px; }
+        .help-input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .help-input-group.full-width { width: 100%; }
+        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
+        .help-input-group input, .help-input-group textarea {
+            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
+            font-family: inherit; font-size: 1rem; transition: all 0.3s; background: #fafafa;
+            width: 100%;
+        }
+        .help-input-group input:focus, .help-input-group textarea:focus {
+            border-color: var(--primary-color); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+        }
+
+        .custom-dropdown { position: relative; width: 100%; }
+        .dropdown-selected {
+            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; background: #fafafa; transition: 0.3s;
+        }
+        .dropdown-selected:hover { border-color: #bbb; }
+        .dropdown-selected span { color: #333; font-weight: 500; }
+        .dropdown-selected i { color: #999; font-size: 1.2rem; }
+        .dropdown-options {
+            position: absolute; top: calc(100% + 5px); left: 0; right: 0;
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 10;
+            max-height: 250px; overflow-y: auto; display: none;
+        }
+        .dropdown-options.active { display: block; }
+        .dropdown-option {
+            padding: 12px 16px; font-size: 0.95rem; color: #444; cursor: pointer;
+            transition: background 0.2s; border-bottom: 1px solid #f5f5f5;
+        }
+        .dropdown-option:last-child { border-bottom: none; }
+        .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
+        .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
+        .help-send-btn {
+            background: var(--primary-color); color: white; border: none; padding: 16px;
+            border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+            width: 100%; text-align: center;
+        }
+        .help-send-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3); }
+        
+        @media (max-width: 600px) {
+            .help-form-row { flex-direction: column; gap: 20px; }
+            .help-modal-card { padding: 30px 20px; }
+        }
+
         @media (max-width: 768px) {
             .main-image-slider { height: 380px !important; min-height: unset; margin-bottom: 1.5rem !important; }
             .hero-layer h2 { font-size: 2.2rem !important; margin-bottom: 0.5rem !important; }
@@ -137,18 +220,12 @@
             display: inline-block;
             letter-spacing: -0.5px;
         }
-        .facility-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 0;
-            height: 4px;
-            background: var(--primary-color);
-            transform: translateX(-50%);
-            transition: width 0.6s ease;
-            border-radius: 2px;
+        .dashboard-rooms-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+            max-width: 1250px; margin: 0 auto;
         }
+        @media (max-width: 1024px) { .dashboard-rooms-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .dashboard-rooms-grid { grid-template-columns: 1fr; } }
         .premium-facility-card:hover .facility-title::after {
             width: 80px;
         }
@@ -281,7 +358,7 @@
                 </div>
 
                 <div class="slider-outer-frame">
-                    <button id="roomPrevBtn" class="room-nav-btn left">‹</button>
+                    <button type="button" id="roomPrevBtn" class="room-nav-btn left" aria-label="Previous">‹</button>
                     
                     <div id="cardsCarousel" class="cards-container">
                         @php
@@ -314,7 +391,7 @@
                         @endfor
                     </div>
 
-                    <button id="roomNextBtn" class="room-nav-btn right">›</button>
+                    <button type="button" id="roomNextBtn" class="room-nav-btn right" aria-label="Next">›</button>
                 </div>
             </div>
         </section>
@@ -342,14 +419,27 @@
 
                 autoScroll();
 
-                leftArrow.onclick = () => {
-                    container.scrollBy({ left: -300, behavior: 'smooth' });
-                    setTimeout(() => { scrollPos = container.scrollLeft; }, 500);
+                let manualPauseTimer = null;
+
+                function manualPause() {
+                    isHovered = true;
+                    if (manualPauseTimer) clearTimeout(manualPauseTimer);
+                    manualPauseTimer = setTimeout(() => {
+                        isHovered = false;
+                        scrollPos = container.scrollLeft;
+                    }, 2500); // 2.5s manual override
+                }
+
+                leftArrow.onclick = (e) => {
+                    e.preventDefault();
+                    manualPause();
+                    container.scrollBy({ left: -320, behavior: 'smooth' });
                 };
 
-                rightArrow.onclick = () => {
-                    container.scrollBy({ left: 300, behavior: 'smooth' });
-                    setTimeout(() => { scrollPos = container.scrollLeft; }, 500); 
+                rightArrow.onclick = (e) => {
+                    e.preventDefault();
+                    manualPause();
+                    container.scrollBy({ left: 320, behavior: 'smooth' });
                 };
 
                 container.addEventListener('mouseenter', () => isHovered = true);
@@ -402,7 +492,7 @@
                         <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Comfortable accommodations designed for short and efficient stays with essential amenities.</p>
                         <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
                         <div style="margin-top: auto;">
-                            <a href="{{ route('standard.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Explore Standard</a>
+                            <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -418,12 +508,11 @@
                         <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Premium guest rooms tailored for extended comfort, delegates, and specific reservations.</p>
                         <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
                         <div style="margin-top: auto;">
-                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Explore Advance</a>
+                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Conference / Glass Rooms -->
                 <div class="card premium-card" style="display: flex; flex-direction: column; height: 100%;">
                     <div class="card-image-wrapper" style="height: 160px;">
                         <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Conference Rooms" style="width: 100%; height: 100%; object-fit: cover;">
@@ -434,7 +523,7 @@
                         <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
                         <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
                         <div style="margin-top: auto;">
-                            <a href="{{ route('conference.rooms') }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Explore Halls</a>
+                            <a href="{{ route('conference.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -556,9 +645,99 @@
     <!-- Alert Toast (View Details dummy action) -->
     <div class="toast" id="toast"></div>
 
+    <!-- Help Modal -->
+    <div class="help-modal-overlay" id="helpModal">
+        <div class="help-modal-card">
+            <button class="help-modal-close" onclick="closeHelpModal()">
+                <i class="ph ph-x"></i>
+            </button>
+            <div class="help-modal-content">
+                <h2 class="help-modal-title">Contact Us</h2>
+                <form class="help-form" onsubmit="event.preventDefault(); return false;">
+                    <div class="help-form-row">
+                        <div class="help-input-group">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your name">
+                        </div>
+                        <div class="help-input-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Your email">
+                        </div>
+                    </div>
+                    
+                    <div class="help-input-group full-width">
+                        <label>Subject</label>
+                        <div class="custom-dropdown" id="helpSubjectDropdown">
+                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
+                                <span id="selectedSubject">Choose subject…</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                            <div class="dropdown-options" id="helpDropdownOptions">
+                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-input-group full-width">
+                        <label>Message</label>
+                        <textarea placeholder="How can we help you?" rows="5"></textarea>
+                    </div>
+
+                    <div class="help-form-footer">
+                        <button type="submit" class="help-send-btn">SEND</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', initIndexPage);
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        function toggleHelpDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('helpDropdownOptions').classList.toggle('active');
+        }
+
+        function selectHelpOption(val) {
+            document.getElementById('selectedSubject').innerText = val;
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            const helpModal = document.getElementById('helpModal');
+            if (event.target == helpModal) {
+                closeHelpModal();
+            }
+
+            const dropdownOptions = document.getElementById('helpDropdownOptions');
+            const dropdownSelected = document.querySelector('.dropdown-selected');
+            if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
+                dropdownOptions.classList.remove('active');
+            }
+        }
 
         function slideLeft() {
             const slider = document.getElementById('roomSlider');

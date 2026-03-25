@@ -3,70 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Standard Rooms - GH Booking System</title>
+    <title>Standard Rooms - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(4px);
+        .rooms-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 2rem !important;
+            margin-top: 2rem !important;
         }
-        .modal-overlay.active { display: flex; }
+        @media (max-width: 1024px) { .rooms-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 768px) { .rooms-grid { grid-template-columns: 1fr !important; } }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(0,0,0,0.7) !important; backdrop-filter: blur(6px) !important;
+            display: none; align-items: center; justify-content: center; z-index: 5000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            padding: 15px;
+        }
+        .modal-overlay.active { display: flex !important; opacity: 1 !important; visibility: visible !important; }
         .modal-card {
-            background: white; border-radius: 16px; padding: 1.75rem; width: 90%; max-width: 580px; 
-            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow: hidden; 
+            background: white; border-radius: 20px; width: 100%; max-width: 500px; 
+            position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; display: flex; flex-direction: column;
+            margin: auto; line-height: 1.3; max-height: 95vh;
         }
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .modal-close {
-            position: absolute; top: 1rem; right: 1rem; background: white; border: none; 
-            width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.9); border: none; 
+            width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; color: #555; transition: 0.2s; z-index: 20;
+            font-size: 1rem; cursor: pointer; color: #333; transition: all 0.3s; z-index: 100;
         }
-        .modal-close:hover { color: var(--primary-color); transform: rotate(90deg); }
-        .modal-img-container { position: relative; width: 100%; height: 180px; margin-bottom: 1.25rem; overflow: hidden; border-radius: 10px; }
+        .modal-close:hover { background: #ff4757; color: white; transform: rotate(90deg); }
+        .modal-img-container { position: relative; width: 100%; height: 150px; overflow: hidden; flex-shrink: 0; }
         .room-img-modal { width: 100%; height: 100%; object-fit: cover; }
-        .modal-work-desk-badge {
-            position: absolute; top: 12px; left: 12px;
-            background: #ffffff; color: var(--primary-color);
-            padding: 5px 12px; border-radius: 20px;
-            font-size: 0.7rem; font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-transform: uppercase; letter-spacing: 0.5px;
-            z-index: 10; display: flex; align-items: center; gap: 5px;
+        .modal-body { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; overflow: hidden; }
+        .modal-title { font-size: 1.4rem; color: #111; margin: 0; font-weight: 800; letter-spacing: -0.5px; }
+        .modal-price-line { font-size: 1rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: baseline; gap: 4px; }
+        .modal-divider { height: 1px; background: #eee; margin: 0.2rem 0; width: 100%; }
+        .facility-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 2px; }
+        .facility-item { background: #f8f9fa; color: #444; padding: 6px 4px; border-radius: 6px; font-size: 0.75rem; display: flex; align-items: center; gap: 4px; border: 1px solid #eee; font-weight: 500; text-align: center; justify-content: center; flex-direction: column; }
+        .facility-item i { font-size: 0.9rem; color: var(--primary-color); }
+
+        /* Help Modal Styles */
+        .help-btn {
+            background: none; border: none; font-family: 'Inter', sans-serif;
+            font-size: 0.95rem; font-weight: 600; color: #444; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; transition: color 0.3s;
         }
-        .form-input { 
-            height: 44px; padding: 10px 40px 10px 14px; border: 1px solid var(--border-color); 
-            border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; 
-            transition: all 0.2s; width: 100%; max-width: 100%; line-height: 1.2; box-sizing: border-box !important;
-            appearance: none; -webkit-appearance: none; min-width: 0;
+        .help-btn:hover { color: var(--primary-color); }
+
+        .help-modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 6000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
-        .form-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1); }
-        .datetime-wrapper { position: relative; width: 100%; }
-        .datetime-icon {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            color: var(--text-light); font-size: 1.2rem; pointer-events: none; z-index: 5;
+        .help-modal-overlay.active { display: flex; opacity: 1; visibility: visible; }
+        .help-modal-card {
+            background: white; border-radius: 16px; width: 100%; max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); position: relative;
+            padding: 40px; animation: modalSlideUp 0.4s ease; margin: 20px;
         }
-        /* Removes default browser icon to allow our custom one to shine */
-        .form-input::-webkit-calendar-picker-indicator { 
-            position: absolute; right: 0; top: 0; width: 100%; height: 100%;
-            margin: 0; padding: 0; opacity: 0; cursor: pointer;
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        .line-clamp-2 {
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;  
-            overflow: hidden; text-overflow: ellipsis;
+        .help-modal-close {
+            position: absolute; top: 20px; right: 20px; left: auto; background: none; border: none;
+            font-size: 1.5rem; color: #999; cursor: pointer; transition: color 0.3s;
+            display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+            z-index: 10;
         }
-        .facility-compact {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: #f8f9fa; color: var(--text-light);
-            padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 500;
+        .help-modal-close:hover { color: #333; }
+        .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
+        .help-form { display: flex; flex-direction: column; gap: 20px; }
+        .help-form-row { display: flex; gap: 20px; }
+        .help-input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .help-input-group.full-width { width: 100%; }
+        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
+        .help-input-group input, .help-input-group textarea {
+            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
+            font-family: inherit; font-size: 1rem; transition: all 0.3s; background: #fafafa;
+            width: 100%;
+        }
+        .help-input-group input:focus, .help-input-group textarea:focus {
+            border-color: var(--primary-color); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+        }
+
+        .custom-dropdown { position: relative; width: 100%; }
+        .dropdown-selected {
+            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; background: #fafafa; transition: 0.3s;
+        }
+        .dropdown-selected:hover { border-color: #bbb; }
+        .dropdown-selected span { color: #333; font-weight: 500; }
+        .dropdown-selected i { color: #999; font-size: 1.2rem; }
+        .dropdown-options {
+            position: absolute; top: calc(100% + 5px); left: 0; right: 0;
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 10;
+            max-height: 250px; overflow-y: auto; display: none;
+        }
+        .dropdown-options.active { display: block; }
+        .dropdown-option {
+            padding: 12px 16px; font-size: 0.95rem; color: #444; cursor: pointer;
+            transition: background 0.2s; border-bottom: 1px solid #f5f5f5;
+        }
+        .dropdown-option:last-child { border-bottom: none; }
+        .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
+        .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
+        .help-send-btn {
+            background: var(--primary-color); color: white; border: none; padding: 16px;
+            border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+            width: 100%; text-align: center;
+        }
+        .help-send-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3); }
+        
+        @media (max-width: 600px) {
+            .help-form-row { flex-direction: column; gap: 20px; }
+            .help-modal-card { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -80,7 +146,8 @@
         <div class="header-center">
             <h1>MCC IGH</h1>
         </div>
-        <div class="header-right">
+        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+            <button class="help-btn" onclick="openHelpModal()">Help</button>
             <a href="{{ route('home') }}" class="btn btn-outline" style="text-decoration: none;">Dashboard</a>
         </div>
     </header>
@@ -100,9 +167,9 @@
             </div>
 
             <!-- Room Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+            <div class="rooms-grid">
                 @for ($i = 1; $i <= 8; $i++)
-                <div class="card" data-name="Standard Room {{ $i }}" style="background: white; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 25px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.04)';">
+                <div class="card" data-name="Standard Room {{ $i }}">
                     <div class="card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Standard Room {{ $i }}">
                         <span class="badge status-available">Available</span>
@@ -115,24 +182,32 @@
                         </div>
                         <p class="description">Comfortable stay with AC, WiFi, and dedicated workspace.</p>
                         
-                        <div class="price-highlight" style="font-size: 1.2rem; color: var(--primary-color); font-weight: 700; margin-top: 1rem;">₹1400 <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">/ 12 hours</span></div>
+                        <div class="price-highlight"><span>₹1400</span> / 12 hours</div>
                         <p class="gst-text">+ 5% GST applicable</p>
                         
-                        <!-- Quick Schedule -->
-                        <div class="datetime-row" style="margin-top: 1.5rem; background: #fbfbfb; padding: 1.15rem; border-radius: 10px; border: 1px solid #eeeeee;">
-                            <div class="datetime-col">
-                                <label>Clock In</label>
-                                <input type="datetime-local">
+                        <!-- Room Highlights -->
+                        <div class="room-highlights" style="margin: 1rem 0; padding: 0.8rem; background: #f9f9f9; border-radius: 12px; border: 1px dashed #ddd;">
+                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">Room Highlights</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
+                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wifi-high" style="color: var(--primary-color);"></i> WiFi</div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wind" style="color: var(--primary-color);"></i> AC</div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-desktop" style="color: var(--primary-color);"></i> Work Desk</div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-bed" style="color: var(--primary-color);"></i> Clean Bedding</div>
                             </div>
-                            <div class="datetime-col">
-                                <label>Clock Out</label>
-                                <input type="datetime-local">
-                            </div>
+                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">Best for short and budget-friendly stays</p>
                         </div>
 
-                        <div class="card-actions" style="margin-top: 1.5rem; display:flex; gap: 0.8rem;">
-                            <button class="btn btn-outline view-details-btn" style="flex: 1; padding: 0.7rem;" data-room="{{ $i }}" onclick="openDetailsModal({{ $i }})">View Details</button>
-                            <a href="{{ route('booking.form.full', ['room' => $i]) }}" class="btn" style="flex: 1; padding: 0.7rem;">Book Now</a>
+                        <div class="card-actions">
+                            <button type="button" class="btn btn-outline" 
+                                onclick="window.showQuickRoomDetails(this)"
+                                data-room="{{ $i }}" 
+                                data-name="Standard Room {{ $i }}" 
+                                data-price="₹1400" 
+                                data-time="/ 12 hours"
+                                 data-img="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                                 data-facilities="AC:ph-wind,WiFi:ph-wifi-high,Work Desk:ph-desktop,Basic Toiletries:ph-bottle"
+                                 data-desc="A clean and comfortable space designed for short stays. Includes essential amenities for a convenient and budget-friendly experience.">View Details</button>
+                            <a href="{{ route('booking.form.full', ['room' => $i]) }}" class="btn">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -141,65 +216,165 @@
         </div>
     </main>
 
-    <!-- Details Modal -->
+    <!-- Modal Modal -->
     <div class="modal-overlay" id="detailsModal">
-        <div class="hotel-modal">
-            <button class="hotel-modal-close" onclick="closeModal('detailsModal')"><i class="ph-bold ph-x"></i></button>
-            <div class="hotel-modal-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Room">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal('detailsModal')"><i class="ph-bold ph-x"></i></button>
+            <div class="modal-img-container">
+                <img src="" alt="Room" class="room-img-modal" id="modalImg">
             </div>
             
-            <div class="hotel-modal-body">
-                <div class="hotel-modal-header">
-                    <h2 class="hotel-modal-title">Standard Room <span id="detailsRoomNo"></span></h2>
-                    <div class="hotel-modal-price">
-                        <span>₹1400</span> 
-                        <span style="font-size:0.85rem; color: var(--text-light); font-weight: 500;">/ 12 hrs</span>
-                    </div>
-                    <p class="gst-text">+ 5% GST applicable</p>
-                </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalRoomTitle">Room Details</h2>
                 
-                <div class="hotel-modal-feature-grid">
-                    <span class="feature-chip"><i class="ph-fill ph-bed"></i> Bed</span>
-                    <span class="feature-chip"><i class="ph-fill ph-wind"></i> AC</span>
-                    <span class="feature-chip"><i class="ph-fill ph-wifi-high"></i> WiFi</span>
-                    <span class="feature-chip"><i class="ph-fill ph-desktop"></i> Work Desk</span>
+                <div class="modal-price-line">
+                    <span id="modalRoomPrice">₹0</span> 
+                    <span style="font-size: 0.95rem; color: #666; font-weight: 600;" id="modalRoomTime">/ period</span>
+                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ 5% GST</span>
                 </div>
 
-                <div class="hotel-modal-why">
-                    <h4>Why choose this room?</h4>
-                    <ul>
-                        <li>Budget friendly</li>
-                        <li>Short stay</li>
-                        <li>Basic amenities</li>
-                    </ul>
+                <p style="color: #666; line-height: 1.4; font-size: 0.85rem; margin: 0.25rem 0;" id="modalRoomDesc"></p>
+                
+                <div class="modal-divider"></div>
+                
+                <h3 style="font-size: 1rem; font-weight: 800; color: #111; margin: 0.25rem 0 0.5rem 0; display: flex; align-items: center; gap: 6px;">
+                    Room Facilities
+                </h3>
+                <div class="facility-grid" id="modalFacilitiesContainer">
+                    <!-- Dynamic Facilities -->
                 </div>
-
-                <p style="color:var(--text-light); margin-bottom:0; line-height:1.5; font-size: 0.95rem;">A clean, spacious room tailored for short to mid-length stays with fresh bedding and essential conveniences.</p>
             </div>
-            
-            <div class="hotel-modal-footer">
-                <a id="modalBookNowBtn" href="#" class="btn" style="width:100%;">Proceed to Booking</a>
+
+            <div class="modal-footer" style="padding: 1rem 1.25rem; background: #fff; border-top: 1px solid #eee; flex-shrink: 0;">
+                <a id="modalBookNowBtn" href="#" class="btn" style="width:100%; text-align: center; border-radius: 10px; font-weight: 700; font-size: 1rem; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 0.75rem;">
+                    Proceed to Booking Form <i class="ph-bold ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="help-modal-overlay" id="helpModal">
+        <div class="help-modal-card">
+            <button class="help-modal-close" onclick="closeHelpModal()">
+                <i class="ph ph-x"></i>
+            </button>
+            <div class="help-modal-content">
+                <h2 class="help-modal-title">Contact Us</h2>
+                <form class="help-form" onsubmit="event.preventDefault(); return false;">
+                    <div class="help-form-row">
+                        <div class="help-input-group">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your name">
+                        </div>
+                        <div class="help-input-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Your email">
+                        </div>
+                    </div>
+                    
+                    <div class="help-input-group full-width">
+                        <label>Subject</label>
+                        <div class="custom-dropdown" id="helpSubjectDropdown">
+                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
+                                <span id="selectedSubject">Choose subject…</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                            <div class="dropdown-options" id="helpDropdownOptions">
+                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-input-group full-width">
+                        <label>Message</label>
+                        <textarea placeholder="How can we help you?" rows="5"></textarea>
+                    </div>
+
+                    <div class="help-form-footer">
+                        <button type="submit" class="help-send-btn">SEND</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-        function openDetailsModal(roomId) {
-            document.getElementById('detailsRoomNo').innerText = roomId;
-            // Link directly to full page booking form
-            document.getElementById('modalBookNowBtn').href = "{{ route('booking.form.full') }}?room=" + roomId;
+        window.showQuickRoomDetails = function(btn) {
+            const data = btn.dataset;
+            document.getElementById('modalRoomTitle').innerText = data.name;
+            document.getElementById('modalRoomPrice').innerText = data.price;
+            document.getElementById('modalRoomTime').innerText = data.time;
+            document.getElementById('modalImg').src = data.img;
+            document.getElementById('modalRoomDesc').innerText = data.desc;
+            document.getElementById('modalBookNowBtn').href = "{{ route('booking.form.full') }}?room=" + data.room;
+            
+            const container = document.getElementById('modalFacilitiesContainer');
+            container.innerHTML = '';
+            const facilities = data.facilities.split(',');
+            facilities.forEach(f => {
+                const [name, icon] = f.split(':');
+                if (name && icon) {
+                    const div = document.createElement('div');
+                    div.className = 'facility-item';
+                    div.innerHTML = `<i class="ph-bold ${icon}"></i> <span>${name}</span>`;
+                    container.appendChild(div);
+                }
+            });
+
             document.getElementById('detailsModal').classList.add('active');
+        };
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
         }
 
-        window.onclick = function(event) {
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        function toggleHelpDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('helpDropdownOptions').classList.toggle('active');
+        }
+
+        function selectHelpOption(val) {
+            document.getElementById('selectedSubject').innerText = val;
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
             const detailsModal = document.getElementById('detailsModal');
-            if (event.target == detailsModal) detailsModal.classList.remove('active');
-        }
+            const helpModal = document.getElementById('helpModal');
+
+            window.onclick = function(event) {
+                if (event.target == detailsModal) closeModal('detailsModal');
+                if (event.target == helpModal) closeHelpModal();
+
+                const dropdownOptions = document.getElementById('helpDropdownOptions');
+                const dropdownSelected = document.querySelector('.dropdown-selected');
+                if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
+                    dropdownOptions.classList.remove('active');
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -386,6 +386,21 @@
             }
         }
 
+        // ISSUE 2: Date selection allows past dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const todayDateTime = now.toISOString().slice(0, 16);
+            
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                input.setAttribute('min', today);
+            });
+            
+            document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+                input.setAttribute('min', todayDateTime);
+            });
+        });
+
         function toggleNationalityFields() {
             const isNonIndian = document.querySelector('input[name="nationality"][value="Non-Indian"]').checked;
             const nonIndianFields = document.querySelectorAll('.non-indian-field');
