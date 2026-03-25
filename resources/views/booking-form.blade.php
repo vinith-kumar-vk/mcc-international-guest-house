@@ -155,6 +155,9 @@
                         <h3>Selected: Room {{ $roomId ?? 'Pending' }}</h3>
                         <p>Standard amenities included</p>
                     </div>
+                    <div>
+                        <p class="gst-text" style="color: var(--primary-color); font-weight: 600;">+ 5% GST applicable</p>
+                    </div>
                 </div>
 
                 <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Booking details submitted. Redirecting to payment...'); window.location.href='{{ route('home') }}';">
@@ -273,19 +276,20 @@
 
                         <!-- SECTION: STAY DETAILS -->
                         <div class="section-divider"></div>
-                        <div class="form-section-title full-width"><i class="ph-bold ph-calendar-check"></i> Booking Details</div>
+                        <div class="form-section-title full-width" style="margin-top: 2rem;"><i class="ph-bold ph-calendar-check" style="color: var(--primary-color);"></i> Booking Details</div>
+                        <p class="gst-text" style="margin-bottom: 1.5rem;">+ 5% GST applicable on all room rates</p>
 
-                        <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
-                        <div class="paired-row">
-                            <div class="form-group">
-                                <label class="form-label">Clock In Date & Time <span>*</span></label>
-                                <input type="datetime-local" class="form-input" required>
+                        <!-- FIXED 50/50 ROW: Clock In (Left) | Clock Out (Right) -->
+                        <div class="datetime-row">
+                            <div class="datetime-col">
+                                <label>Clock In Date & Time <span>*</span></label>
+                                <input type="datetime-local" required>
                                 <div class="form-helper">Select your intended arrival</div>
                             </div>
                             
-                            <div class="form-group">
-                                <label class="form-label">Clock Out Date & Time <span>*</span></label>
-                                <input type="datetime-local" class="form-input" required>
+                            <div class="datetime-col">
+                                <label>Clock Out Date & Time <span>*</span></label>
+                                <input type="datetime-local" required>
                                 <div class="form-helper">Select your intended departure</div>
                             </div>
                         </div>

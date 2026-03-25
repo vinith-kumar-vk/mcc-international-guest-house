@@ -110,6 +110,7 @@
                     <div class="card-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="{{ $room['type'] }}">
                         <span class="badge status-available">Available</span>
+                        <span class="badge" style="top: 1rem; left: auto; right: 1rem; background: var(--primary-color); color: white;">Premium</span>
                     </div>
                     <div class="card-content">
                         <div class="card-header">
@@ -119,29 +120,23 @@
                         <p class="description">{{ $room['type'] }}</p>
                         
                         <div class="price-highlight" style="font-size: 1.2rem; color: var(--primary-color); font-weight: 700; margin-top: 1rem;">₹2500 <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">/ day</span></div>
-                        <p style="font-size: 0.8rem; color: #888; margin-top: 2px; font-weight: 500;">+ 5% GST applicable</p>
+                        <p class="gst-text">+ 5% GST applicable</p>
                         
                         <!-- Quick Schedule -->
-                        <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: center; background: #fbfbfb; padding: 1.15rem; border-radius: 10px; border: 1px solid #eeeeee; width: 100%; box-sizing: border-box; overflow: hidden;">
-                            <div style="min-width: 0;">
-                                <label style="font-size: 0.7rem; font-weight:700; text-transform: uppercase; display:block; margin-bottom:6px; color: #888; letter-spacing: 0.5px;">Clock In</label>
-                                <div class="datetime-wrapper" style="width: 100%;">
-                                    <i class="ph ph-calendar-blank datetime-icon"></i>
-                                    <input type="datetime-local" class="form-input" style="background: white; border: 1px solid #ddd;">
-                                </div>
+                        <div class="datetime-row" style="margin-top: 1.5rem; background: #fbfbfb; padding: 1.15rem; border-radius: 10px; border: 1px solid #eeeeee;">
+                            <div class="datetime-col">
+                                <label>Clock In</label>
+                                <input type="datetime-local">
                             </div>
-                            <div style="min-width: 0;">
-                                <label style="font-size: 0.7rem; font-weight:700; text-transform: uppercase; display:block; margin-bottom:6px; color: #888; letter-spacing: 0.5px;">Clock Out</label>
-                                <div class="datetime-wrapper" style="width: 100%;">
-                                    <i class="ph ph-calendar-blank datetime-icon"></i>
-                                    <input type="datetime-local" class="form-input" style="background: white; border: 1px solid #ddd;">
-                                </div>
+                            <div class="datetime-col">
+                                <label>Clock Out</label>
+                                <input type="datetime-local">
                             </div>
                         </div>
 
                         <div class="card-actions" style="margin-top: 1.5rem; display:flex; gap: 0.8rem;">
-                            <button class="btn btn-outline" style="flex: 1; padding: 0.7rem; transition: 0.2s;" onclick="openDetailsModal('{{ $room["no"] }}')">View Details</button>
-                            <a href="{{ route('booking.form.full', ['room' => $room['no']]) }}" class="btn" style="flex: 1; padding: 0.7rem; text-align: center; text-decoration: none; transition: 0.2s; box-shadow: 0 4px 10px rgba(230, 81, 0, 0.2);">Book Now</a>
+                            <button class="btn btn-outline view-details-btn" style="flex: 1; padding: 0.7rem;" data-room="{{ $room['no'] }}" onclick="openDetailsModal('{{ $room["no"] }}')">View Details</button>
+                            <a href="{{ route('booking.form.full', ['room' => $room['no']]) }}" class="btn" style="flex: 1; padding: 0.7rem;">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -152,24 +147,45 @@
 
     <!-- Details Modal -->
     <div class="modal-overlay" id="detailsModal">
-        <div class="modal-card">
-            <button class="modal-close" onclick="closeModal('detailsModal')"><i class="ph-bold ph-x"></i></button>
-            <div class="modal-img-container">
-                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Room" class="room-img-modal">
+        <div class="hotel-modal">
+            <button class="hotel-modal-close" onclick="closeModal('detailsModal')"><i class="ph-bold ph-x"></i></button>
+            <div class="hotel-modal-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Room">
             </div>
             
-            <h2 style="font-size:1.5rem; margin-bottom: 0.25rem; color: var(--text-color);">Premium Room <span id="detailsRoomNo"></span></h2>
-            <div class="price-highlight" style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--primary-color); font-weight: 700;">₹2500 <span style="font-size:0.85rem; color: var(--text-light); font-weight: 500;">/ day</span></div>
-            
-            <p class="line-clamp-2" style="color:var(--text-light); margin-bottom:1rem; line-height:1.5; font-size: 0.95rem;">A premium guest room specifically designed for an extended stay, ensuring absolute comfort and elegance for our special guests and delegates.</p>
-            
-            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom: 1.25rem;">
-                <span class="facility-compact"><i class="ph ph-wifi-high"></i> WiFi</span>
-                <span class="facility-compact"><i class="ph ph-wind"></i> AC</span>
-                <span class="facility-compact"><i class="ph ph-coffee"></i> Coffee</span>
+            <div class="hotel-modal-body">
+                <div class="hotel-modal-header">
+                    <h2 class="hotel-modal-title">Premium Room <span id="detailsRoomNo"></span></h2>
+                    <div class="hotel-modal-price">
+                        <span>₹2500</span> 
+                        <span style="font-size:0.85rem; color: var(--text-light); font-weight: 500;">/ day</span>
+                    </div>
+                    <p class="gst-text">+ 5% GST applicable</p>
+                </div>
+                
+                <div class="hotel-modal-feature-grid">
+                    <span class="feature-chip"><i class="ph-fill ph-bed"></i> Premium Bed</span>
+                    <span class="feature-chip"><i class="ph-fill ph-wind"></i> AC</span>
+                    <span class="feature-chip"><i class="ph-fill ph-wifi-high"></i> High-speed WiFi</span>
+                    <span class="feature-chip"><i class="ph-fill ph-coffee"></i> Coffee</span>
+                    <span class="feature-chip"><i class="ph-fill ph-shield-check"></i> Privacy</span>
+                </div>
+
+                <div class="hotel-modal-why">
+                    <h4>Why choose this room?</h4>
+                    <ul>
+                        <li>Luxury stay</li>
+                        <li>Better comfort</li>
+                        <li>More privacy</li>
+                    </ul>
+                </div>
+
+                <p style="color:var(--text-light); margin-bottom:0; line-height:1.5; font-size: 0.95rem;">A premium guest room designed for an extended stay, ensuring absolute comfort and elegance for our delegates.</p>
             </div>
             
-            <a id="modalBookNowBtn" href="#" class="btn" style="width:100%; padding: 1rem; font-size: 1rem; font-weight: 600; text-align: center; text-decoration: none; display: block; box-sizing: border-box; margin-top: 12px;">Proceed to Booking Form</a>
+            <div class="hotel-modal-footer">
+                <a id="modalBookNowBtn" href="#" class="btn" style="width:100%;">Proceed to Booking</a>
+            </div>
         </div>
     </div>
 

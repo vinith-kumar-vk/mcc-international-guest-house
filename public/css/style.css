@@ -34,11 +34,12 @@ body {
 header {
     background-color: var(--card-bg);
     color: var(--primary-color);
-    padding: 0.75rem 1.5rem; /* Clean vertical spacing */
+    padding: 0.75rem 1.5rem;
     display: flex;
-    justify-content: space-between; /* Space out left logo and right button */
+    justify-content: space-between;
     align-items: center;
     position: relative;
+    z-index: 1000; /* CRITICAL: keeps dropdown above hero */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border-bottom: 2px solid var(--primary-color);
 }
@@ -92,13 +93,15 @@ header h1 {
 .profile-dropdown {
     position: relative;
     display: inline-block;
+    z-index: 9999; /* Must be highest to float above banner */
 }
 
 .profile-btn {
     background: transparent;
     border: none;
+    box-shadow: none; /* No box around icon */
     color: var(--primary-color);
-    font-size: 2.8rem; /* Increased size for better visibility */
+    font-size: 2.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -110,6 +113,7 @@ header h1 {
 .profile-btn:hover {
     color: var(--primary-hover);
     transform: scale(1.1);
+    box-shadow: none !important;
 }
 
 .dropdown-menu {
@@ -118,11 +122,11 @@ header h1 {
     right: 0;
     top: 110%;
     background-color: white;
-    min-width: 150px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    min-width: 160px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-radius: 10px;
     border: 1px solid var(--border);
-    z-index: 1000;
+    z-index: 9999; /* Float above EVERYTHING including hero */
     overflow: hidden;
 }
 
@@ -155,9 +159,27 @@ header h1 {
     color: #dc3545;
 }
 
-.dropdown-item.logout:hover {
-    background-color: #fdf5f5;
+/* Badge Color Classes */
+.badge.standard-badge {
+    background: #e5e7eb !important;
+    color: #374151 !important;
 }
+
+.badge.premium-badge {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.badge.conference-badge {
+    background: #3b82f6 !important;
+    color: #fff !important;
+}
+
+.badge.suite-badge {
+    background: #7c3aed !important;
+    color: #fff !important;
+}
+
 
 main {
     flex: 1;
@@ -518,7 +540,8 @@ main {
     margin-top: auto;
 }
 
-/* Base Buttons */
+/* Base Buttons & Forcing Overrides */
+button,
 .btn {
     background-color: var(--primary-color);
     color: white;
@@ -528,7 +551,6 @@ main {
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     text-align: center;
     text-decoration: none;
     display: flex;
@@ -536,55 +558,121 @@ main {
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.15);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: 0.6s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     z-index: 1;
 }
 
-.btn:hover::after {
-    left: 100%;
+button::before,
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 120%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.35),
+        transparent
+    );
+    transition: 0.6s ease;
+    z-index: 2;
 }
 
+button:hover::before,
+.btn:hover::before {
+    left: 120%;
+}
+
+button:hover,
 .btn:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.3);
-    filter: brightness(1.08);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    filter: brightness(1.08) !important;
 }
 
 .btn:active {
-    transform: scale(0.98);
+    transform: scale(0.98) !important;
 }
 
 .btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    transform: none;
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+    transform: none !important;
 }
 
 .btn-outline {
-    background-color: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    background-color: transparent !important;
+    border: 1px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 122, 0, 0.08) !important;
+}
+
+/* Global Container & Alignment */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* GST Utility Style */
+.gst-text {
+    font-size: 13px;
+    color: #777;
+    font-weight: 500;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Component: Datetime Row (50/50 alignment) */
+.datetime-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.datetime-col {
+    flex: 1;
+    min-width: 0;
+}
+
+.datetime-col label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.datetime-col input {
+    width: 100% !important;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Global Button Hover Effect */
+button, .btn, .btn-outline {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button:hover, .btn:hover, .btn-outline:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15) !important;
 }
 
 .btn-outline:hover {
     background-color: rgba(255, 122, 0, 0.08);
-    color: var(--primary-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(255, 122, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Modals */
@@ -592,17 +680,18 @@ main {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(4px);
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    padding: 20px;
 }
 
 .modal-overlay.active {
@@ -610,19 +699,339 @@ main {
     pointer-events: auto;
 }
 
-.modal {
-    background: var(--card-bg);
-    width: 90%;
-    max-width: 450px;
-    border-radius: var(--radius);
+/* Premium Hotel-Style Modal (Wide) */
+.hotel-modal {
+    background: white;
+    width: 700px; /* Increased to 700px as requested */
+    max-width: 95%;
+    max-height: 90vh;
+    border-radius: 16px;
     overflow: hidden;
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.modal-overlay.active .modal {
-    transform: translateY(0) scale(1);
+.modal-overlay.active .hotel-modal {
+    transform: translateY(0);
+}
+
+.hotel-modal-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px; /* Adjusted for wider modal */
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.hotel-modal-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.hotel-modal-image-wrapper:hover img {
+    transform: scale(1.08); /* Premium subtle zoom */
+}
+
+/* Gradient Overlay for Image */
+.hotel-modal-image-wrapper::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.hotel-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    left: auto !important; /* Ensure Right Side */
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    color: #333;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Page Interaction Effect when touching Close Symbol */
+.hotel-modal-close:hover {
+    background: #ff4d4d; /* Reddish for close hover */
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+}
+
+/* Subtle modal scale-down on close button hover */
+.hotel-modal:has(.hotel-modal-close:hover) {
+    transform: scale(0.98);
+    opacity: 0.95;
+    transition: 0.4s;
+}
+
+.hotel-modal-body {
+    padding: 1.5rem 1.75rem;
+    padding-bottom: 90px; /* Space for footer so content isn't hidden */
+    overflow-y: auto; /* Allow internal scroll if content is long */
+    flex: 1;
+    max-height: calc(90vh - 350px); /* Adjust based on image + footer */
+}
+
+/* Scrollbar styling for body */
+.hotel-modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.hotel-modal-body::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.section {
+    margin-bottom: 16px;
+}
+
+.hotel-modal-header {
+    margin-bottom: 16px;
+}
+
+.hotel-modal-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+.hotel-modal-price {
+    font-size: 1.35rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.hotel-modal-feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.feature-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f7fafc;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    border: 1px solid #edf2f7;
+}
+
+.feature-chip i {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.hotel-modal-why {
+    background: #fffaf0; /* Subtle orange tint */
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #feebc8;
+    margin-bottom: 16px;
+}
+
+.hotel-modal-why h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #c05621;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hotel-modal-why ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hotel-modal-why li {
+    font-size: 0.9rem;
+    color: #744210;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.hotel-modal-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 1.75rem 24px 1.75rem;
+    background: white;
+    border-top: 1px solid #edf2f7;
+    z-index: 45;
+}
+
+/* Slider & Carousel Arrows Global Design */
+/* Center Align Section */
+.explore-rooms-section {
+    width: 100%;
+    margin: 40px 0 5rem;
+    position: relative;
+    overflow: visible; /* Ensure outside arrows are seen */
+}
+
+.slider-master-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 70px;
+    position: relative;
+    overflow: visible; /* Prevent arrow clipping */
+}
+
+.slider-outer-frame {
+    position: relative;
+    width: 100%;
+}
+
+.room-nav-btn {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 150 !important; /* Extremely high to prevent any overlap issues */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #ff7a00;
+    background: white;
+    color: #ff7a00;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.room-nav-btn:hover {
+    background: #ff7a00;
+    color: white;
+}
+
+.room-nav-btn.left {
+    left: -55px !important;
+    right: auto !important;
+}
+
+.room-nav-btn.right {
+    right: -55px !important;
+    left: auto !important;
+}
+
+/* Hero Slider Arrows (Independent) */
+.hero-slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.hero-slider-arrow.left { left: 20px; }
+.hero-slider-arrow.right { right: 20px; }
+
+.hero-prev, .hero-next {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: 0.3s;
+}
+
+.cards-container {
+    display: flex;
+    gap: 25px;
+    overflow: hidden;
+    padding: 15px 0;
+    scroll-behavior: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border);
+    width: 100%; /* Flexible by default */
+}
+
+.slider-card {
+    flex: 0 0 280px;
+    max-width: 280px;
+    flex-shrink: 0;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* DASHBOARD FULL-WIDTH GRID */
+.dashboard-rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem; /* Tighter balanced space */
+    width: 100%;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-rooms-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-rooms-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    font-size: 1.4rem;
 }
 
 .modal-header {
