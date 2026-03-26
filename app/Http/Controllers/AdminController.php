@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminNotification;
+use App\Mail\BookingApproved;
 
 class AdminController extends Controller
 {
@@ -19,10 +22,17 @@ class AdminController extends Controller
             ->sum('total_price');
         
         // Status Counts
-        $pendingBookings = Booking::where('payment_status', 'Pending')->count();
+        $completedBookings = Booking::where('approval_status', 'Approved')->count();
         $pendingApprovals = Booking::where('approval_status', 'Pending')->count();
-        $completedBookings = Booking::where('payment_status', 'Paid')->count();
+        $principalApprovals = Booking::where('approval_status', 'Principal Approved')->count();
+        $pendingPayments = Booking::where('payment_status', 'Pending')->count();
         $cancelledBookings = Booking::where('payment_status', 'Failed')->count();
+
+        // Feed for the Notification Center
+        $notificationBookings = Booking::whereIn('approval_status', ['Pending', 'Principal Approved'])
+            ->orderBy('updated_at', 'desc')
+            ->limit(10)
+            ->get();
 
         // Active spaces
         $activeWorkspaces = Booking::where('payment_status', 'Paid')
@@ -74,8 +84,11 @@ class AdminController extends Controller
         if ($todayBookings > 0) {
             $insights[] = "You have $todayBookings bookings scheduled for today.";
         }
-        if ($pendingBookings > 0) {
-            $insights[] = "There are $pendingBookings bookings awaiting payment confirmation.";
+        if ($pendingPayments > 0) {
+            $insights[] = "There are $pendingPayments bookings awaiting payment confirmation.";
+        }
+        if ($principalApprovals > 0) {
+            $insights[] = "You have $principalApprovals bookings approved by the Principal awaiting your final confirmation.";
         }
         $topSpace = $workspaceData->first();
         if ($topSpace) {
@@ -84,8 +97,8 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact(
             'totalBookings', 'todayBookings', 'totalRevenue', 'todayRevenue', 
-            'pendingBookings', 'pendingApprovals', 'completedBookings', 'cancelledBookings', 'activeWorkspaces',
-            'recentBookings', 'upcomingBookings', 'dailyRevenue', 'monthlyRevenue', 'workspaceData', 'insights'
+            'pendingPayments', 'pendingApprovals', 'principalApprovals', 'completedBookings', 'cancelledBookings', 'activeWorkspaces',
+            'recentBookings', 'upcomingBookings', 'dailyRevenue', 'monthlyRevenue', 'workspaceData', 'insights', 'notificationBookings'
         ));
     }
 
@@ -132,9 +145,39 @@ class AdminController extends Controller
     public function approve($id)
     {
         $booking = Booking::findOrFail($id);
-        $booking->update(['approval_status' => 'Approved']);
         
-        return back()->with('success', 'Booking approved successfully.');
+        if ($booking->approval_status === 'Pending') {
+            $booking->update(['approval_status' => 'Principal Approved']);
+            
+            return redirect()->route('approval.status')->with('success', 'Booking approved by Principal. Admin has been notified via dashboard for final confirmation.');
+        } 
+        
+        if ($booking->approval_status === 'Principal Approved') {
+            $booking->update(['approval_status' => 'Approved']);
+            
+            // Notify Guest
+            try {
+                $senderEmail = \App\Models\Setting::where('key', 'sender_email')->value('value') ?? 'prasathragul75@gmail.com';
+                $mailPassword = \App\Models\Setting::where('key', 'mail_password')->value('value') ?? 'wnzt bweh qwvk gtbu';
+
+                config([
+                    'mail.mailers.smtp.username' => $senderEmail,
+                    'mail.mailers.smtp.password' => $mailPassword,
+                    'mail.from.address' => $senderEmail,
+                    'mail.from.name' => 'MCC IGH System'
+                ]);
+
+                \Illuminate\Support\Facades\Mail::purge('smtp');
+
+                Mail::to($booking->email)->send(new BookingApproved($booking));
+            } catch (\Exception $e) {
+                \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
+            }
+
+            return redirect()->route('approval.status')->with('success', 'Booking fully approved. Guest has been notified.');
+        }
+
+        return redirect()->route('approval.status')->with('info', 'Booking status has already been updated.');
     }
 
     public function reject($id)
@@ -142,6 +185,14 @@ class AdminController extends Controller
         $booking = Booking::findOrFail($id);
         $booking->update(['approval_status' => 'Rejected']);
         
-        return back()->with('success', 'Booking rejected successfully.');
+        return redirect()->route('approval.status')->with('success', 'Booking has been rejected.');
+    }
+
+    public function destroy($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->delete();
+
+        return redirect()->route('admin.bookings')->with('success', 'Booking deleted successfully.');
     }
 }

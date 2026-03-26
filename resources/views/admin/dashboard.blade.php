@@ -65,6 +65,7 @@
 
         .sidebar-menu {
             padding: 1rem 0.75rem; flex: 1;
+            display: flex; flex-direction: column;
         }
 
         .menu-item {
@@ -106,9 +107,33 @@
 
         .notification-badge {
             position: absolute; top: -5px; right: -5px; background: var(--danger); color: white;
-            font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%; display: flex;
+            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; border: 2px solid white; font-weight: 700;
         }
+
+        .notification-dropdown {
+            position: absolute; top: 100%; right: 0; width: 320px; background: white;
+            border-radius: 12px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border: 1px solid var(--border);
+            display: none; z-index: 1000; margin-top: 10px; overflow: hidden;
+        }
+
+        .notification-dropdown.active { display: block; }
+
+        .notification-header {
+            padding: 1rem; border-bottom: 1px solid var(--border); background: #f8fafc;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .notification-item {
+            padding: 1rem; border-bottom: 1px solid var(--border); text-decoration: none;
+            display: block; transition: background 0.2s;
+        }
+
+        .notification-item:hover { background: #f8fafc; }
+
+        .notification-item .title { font-weight: 600; font-size: 0.85rem; color: #1e293b; margin-bottom: 0.25rem; }
+        .notification-item .desc { font-size: 0.75rem; color: #64748b; }
+        .notification-item .time { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; }
 
         .admin-body {
             padding: 1.5rem 2.5rem 3rem 2rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
@@ -301,11 +326,15 @@
             <a href="{{ route('home') }}" class="menu-item">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
-        </div>
-        <div class="sidebar-footer">
-            <a href="#" class="menu-item">
-                <i class="ph ph-gear"></i> Settings
-            </a>
+            <div style="margin-top: auto; padding: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                <form action="{{ route('admin.logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" style="width: 100%; display: flex; align-items: center; gap: 0.75rem; background: none; border: none; padding: 0.75rem 1rem; color: #ef4444; cursor: pointer; font-weight: 600; border-radius: 8px; transition: background 0.2s;">
+                        <i class="ph-bold ph-sign-out" style="font-size: 1.25rem;"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -318,11 +347,39 @@
                 <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">Dashboard Overview</div>
             </div>
             <div class="nav-right">
-                <div class="notification-bell">
+                <div class="notification-bell" id="notifToggle">
                     <i class="ph ph-bell"></i>
-                    @if($pendingBookings > 0)
-                        <div class="notification-badge">{{ $pendingBookings }}</div>
+                    @if($notificationBookings->count() > 0)
+                        <div class="notification-badge">{{ $notificationBookings->count() }}</div>
                     @endif
+                    <div class="notification-dropdown" id="notifDropdown">
+                        <div class="notification-header">
+                            <span style="font-weight: 700; font-size: 0.9rem;">Notifications</span>
+                            <span style="font-size: 0.7rem; color: var(--primary-color);">Mark all as read</span>
+                        </div>
+                        <div style="max-height: 350px; overflow-y: auto;">
+                            @forelse($notificationBookings as $nb)
+                                <a href="{{ route('admin.bookings.show', $nb->id) }}" class="notification-item">
+                                    <div class="title">
+                                        {{ $nb->approval_status === 'Pending' ? 'New Booking Request' : 'Principal Approved' }}
+                                    </div>
+                                    <div class="desc">
+                                        {{ $nb->name }} booked {{ $nb->room_name }}
+                                        @if($nb->approval_status === 'Principal Approved')
+                                            - <span style="color: var(--success); font-weight: 600;">Requires Final Action</span>
+                                        @endif
+                                    </div>
+                                    <div class="time">{{ $nb->updated_at->diffForHumans() }}</div>
+                                </a>
+                            @empty
+                                <div style="padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.85rem;">
+                                    <i class="ph ph-bell-slash" style="font-size: 2rem; display: block; margin-bottom: 0.5rem; opacity: 0.3;"></i>
+                                    No new notifications
+                                </div>
+                            @endforelse
+                        </div>
+                        <a href="{{ route('admin.bookings') }}" style="display: block; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--primary-color); border-top: 1px solid var(--border); background: #f8fafc; text-decoration: none;">View All Bookings</a>
+                    </div>
                 </div>
                 <div class="user-info" style="display: flex; align-items: center; gap: 0.75rem;">
                     <div style="text-align: right;">
@@ -367,12 +424,20 @@
                     </div>
                     <div class="stat-value">{{ $pendingApprovals }}</div>
                 </div>
+                <div class="stat-card" style="border-left: 4px solid #3b82f6;">
+                    <div class="stat-header">
+                        <span class="stat-label">Principal Approved</span>
+                        <div class="stat-icon icon-blue"><i class="ph ph-check-square"></i></div>
+                    </div>
+                    <div class="stat-value">{{ $principalApprovals }}</div>
+                    <span style="font-size: 0.6rem; color: #64748b;">Requires final Admin action</span>
+                </div>
                 <div class="stat-card">
                     <div class="stat-header">
                         <span class="stat-label">Pending Payment</span>
                         <div class="stat-icon icon-orange"><i class="ph ph-clock"></i></div>
                     </div>
-                    <div class="stat-value">{{ $pendingBookings }}</div>
+                    <div class="stat-value">{{ $pendingPayments }}</div>
                 </div>
             </div>
 
@@ -587,7 +652,7 @@
                 </div>
                 <div class="stat-card" style="padding: 1rem;">
                     <div class="stat-label" style="font-size: 0.7rem;">Pending Bookings</div>
-                    <div class="stat-value" style="font-size: 1.25rem; color: var(--warning);">{{ $pendingBookings }}</div>
+                    <div class="stat-value" style="font-size: 1.25rem; color: var(--warning);">{{ $pendingPayments }}</div>
                 </div>
                 <div class="stat-card" style="padding: 1rem;">
                     <div class="stat-label" style="font-size: 0.7rem;">Cancelled Bookings</div>
@@ -620,13 +685,32 @@
     </main>
 
     <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('open');
-        });
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
 
-        // Close sidebar if clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.querySelector('.sidebar');
+        // Notification Toggle
+        const notifToggle = document.getElementById('notifToggle');
+        const notifDropdown = document.getElementById('notifDropdown');
+
+        if (notifToggle) {
+            notifToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifDropdown.classList.toggle('active');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (notifDropdown) notifDropdown.classList.remove('active');
+            
+            // Mobile sidebar closing logic
             const toggle = document.getElementById('sidebarToggle');
             if (window.innerWidth <= 768 && 
                 sidebar && toggle &&

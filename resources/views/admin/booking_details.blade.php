@@ -233,6 +233,7 @@
         .badge-pending { background: #fef9c3; color: #854d0e; }
         .badge-failed { background: #fee2e2; color: #991b1b; }
         .badge-approved { background: #dcfce7; color: #166534; }
+        .badge-principal-approved { background: #d1fae5; color: #065f46; border: 1px solid #059669; }
         .badge-rejected { background: #fee2e2; color: #991b1b; }
 
         .btn-approve {
@@ -263,6 +264,43 @@
             align-items: center;
             gap: 0.5rem;
             transition: background 0.2s;
+        }
+
+        .btn-view {
+            padding: 0.75rem 1rem;
+            background: #f1f5f9;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-delete {
+            padding: 0.75rem 1rem;
+            background: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ffe4e6;
+            color: #9f1239;
         }
 
         .btn-approve:hover { background: #218838; }
@@ -379,8 +417,8 @@
                     <div class="details-section-header">
                         <h3>Customer Information</h3>
                         <div style="display: flex; gap: 0.75rem;">
-                            <div class="status-badge badge-{{ strtolower($booking->approval_status) }}">
-                                <i class="ph-fill ph-{{ $booking->approval_status == 'Approved' ? 'check-circle' : ($booking->approval_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
+                            <div class="status-badge badge-{{ str_replace(' ', '-', strtolower($booking->approval_status)) }}">
+                                <i class="ph-fill ph-{{ $booking->approval_status == 'Approved' || $booking->approval_status == 'Principal Approved' ? 'check-circle' : ($booking->approval_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
                                 Approval: {{ $booking->approval_status }}
                             </div>
                             <div class="status-badge badge-{{ strtolower($booking->payment_status) }}">
@@ -514,11 +552,12 @@
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    @if($booking->approval_status === 'Pending')
+                    @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-approve" style="width: 100%; justify-content: center;">
-                                <i class="ph-bold ph-check"></i> Approve Proposal
+                                <i class="ph-bold ph-check"></i> 
+                                {{ $booking->approval_status === 'Principal Approved' ? 'Final Approve' : 'Approve Proposal' }}
                             </button>
                         </form>
                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
@@ -528,6 +567,16 @@
                             </button>
                         </form>
                     @endif
+
+                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 0.5rem 0;">
+
+                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-delete">
+                            <i class="ph ph-trash"></i> Delete Booking
+                        </button>
+                    </form>
                     <button class="btn"><i class="ph ph-printer"></i> Print Invoice</button>
                     <button class="btn btn-outline"><i class="ph ph-envelope"></i> Resend Confirmation</button>
                     @if($booking->payment_status == 'Pending')

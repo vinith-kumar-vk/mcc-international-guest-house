@@ -111,8 +111,11 @@
             </div>
 
             <div class="success-actions">
-                <button class="btn btn-outline" style="flex:1;" onclick="downloadDummyReceipt()"><i
-                        class="ph-bold ph-download-simple"></i> Download Receipt</button>
+                @if($booking->approval_status === 'Approved')
+                    <button class="btn btn-outline" style="flex:1;" onclick="downloadDummyReceipt()">
+                        <i class="ph-bold ph-download-simple"></i> Download Receipt
+                    </button>
+                @endif
                 <button class="btn" style="flex:1;" onclick="window.location.href='{{ route('home') }}'"><i
                         class="ph-bold ph-house"></i> Back to Home</button>
             </div>

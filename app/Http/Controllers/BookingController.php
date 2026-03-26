@@ -7,6 +7,8 @@ use App\Models\Booking;
 use Razorpay\Api\Api;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingNotification;
 
 class BookingController extends Controller
 {
@@ -69,7 +71,30 @@ class BookingController extends Controller
             'approval_status' => 'Pending'
         ]));
 
-        // 3. Redirect to the success page (waiting for approval)
+        // 3. Send notification email to the Principal
+        try {
+            // Get dynamic settings
+            $principalEmail = \App\Models\Setting::where('key', 'principal_email')->value('value') ?? 'unfortunately2909@gmail.com';
+            $senderEmail = \App\Models\Setting::where('key', 'sender_email')->value('value') ?? 'prasathragul75@gmail.com';
+            $mailPassword = \App\Models\Setting::where('key', 'mail_password')->value('value') ?? 'wnzt bweh qwvk gtbu';
+
+            // Override config at runtime
+            config([
+                'mail.mailers.smtp.username' => $senderEmail,
+                'mail.mailers.smtp.password' => $mailPassword,
+                'mail.from.address' => $senderEmail,
+                'mail.from.name' => 'MCC IGH System'
+            ]);
+
+            \Illuminate\Support\Facades\Mail::purge('smtp');
+
+            Mail::to($principalEmail)->send(new BookingNotification($booking));
+            Log::info('Booking notification sent successfully for ID: ' . $booking->id);
+        } catch (\Exception $e) {
+            Log::error('Failed to send booking notification for ID ' . $booking->id . ': ' . $e->getMessage());
+        }
+
+        // 4. Redirect to the success page (waiting for approval)
         return redirect()->route('checkout.success')->with('success', 'Booking submitted and waiting for approval!');
     }
 

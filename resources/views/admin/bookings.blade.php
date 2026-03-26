@@ -69,6 +69,8 @@
         .sidebar-menu {
             padding: 1.5rem 0.75rem;
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .menu-item {
@@ -196,12 +198,20 @@
         }
 
         .data-table th {
-            background: #f8fafc;
-            color: #64748b;
+            text-align: left;
+            padding: 1.25rem 1rem;
             font-size: 0.75rem;
-            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.05rem;
+            color: #64748b;
+            font-weight: 700;
+            border-bottom: 2px solid #f1f5f9;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            font-size: 0.9rem;
+            color: #334155;
         }
 
         .data-table tbody tr:hover {
@@ -229,12 +239,15 @@
             border-radius: 999px;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
+            display: inline-block;
         }
 
         .pill-paid { background: #dcfce7; color: #166534; }
         .pill-pending { background: #fef9c3; color: #854d0e; }
         .pill-failed { background: #fee2e2; color: #991b1b; }
         .pill-approved { background: #dcfce7; color: #166534; }
+        .pill-principal-approved { background: #d1fae5; color: #065f46; border: 1px solid #059669; }
         .pill-rejected { background: #fee2e2; color: #991b1b; }
 
         .btn-approve {
@@ -269,22 +282,42 @@
         .btn-reject:hover { background: #c82333; }
 
         .btn-view {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.75rem;
             background: #f1f5f9;
-            color: #475569;
+            color: #334155;
             text-decoration: none;
             border-radius: 6px;
             font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.3rem;
+            transition: all 0.2s;
         }
 
         .btn-view:hover {
             background: #e2e8f0;
             color: #0f172a;
+        }
+
+        .btn-delete {
+            padding: 0.5rem 0.75rem;
+            background: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ffe4e6;
+            color: #9f1239;
         }
 
         /* Pagination */
@@ -344,10 +377,13 @@
                 <i class="ph ph-globe"></i> Visit Website
             </a>
         </div>
-        <div class="sidebar-footer">
-            <a href="#" class="menu-item" style="margin-bottom: 0;">
-                <i class="ph ph-sign-out"></i> Logout
-            </a>
+        <div class="sidebar-footer" style="margin-top: auto; border-top: 1px solid var(--border); padding: 1rem;">
+            <form action="{{ route('admin.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: #ef4444; margin: 0;">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </form>
         </div>
     </div>
 
@@ -434,12 +470,14 @@
                                 <div class="customer-id">{{ $booking->email }}</div>
                             </td>
                             <td>{{ $booking->room_name }}</td>
-                            <td>
-                                <div style="font-weight: 500;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}</div>
-                                <div style="font-size: 0.75rem; color: #64748b;">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</div>
+                            <td style="white-space: nowrap;">
+                                <div style="font-weight: 600; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}</div>
+                                <div style="font-size: 0.75rem; color: #64748b;">
+                                    {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}
+                                </div>
                             </td>
                             <td>
-                                <span class="status-pill pill-{{ strtolower($booking->approval_status) }}">
+                                <span class="status-pill pill-{{ str_replace(' ', '-', strtolower($booking->approval_status)) }}">
                                     {{ $booking->approval_status }}
                                 </span>
                             </td>
@@ -450,11 +488,12 @@
                             </td>
                             <td>
                                 <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                    @if($booking->approval_status === 'Pending')
+                                    @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                                         <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="submit" class="btn-approve">
-                                                <i class="ph-bold ph-check"></i> Approve
+                                                <i class="ph-bold ph-check"></i> 
+                                                {{ $booking->approval_status === 'Principal Approved' ? 'Final Approve' : 'Approve' }}
                                             </button>
                                         </form>
                                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST" style="display: inline;">
@@ -467,6 +506,13 @@
                                     <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view">
                                         <i class="ph ph-eye"></i> View
                                     </a>
+                                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-delete">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
