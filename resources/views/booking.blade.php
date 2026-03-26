@@ -8,6 +8,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        /* Fix ONLY for Proceed to Payment / Confirm Booking button */
+        #proceedBtn:not(:disabled) {
+            background-color: #ff6a00 !important;
+            color: #ffffff !important;
+            border-color: #ff6a00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+        }
+        #proceedBtn:not(:disabled):hover,
+        #proceedBtn:not(:disabled):focus {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:not(:disabled):active {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:disabled {
+            background-color: #ccc !important;
+            color: #888 !important;
+            border-color: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            scale: 1 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,7 +58,7 @@
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth

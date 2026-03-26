@@ -84,13 +84,37 @@
         .breadcrumb a:hover { text-decoration: underline; color: #cc4800; }
         
         .submit-btn {
-            background: var(--primary-color); color: white; border: none; padding: 0.9rem;
+            background: #ff6a00 !important; color: #ffffff !important; border: none !important; padding: 0.9rem;
             font-size: 1.1rem; font-weight: 700; border-radius: 8px; cursor: pointer;
-            transition: all 0.2s ease; display: block; width: 100%; margin-top: 20px;
+            transition: background-color 0.2s ease; display: block; width: 100%; margin-top: 20px;
             box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15);
             text-align: center;
+            transform: none !important;
+            scale: 1 !important;
         }
-        .submit-btn:hover { background: #e66b00; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255, 122, 0, 0.25); }
+        .submit-btn:hover {
+            background: #e65c00 !important; color: #ffffff !important;
+            transform: none !important; scale: 1 !important;
+            box-shadow: 0 6px 16px rgba(255, 122, 0, 0.25);
+        }
+        .submit-btn:active {
+            background: #ff6a00 !important; color: #ffffff !important;
+            transform: none !important; scale: 1 !important;
+            opacity: 1 !important;
+            outline: none !important;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15) !important;
+        }
+        .submit-btn:focus {
+            background: #ff6a00 !important; color: #ffffff !important;
+            transform: none !important; scale: 1 !important;
+            opacity: 1 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        .submit-btn:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+        }
 
         .form-section-title { font-size: 1.15rem; font-weight: 700; color: var(--primary-color); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; gap: 0.5rem; margin-top: 10px; margin-bottom: 5px; }
         .section-divider { display: none; }

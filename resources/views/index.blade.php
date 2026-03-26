@@ -26,7 +26,7 @@
             <button class="help-btn" onclick="openHelpModal()">Help</button>
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth
@@ -124,12 +124,14 @@
             to { transform: translateY(0); opacity: 1; }
         }
         .help-modal-close {
-            position: absolute; top: 20px; right: 20px; left: auto; background: none; border: none;
-            font-size: 1.5rem; color: #999; cursor: pointer; transition: color 0.3s;
-            display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+            position: absolute !important; top: 20px !important; right: 20px !important; left: auto !important;
+            background: none !important; border: none !important; box-shadow: none !important;
+            font-size: 1.5rem !important; color: #999 !important; cursor: pointer; transition: color 0.3s;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+            width: 32px !important; height: 32px !important; padding: 0 !important;
             z-index: 10;
         }
-        .help-modal-close:hover { color: #333; }
+        .help-modal-close:hover { color: #333 !important; background: none !important; box-shadow: none !important; transform: none !important; }
         .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
         .help-form { display: flex; flex-direction: column; gap: 20px; }
         .help-form-row { display: flex; gap: 20px; }
@@ -137,12 +139,12 @@
         .help-input-group.full-width { width: 100%; }
         .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
         .help-input-group input, .help-input-group textarea {
-            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
-            font-family: inherit; font-size: 1rem; transition: all 0.3s; background: #fafafa;
+            padding: 14px 16px !important; border: 1px solid #ddd !important; border-radius: 8px !important;
+            font-family: inherit; font-size: 1rem !important; transition: all 0.3s; background: #fafafa !important;
             width: 100%;
         }
         .help-input-group input:focus, .help-input-group textarea:focus {
-            border-color: var(--primary-color); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            border-color: var(--primary-color) !important; outline: none !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
         }
 
         .custom-dropdown { position: relative; width: 100%; }
@@ -169,12 +171,12 @@
         .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
         .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
         .help-send-btn {
-            background: var(--primary-color); color: white; border: none; padding: 16px;
-            border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
-            width: 100%; text-align: center;
+            background: var(--primary-color) !important; color: white !important; border: none !important; padding: 16px !important;
+            border-radius: 40px !important; font-size: 1.1rem !important; font-weight: 700 !important; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2) !important;
+            width: 100% !important; text-align: center !important;
         }
-        .help-send-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3); }
+        .help-send-btn:hover { background: var(--primary-hover) !important; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3) !important; }
         
         @media (max-width: 600px) {
             .help-form-row { flex-direction: column; gap: 20px; }
@@ -578,29 +580,177 @@
 
     <!-- FOOTER SECTION -->
     <footer class="main-footer">
+        <style>
+            /* ── Footer-scoped enhancements ── */
+            .main-footer {
+                background: linear-gradient(180deg, #fff7f0 0%, #f3f4f6 100%) !important;
+                border-top: 3px solid #ff6a00 !important;
+                color: #444 !important;
+            }
+            .main-footer .footer-column h4 {
+                color: #222 !important;
+            }
+            .main-footer .footer-column ul li,
+            .main-footer .footer-column ul li a,
+            .main-footer .footer-column p,
+            .main-footer .footer-contact-link {
+                color: #555 !important;
+            }
+            .main-footer .footer-column ul li a:hover,
+            .main-footer .footer-contact-link:hover {
+                color: #ff6a00 !important;
+            }
+            .main-footer .footer-content {
+                padding: 2rem 2rem 1.5rem !important;
+            }
+            .main-footer .footer-column h4 {
+                font-weight: 700 !important;
+                margin-bottom: 0.8rem !important;
+                padding-bottom: 0.5rem !important;
+                position: relative;
+                display: inline-block;
+            }
+            .main-footer .footer-column h4::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 30px;
+                height: 2px;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+            /* Quick Links hover */
+            .main-footer .footer-column ul { list-style: none; padding: 0; margin: 0; }
+            .main-footer .footer-column ul li { margin-bottom: 0.4rem; }
+            .main-footer .footer-column ul li a {
+                transition: color 0.3s ease, transform 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                text-decoration: none;
+            }
+            .main-footer .footer-column ul li a:hover {
+                color: var(--primary-color) !important;
+                transform: translateX(2px);
+            }
+            /* Contact links */
+            .main-footer .footer-contact-link {
+                color: inherit;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            .main-footer .footer-contact-link:hover {
+                color: var(--primary-color) !important;
+            }
+            .main-footer .footer-column ul li i {
+                width: 18px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+            /* Social icons */
+            .footer-social-icons {
+                display: flex;
+                gap: 10px;
+                margin-top: 1rem;
+            }
+            .footer-social-icons a {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.06);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #888;
+                font-size: 1rem;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            .footer-social-icons a:hover {
+                background: var(--primary-color) !important;
+                color: #fff !important;
+                transform: translateY(-2px);
+            }
+            /* Address line spacing */
+            .main-footer .footer-address-text {
+                line-height: 1.8;
+            }
+            /* Footer bottom bar */
+            .main-footer .footer-bottom {
+                border-top: 1px solid rgba(0,0,0,0.06) !important;
+                padding: 1rem 2rem !important;
+                background: rgba(0,0,0,0.03) !important;
+                text-align: center;
+                color: #888 !important;
+            }
+            /* Mobile responsive */
+            @media (max-width: 768px) {
+                .main-footer .footer-content {
+                    flex-direction: column !important;
+                    text-align: center !important;
+                    gap: 2rem !important;
+                }
+                .main-footer .footer-column {
+                    width: 100% !important;
+                    text-align: center;
+                }
+                .main-footer .footer-column h4 {
+                    display: block;
+                }
+                .main-footer .footer-column h4::after {
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+                .main-footer .footer-column ul li a {
+                    justify-content: center;
+                }
+                .main-footer .footer-column p {
+                    justify-content: center;
+                }
+                .footer-social-icons {
+                    justify-content: center;
+                }
+                .main-footer .footer-column ul li {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                }
+                .main-footer .footer-bottom {
+                    font-size: 0.8rem !important;
+                    padding: 0.8rem 1rem !important;
+                }
+            }
+        </style>
         <div class="footer-content">
             <div class="footer-column">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Home</a></li>
-                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Spaces</a></li>
-                    <li><a href="#"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Contact</a></li>
+                    <li><a href="javascript:void(0)" onclick="document.querySelector('.main-image-slider').scrollIntoView({behavior:'smooth'})"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Home</a></li>
+                    <li><a href="javascript:void(0)" onclick="document.querySelector('.explore-rooms-section').scrollIntoView({behavior:'smooth'})"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Spaces</a></li>
+                    <li><a href="javascript:void(0)" onclick="openHelpModal()"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Contact</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Contact Info</h4>
                 <ul>
-                    <li><i class="ph-fill ph-envelope-simple"></i> contact@mmip.example.com</li>
-                    <li><i class="ph-fill ph-phone"></i> +91 98765 43210</li>
+                    <li><i class="ph-fill ph-envelope-simple"></i> <a href="mailto:contact@mmip.example.com" class="footer-contact-link">contact@mmip.example.com</a></li>
+                    <li><i class="ph-fill ph-phone"></i> <a href="tel:+919876543210" class="footer-contact-link">+91 98765 43210</a></li>
                 </ul>
+                <div class="footer-social-icons">
+                    <a href="https://wa.me/919876543210" target="_blank" rel="noopener" title="WhatsApp"><i class="ph-bold ph-whatsapp-logo"></i></a>
+                    <a href="mailto:contact@mmip.example.com" title="Email"><i class="ph-bold ph-envelope-simple"></i></a>
+                    <a href="tel:+919876543210" title="Call"><i class="ph-bold ph-phone"></i></a>
+                </div>
             </div>
             <div class="footer-column">
                 <h4>Address</h4>
-                <p><i class="ph-fill ph-map-pin" style="margin-top: 0.3rem;"></i> <span>123 Innovation Drive,<br>Tech Park Sector,<br>Chennai 600001</span></p>
+                <p><i class="ph-fill ph-map-pin" style="margin-top: 0.3rem;"></i> <span class="footer-address-text">MCC MRF Innovation Park,<br>Madras Christian College,<br>Tambaram East,<br>Chennai - 600059,<br>Tamil Nadu, India</span></p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Design and Developed by MCC-MRF Innovation Park</p>
+            <p>&copy; 2026 MCC-MRF Innovation Park. All rights reserved.</p>
         </div>
     </footer>
 

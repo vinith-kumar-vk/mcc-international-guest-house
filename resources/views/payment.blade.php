@@ -21,7 +21,7 @@
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth

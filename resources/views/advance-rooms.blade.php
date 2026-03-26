@@ -78,12 +78,14 @@
             to { transform: translateY(0); opacity: 1; }
         }
         .help-modal-close {
-            position: absolute; top: 20px; right: 20px; left: auto; background: none; border: none;
-            font-size: 1.5rem; color: #999; cursor: pointer; transition: color 0.3s;
-            display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+            position: absolute !important; top: 20px !important; right: 20px !important; left: auto !important;
+            background: none !important; border: none !important; box-shadow: none !important;
+            font-size: 1.5rem !important; color: #999 !important; cursor: pointer; transition: color 0.3s;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+            width: 32px !important; height: 32px !important; padding: 0 !important;
             z-index: 10;
         }
-        .help-modal-close:hover { color: #333; }
+        .help-modal-close:hover { color: #333 !important; background: none !important; box-shadow: none !important; transform: none !important; }
         .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
         .help-form { display: flex; flex-direction: column; gap: 20px; }
         .help-form-row { display: flex; gap: 20px; }
@@ -91,12 +93,12 @@
         .help-input-group.full-width { width: 100%; }
         .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
         .help-input-group input, .help-input-group textarea {
-            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
-            font-family: inherit; font-size: 1rem; transition: all 0.3s; background: #fafafa;
+            padding: 14px 16px !important; border: 1px solid #ddd !important; border-radius: 8px !important;
+            font-family: inherit; font-size: 1rem !important; transition: all 0.3s; background: #fafafa !important;
             width: 100%;
         }
         .help-input-group input:focus, .help-input-group textarea:focus {
-            border-color: var(--primary-color); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            border-color: var(--primary-color) !important; outline: none !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
         }
 
         .custom-dropdown { position: relative; width: 100%; }
@@ -123,16 +125,29 @@
         .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
         .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
         .help-send-btn {
-            background: var(--primary-color); color: white; border: none; padding: 16px;
-            border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
-            width: 100%; text-align: center;
+            background: var(--primary-color) !important; color: white !important; border: none !important; padding: 16px !important;
+            border-radius: 40px !important; font-size: 1.1rem !important; font-weight: 700 !important; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2) !important;
+            width: 100% !important; text-align: center !important;
         }
-        .help-send-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3); }
+        .help-send-btn:hover { background: var(--primary-hover) !important; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3) !important; }
         
         @media (max-width: 600px) {
             .help-form-row { flex-direction: column; gap: 20px; }
             .help-modal-card { padding: 30px 20px; }
+        }
+
+        /* View Details button hover/active fix */
+        .card-actions .btn-outline:hover,
+        .card-actions .btn-outline:focus {
+            background-color: #ff6a00 !important;
+            color: #ffffff !important;
+            border-color: #ff6a00 !important;
+        }
+        .card-actions .btn-outline:active {
+            background-color: #e06000 !important;
+            color: #ffffff !important;
+            border-color: #e06000 !important;
         }
     </style>
 </head>
