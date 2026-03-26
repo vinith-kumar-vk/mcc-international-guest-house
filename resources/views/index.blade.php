@@ -13,14 +13,14 @@
 </head>
 
 <body>
-    <header>
+    <header class="header-container" style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
         <div class="header-left">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo">
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
             </a>
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1 class="header-title">MCC International Guest House</h1>
         </div>
         <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
             <button class="help-btn" onclick="openHelpModal()">Help</button>
@@ -99,6 +99,30 @@
         .hero-slide .slide-subtitle { transform: translateY(20px); opacity: 0; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s; }
         .hero-slide.active-slide .slide-title, .hero-slide.active-slide .slide-subtitle { transform: translateY(0); opacity: 1; }
 
+        /* Header Centering */
+        .header-container {
+            position: relative;
+        }
+        .header-title {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            white-space: nowrap;
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-logo {
+            height: 50px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            image-rendering: -webkit-optimize-contrast !important;
+            image-rendering: crisp-edges !important;
+        }
+
         /* Help Modal Styles */
         .help-btn {
             background: none; border: none; font-family: 'Inter', sans-serif;
@@ -171,12 +195,18 @@
         .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
         .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
         .help-send-btn {
-            background: var(--primary-color) !important; color: white !important; border: none !important; padding: 16px !important;
+            background: #ff7a00 !important; color: white !important; border: none !important; padding: 16px !important;
             border-radius: 40px !important; font-size: 1.1rem !important; font-weight: 700 !important; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2) !important;
+            transition: none !important; box-shadow: none !important;
             width: 100% !important; text-align: center !important;
+            transform: none !important; scale: 1 !important;
         }
-        .help-send-btn:hover { background: var(--primary-hover) !important; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3) !important; }
+        .help-send-btn:hover, .help-send-btn:focus, .help-send-btn:active {
+            background: #ff7a00 !important; color: white !important;
+            transform: none !important; scale: 1 !important;
+            box-shadow: none !important; opacity: 1 !important;
+        }
+        .help-modal-card button:active { transform: none !important; scale: 1 !important; }
         
         @media (max-width: 600px) {
             .help-form-row { flex-direction: column; gap: 20px; }

@@ -97,19 +97,16 @@
             transform: none !important; scale: 1 !important;
             box-shadow: 0 6px 16px rgba(255, 122, 0, 0.25);
         }
-        .submit-btn:active {
-            background: #ff6a00 !important; color: #ffffff !important;
-            transform: none !important; scale: 1 !important;
-            opacity: 1 !important;
-            outline: none !important;
-            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15) !important;
-        }
+        .submit-btn,
+        .confirm-booking-btn,
+        .confirm-booking-btn:active,
+        .confirm-booking-btn:focus,
+        .submit-btn:active,
         .submit-btn:focus {
-            background: #ff6a00 !important; color: #ffffff !important;
-            transform: none !important; scale: 1 !important;
+            transform: none !important;
+            scale: 1 !important;
+            transition: none !important;
             opacity: 1 !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
         .submit-btn:focus-visible {
             outline: none !important;
@@ -146,11 +143,11 @@
     <header>
         <div class="header-left">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo">
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
             </a>
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <a href="{{ route('home') }}" class="btn btn-outline" style="text-decoration: none;">Dashboard</a>
@@ -320,7 +317,7 @@
 
                         <!-- Submit -->
                         <div class="form-group full-width" style="margin-top: 10px;">
-                            <button type="submit" class="submit-btn"><i class="ph-bold ph-check-circle" style="vertical-align: middle; margin-right: 8px;"></i> Confirm Booking</button>
+                            <button type="submit" class="submit-btn confirm-booking-btn"><i class="ph-bold ph-check-circle" style="vertical-align: middle; margin-right: 8px;"></i> Confirm Booking</button>
                         </div>
                     </div>
                 </form>

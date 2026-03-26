@@ -44,16 +44,27 @@
             transform: none !important;
             scale: 1 !important;
         }
+        #proceedBtn,
+        .confirm-booking-btn,
+        .confirm-booking-btn:active,
+        .confirm-booking-btn:focus,
+        #proceedBtn:active,
+        #proceedBtn:focus {
+            transform: none !important;
+            scale: 1 !important;
+            transition: none !important;
+            opacity: 1 !important;
+        }
     </style>
 </head>
 
 <body>
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
@@ -192,7 +203,7 @@
                     <div class="button-group" style="margin-top: 1.5rem;">
                         <button type="button" class="btn btn-outline" onclick="window.location.href='{{ route('home') }}'"><i
                                 class="ph-bold ph-arrow-left"></i> Back to Spaces</button>
-                        <button type="submit" class="btn" id="proceedBtn" disabled><i
+                        <button type="submit" class="btn confirm-booking-btn" id="proceedBtn" disabled><i
                                 class="ph-bold ph-credit-card"></i> Proceed to Payment</button>
                     </div>
                 </form>

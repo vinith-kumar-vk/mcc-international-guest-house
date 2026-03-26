@@ -13,10 +13,10 @@
 <body style="background: #f1f5f9;">
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
