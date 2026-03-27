@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Dynamically set APP_URL to match the current request's host
+        // This ensures email links work for everyone on the same WiFi, even if the .env IP changes.
+        if (!app()->runningInConsole()) {
+            config(['app.url' => request()->getSchemeAndHttpHost()]);
+        }
     }
 }

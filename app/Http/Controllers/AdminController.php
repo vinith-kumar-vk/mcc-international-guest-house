@@ -142,42 +142,48 @@ class AdminController extends Controller
         return view('admin.booking_details', compact('booking'));
     }
 
-    public function approve($id)
+    public function principalApprove($id)
     {
         $booking = Booking::findOrFail($id);
         
         if ($booking->approval_status === 'Pending') {
             $booking->update(['approval_status' => 'Principal Approved']);
-            
-            return redirect()->route('approval.status')->with('success', 'Booking approved by Principal. Admin has been notified via dashboard for final confirmation.');
+            return redirect()->route('approval.status')->with('success', 'Booking approved by Principal. Admin has been notified for final confirmation.');
         } 
         
-        if ($booking->approval_status === 'Principal Approved') {
-            $booking->update(['approval_status' => 'Approved']);
-            
-            // Notify Guest
-            try {
-                $senderEmail = \App\Models\Setting::where('key', 'sender_email')->value('value') ?? 'prasathragul75@gmail.com';
-                $mailPassword = \App\Models\Setting::where('key', 'mail_password')->value('value') ?? 'wnzt bweh qwvk gtbu';
+        return redirect()->route('approval.status')->with('info', 'This booking has already been processed.');
+    }
 
-                config([
-                    'mail.mailers.smtp.username' => $senderEmail,
-                    'mail.mailers.smtp.password' => $mailPassword,
-                    'mail.from.address' => $senderEmail,
-                    'mail.from.name' => 'MCC IGH System'
-                ]);
-
-                \Illuminate\Support\Facades\Mail::purge('smtp');
-
-                Mail::to($booking->email)->send(new BookingApproved($booking));
-            } catch (\Exception $e) {
-                \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
-            }
-
-            return redirect()->route('approval.status')->with('success', 'Booking fully approved. Guest has been notified.');
+    public function adminApprove($id)
+    {
+        $booking = Booking::findOrFail($id);
+        
+        if ($booking->approval_status !== 'Principal Approved') {
+            return back()->with('error', 'Strict Enforced: This booking must be approved by the Principal first.');
         }
 
-        return redirect()->route('approval.status')->with('info', 'Booking status has already been updated.');
+        $booking->update(['approval_status' => 'Approved']);
+        
+        // Notify Guest (Testing with unfortunately2909@gmail.com)
+        try {
+            $senderEmail = \App\Models\Setting::where('key', 'sender_email')->value('value') ?? 'prasathragul75@gmail.com';
+            $mailPassword = \App\Models\Setting::where('key', 'mail_password')->value('value') ?? 'wnzt bweh qwvk gtbu';
+
+            config([
+                'mail.mailers.smtp.username' => $senderEmail,
+                'mail.mailers.smtp.password' => $mailPassword,
+                'mail.from.address' => $senderEmail,
+                'mail.from.name' => 'MCC IGH System'
+            ]);
+
+            \Illuminate\Support\Facades\Mail::purge('smtp');
+
+            Mail::to('unfortunately2909@gmail.com')->send(new BookingApproved($booking));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Booking fully approved. Guest has been notified.');
     }
 
     public function reject($id)

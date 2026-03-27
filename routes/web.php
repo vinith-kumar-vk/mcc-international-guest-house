@@ -64,12 +64,14 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
     Route::get('/bookings/{id}', [AdminController::class, 'show'])->name('admin.bookings.show');
-    Route::post('/bookings/{id}/approve', [AdminController::class, 'approve'])->name('admin.bookings.approve');
-    Route::get('/bookings/{id}/approve', [AdminController::class, 'approve'])->name('admin.bookings.approve.get');
+    Route::post('/bookings/{id}/approve', [AdminController::class, 'adminApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
-    Route::get('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject.get');
     Route::delete('/bookings/{id}', [AdminController::class, 'destroy'])->name('admin.bookings.destroy');
 });
+
+// These routes are now public for one-click approval from email
+Route::get('/admin/bookings/{id}/approve', [AdminController::class, 'principalApprove'])->name('admin.bookings.approve.get');
+Route::get('/admin/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject.get');
 
 // SuperAdmin Auth
 Route::get('/superadmin/login', [LoginController::class, 'showSuperAdminLogin'])->name('superadmin.login');
@@ -86,3 +88,19 @@ Route::prefix('superadmin')->middleware('superadmin.auth')->group(function () {
 Route::get('/approval-status', function () {
     return view('approval_status');
 })->name('approval.status');
+
+// 🎨 DESIGN PREVIEW ROUTE
+Route::get('/mail-preview', function () {
+    $booking = Booking::first() ?? new Booking([
+        'name' => 'John Doe',
+        'email' => 'john@example.com',
+        'phone' => '+91 9876543210',
+        'room_name' => 'Premium Suite',
+        'booking_date' => date('Y-m-d'),
+        'start_time' => '10:00:00',
+        'end_time' => '12:00:00',
+        'no_of_persons' => 2,
+        'total_price' => 5000
+    ]);
+    return new App\Mail\BookingNotification($booking);
+});

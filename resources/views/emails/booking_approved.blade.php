@@ -98,12 +98,21 @@
             <h1>Reservation Confirmed!</h1>
         </div>
         <div class="content" style="text-align: center;">
-            <div class="success-checkmark">
-                <span class="checkmark-icon">✓</span>
-            </div>
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="80" height="80" style="margin: 0 auto 20px; background-color: #dcfce7; border-radius: 40px;">
+                <tr>
+                    <td align="center" valign="middle" style="color: #166534; font-size: 40px; font-weight: bold; line-height: 80px;">
+                        ✓
+                    </td>
+                </tr>
+            </table>
             
             <h2 style="color: #1e293b;">Hello {{ $booking->name }},</h2>
-            <p style="color: #64748b; line-height: 1.6;">Your booking request for <strong>{{ $booking->room_name }}</strong> has been officially approved and confirmed. We look forward to welcoming you!</p>
+            <p style="color: #64748b; line-height: 1.6; font-size: 16px;">Great news! Your booking request for <strong>{{ $booking->room_name }}</strong> has been officially approved and confirmed.</p>
+
+            <div style="background-color: #fff8eb; border-left: 4px solid #ff7a00; padding: 20px; margin: 30px 0; text-align: left; border-radius: 8px;">
+                <p style="margin: 0; color: #b45309; font-weight: 700; font-size: 15px;">Next Steps:</p>
+                <p style="margin: 8px 0 0; color: #d97706; font-size: 14px; line-height: 1.5;">Since this is a <strong>Direct Pay</strong> system, you can come directly to the guest house. Please settle the payment at the reception counter upon arrival.</p>
+            </div>
             
             <table class="booking-details">
                 <tr>
@@ -119,17 +128,13 @@
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->format('M d, Y, h:i A') }}</td>
                 </tr>
                 <tr>
-                    <th>Amount Paid</th>
-                    <td>₹{{ number_format($booking->total_price, 2) }}</td>
+                    <th>Pay at Counter</th>
+                    <td style="color: #ff7a00; font-weight: 700;">₹{{ number_format($booking->total_price, 2) }}</td>
                 </tr>
             </table>
 
-            <p style="margin-top: 30px;">
-                <a href="{{ url('/success') }}?id={{ $booking->id }}" class="btn">Download Your Receipt</a>
-            </p>
-            
-            <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
-                If you have any questions, please contact our support team.
+            <p style="margin-top: 30px; font-size: 14px; color: #94a3b8;">
+                We look forward to seeing you at MCC IGH. If you have any questions, feel free to visit us or contact support.
             </p>
         </div>
         <div class="footer">

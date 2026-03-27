@@ -403,6 +403,27 @@
             </div>
         </div>
 
+        @if(session('success'))
+            <div style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-check-circle"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #fecaca; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-warning-circle"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div style="background: #eff6ff; color: #1e40af; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bfdbfe; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-info"></i>
+                {{ session('info') }}
+            </div>
+        @endif
+
         <style>
             @media (max-width: 768px) {
                 #sidebarToggle {
@@ -553,17 +574,42 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
+                        @if($booking->approval_status === 'Pending')
+                            <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; border: 1px solid #ffedd5; text-align: center; margin-bottom: 0.5rem;">
+                                <p style="margin: 0; font-size: 0.85rem; color: #9a3412; font-weight: 500;">
+                                    <i class="ph ph-hourglass"></i> Waiting for Principal Approval
+                                </p>
+                            </div>
+                        @endif
+
                         <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-approve" style="width: 100%; justify-content: center;">
+                            <button type="submit" class="btn-approve" 
+                                    style="width: 100%; justify-content: center; {{ $booking->approval_status === 'Pending' ? 'opacity: 0.5; cursor: not-allowed; background: #94a3b8;' : '' }}"
+                                    {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
                                 <i class="ph-bold ph-check"></i> 
-                                {{ $booking->approval_status === 'Principal Approved' ? 'Final Approve' : 'Approve Proposal' }}
+                                Final Approve
                             </button>
                         </form>
+                        
                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-reject" style="width: 100%; justify-content: center;">
                                 <i class="ph-bold ph-x"></i> Reject Proposal
+                            </button>
+                        </form>
+                    @endif
+
+                    @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
+                        <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; border: 1px solid #dcfce7; text-align: center; margin-bottom: 0.5rem;">
+                            <p style="margin: 0; font-size: 0.85rem; color: #166534; font-weight: 600;">
+                                Approved! Waiting for Counter Payment
+                            </p>
+                        </div>
+                        <form action="{{ route('booking.simulate.success', $booking->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-approve" style="width: 100%; justify-content: center; background: #22c55e;">
+                                <i class="ph-bold ph-hand-coins"></i> Mark as Paid (at Counter)
                             </button>
                         </form>
                     @endif
@@ -577,14 +623,6 @@
                             <i class="ph ph-trash"></i> Delete Booking
                         </button>
                     </form>
-                    <button class="btn"><i class="ph ph-printer"></i> Print Invoice</button>
-                    <button class="btn btn-outline"><i class="ph ph-envelope"></i> Resend Confirmation</button>
-                    @if($booking->payment_status == 'Pending')
-                        <form action="{{ route('booking.simulate.success', $booking->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn" style="background: #22c55e; border-color: #22c55e;">Mark as Paid</button>
-                        </form>
-                    @endif
                 </div>
             </div>
         </div>
