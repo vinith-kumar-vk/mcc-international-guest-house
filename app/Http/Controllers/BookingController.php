@@ -31,12 +31,17 @@ class BookingController extends Controller
             'department' => 'nullable|string',
             'primary_guest_name' => 'nullable|string',
             'no_of_persons' => 'required|integer|min:1',
-            'passport_number' => 'nullable|string',
+            'passport_number' => $request->nationality === 'Non-Indian' ? 'required|string' : 'nullable|string',
             'gst_id' => 'nullable|string|max:50',
             'room_name' => 'required|string',
             'clock_in' => 'required|date',
             'clock_out' => 'required|date|after:clock_in',
+            'department_other' => 'nullable|string',
         ]);
+
+        if ($request->department === 'Other' && $request->filled('department_other')) {
+            $validated['department'] = $request->department_other;
+        }
 
         $clockIn = \Carbon\Carbon::parse($validated['clock_in']);
         $clockOut = \Carbon\Carbon::parse($validated['clock_out']);

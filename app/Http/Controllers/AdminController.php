@@ -136,6 +136,70 @@ class AdminController extends Controller
         return view('admin.bookings', compact('bookings', 'workspaces'));
     }
 
+    public function exportCsv(Request $request)
+    {
+        $query = Booking::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('id', 'LIKE', "%{$search}%");
+            });
+        }
+        if ($request->filled('date'))      $query->whereDate('booking_date', $request->date);
+        if ($request->filled('status'))    $query->where('payment_status', $request->status);
+        if ($request->filled('workspace')) $query->where('room_name', $request->workspace);
+
+        $bookings = $query->orderBy('created_at', 'desc')->get();
+
+        $filename = 'bookings_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
+
+        $callback = function () use ($bookings) {
+            $handle = fopen('php://output', 'w');
+
+            // CSV Header Row
+            fputcsv($handle, [
+                'Booking ID', 'Guest Name', 'Email', 'Phone',
+                'Room / Space', 'Booking Date', 'Start Time', 'End Time',
+                'No. of Persons', 'User Type', 'Approval Status', 'Payment Status',
+                'Total Price (₹)', 'Payment ID', 'Submitted At'
+            ]);
+
+            foreach ($bookings as $b) {
+                fputcsv($handle, [
+                    $b->id,
+                    $b->name,
+                    $b->email,
+                    $b->phone ?? '',
+                    $b->room_name,
+                    \Carbon\Carbon::parse($b->booking_date)->format('d M Y'),
+                    \Carbon\Carbon::parse($b->start_time)->format('H:i'),
+                    \Carbon\Carbon::parse($b->end_time)->format('H:i'),
+                    $b->no_of_persons ?? '',
+                    $b->user_type ?? '',
+                    $b->approval_status,
+                    $b->payment_status,
+                    number_format($b->total_price, 2),
+                    $b->razorpay_payment_id ?? '',
+                    $b->created_at->format('d M Y, H:i'),
+                ]);
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function show($id)
     {
         $booking = Booking::findOrFail($id);
@@ -192,6 +256,18 @@ class AdminController extends Controller
         $booking->update(['approval_status' => 'Rejected']);
         
         return redirect()->route('approval.status')->with('success', 'Booking has been rejected.');
+    }
+
+    public function markAsPaid($id)
+    {
+        $booking = Booking::findOrFail($id);
+        
+        $booking->update([
+            'payment_status' => 'Paid',
+            'razorpay_payment_id' => 'COUNTER_' . uniqid()
+        ]);
+
+        return back()->with('success', 'Booking marked as Paid at counter.');
     }
 
     public function destroy($id)

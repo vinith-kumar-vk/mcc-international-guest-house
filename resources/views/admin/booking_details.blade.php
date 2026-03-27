@@ -10,9 +10,10 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --admin-bg: #f4f7fa;
+            --admin-bg: #f8fafc;
             --primary-color: #ff7a00;
-            --border: #e2e8f0;
+            --primary-hover: #e66k00;
+            --border: #eaedf0;
             --text-color: #1e293b;
             --text-light: #64748b;
         }
@@ -229,89 +230,191 @@
             font-size: 0.9rem;
         }
 
-        .badge-paid { background: #dcfce7; color: #166534; }
-        .badge-pending { background: #fef9c3; color: #854d0e; }
-        .badge-failed { background: #fee2e2; color: #991b1b; }
-        .badge-approved { background: #dcfce7; color: #166534; }
-        .badge-principal-approved { background: #d1fae5; color: #065f46; border: 1px solid #059669; }
-        .badge-rejected { background: #fee2e2; color: #991b1b; }
-
-        .btn-approve {
-            padding: 0.65rem 1.25rem;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
+        .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: background 0.2s;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-paid { background: rgba(34, 197, 94, 0.1); color: #166534; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .badge-pending { background: rgba(245, 158, 11, 0.1); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-failed { background: rgba(239, 68, 68, 0.1); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .badge-approved { background: rgba(34, 197, 94, 0.1); color: #166534; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .badge-principal-approved { background: rgba(16, 185, 129, 0.1); color: #065f46; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-rejected { background: rgba(239, 68, 68, 0.1); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        /* ============================
+           ADMIN ACTION BUTTONS
+           Using !important to prevent
+           global style.css overrides
+        ============================ */
+
+        .btn-mark-paid {
+            padding: 1.1rem 2rem !important;
+            background: #16a34a !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            width: 100% !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .btn-mark-paid:hover {
+            background: #15803d !important;
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.45) !important;
+            color: #ffffff !important;
+            transform: none !important;
+            width: 100% !important;
+            padding: 1.1rem 2rem !important;
+        }
+
+        .btn-approve {
+            padding: 1.1rem 2rem !important;
+            background: #ff7a00 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            width: 100% !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .btn-approve:hover:not(:disabled) {
+            background: #e66d00 !important;
+            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.5) !important;
+            color: #ffffff !important;
+            transform: none !important;
+            width: 100% !important;
+            padding: 1.1rem 2rem !important;
+        }
+
+        .btn-approve:disabled {
+            background: #94a3b8 !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            opacity: 0.55 !important;
+            transform: none !important;
+            color: #fff !important;
         }
 
         .btn-reject {
-            padding: 0.65rem 1.25rem;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: background 0.2s;
+            padding: 1.1rem 2rem !important;
+            background: #fff1f2 !important;
+            color: #be123c !important;
+            border: 2px solid #fecdd3 !important;
+            border-radius: 12px !important;
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            width: 100% !important;
+            transform: none !important;
+        }
+
+        .btn-reject:hover {
+            background: #ffe4e6 !important;
+            border-color: #fda4af !important;
+            color: #9f1239 !important;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15) !important;
+            transform: none !important;
+            width: 100% !important;
+            padding: 1.1rem 2rem !important;
         }
 
         .btn-view {
-            padding: 0.75rem 1rem;
-            background: #f1f5f9;
-            color: #475569;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
+            padding: 0.85rem 1rem !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            text-decoration: none !important;
+            border-radius: 12px !important;
+            font-size: 0.9rem !important;
+            font-weight: 700 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+            transition: all 0.3s ease !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        .btn-view:hover {
+            background: #e2e8f0 !important;
+            color: #1e293b !important;
         }
 
         .btn-delete {
-            padding: 0.75rem 1rem;
-            background: #fff1f2;
-            color: #be123c;
-            border: 1px solid #fecdd3;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
-            transition: all 0.2s;
+            padding: 1.1rem 2rem !important;
+            background: #fff1f2 !important;
+            color: #be123c !important;
+            border: 2px solid #fecdd3 !important;
+            border-radius: 12px !important;
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            width: 100% !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            transform: none !important;
         }
 
         .btn-delete:hover {
-            background: #ffe4e6;
-            color: #9f1239;
+            background: #ffe4e6 !important;
+            border-color: #fda4af !important;
+            color: #9f1239 !important;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15) !important;
+            transform: none !important;
+            width: 100% !important;
+            padding: 1.1rem 2rem !important;
         }
 
-        .btn-approve:hover { background: #218838; }
-        .btn-reject:hover { background: #c82333; }
 
         /* Payment Summary */
         .payment-summary {
             background: #f8fafc;
-            border-radius: 8px;
+            border-radius: 16px;
             padding: 1.5rem;
             margin-top: 1rem;
+            border: 1px solid #f1f5f9;
         }
 
         .summary-row {
@@ -343,26 +446,31 @@
         }
 
         .timeline-item:last-child {
-            border-left: 2px solid transparent;
+            border-left-color: transparent;
         }
 
         .timeline-point {
             position: absolute;
-            left: -7px;
-            top: 0;
+            left: -6px;
+            top: 4px;
             width: 12px;
             height: 12px;
-            background: #cbd5e1;
+            background: #ff7a00;
             border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.15);
             border: 2px solid white;
         }
 
         .timeline-item.active .timeline-point {
-            background: var(--primary-color);
+            /* This rule is now redundant as the base timeline-point is orange */
+            /* background: var(--primary-color); */
         }
 
         .timeline-content {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
         }
 
         .timeline-time {
@@ -575,9 +683,9 @@
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         @if($booking->approval_status === 'Pending')
-                            <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; border: 1px solid #ffedd5; text-align: center; margin-bottom: 0.5rem;">
-                                <p style="margin: 0; font-size: 0.85rem; color: #9a3412; font-weight: 500;">
-                                    <i class="ph ph-hourglass"></i> Waiting for Principal Approval
+                            <div style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2); text-align: center; margin-bottom: 1rem;">
+                                <p style="margin: 0; font-size: 0.95rem; color: #b45309; font-weight: 800; letter-spacing: 0.5px;">
+                                    <i class="ph-fill ph-hourglass"></i> WAITING FOR PRINCIPAL APPROVAL
                                 </p>
                             </div>
                         @endif
@@ -585,31 +693,31 @@
                         <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-approve" 
-                                    style="width: 100%; justify-content: center; {{ $booking->approval_status === 'Pending' ? 'opacity: 0.5; cursor: not-allowed; background: #94a3b8;' : '' }}"
+                                    style="width: 100%;"
                                     {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
                                 <i class="ph-bold ph-check"></i> 
-                                Final Approve
+                                FINAL APPROVE
                             </button>
                         </form>
                         
                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-reject" style="width: 100%; justify-content: center;">
-                                <i class="ph-bold ph-x"></i> Reject Proposal
+                            <button type="submit" class="btn-reject" style="width: 100%;">
+                                <i class="ph-bold ph-x"></i> REJECT PROPOSAL
                             </button>
                         </form>
                     @endif
 
                     @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
-                        <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; border: 1px solid #dcfce7; text-align: center; margin-bottom: 0.5rem;">
-                            <p style="margin: 0; font-size: 0.85rem; color: #166534; font-weight: 600;">
-                                Approved! Waiting for Counter Payment
+                        <div style="background: rgba(59, 130, 246, 0.08); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); text-align: center; margin-bottom: 0.5rem;">
+                            <p style="margin: 0; font-size: 0.95rem; color: #1d4ed8; font-weight: 800; letter-spacing: 0.5px;">
+                                <i class="ph-fill ph-info"></i> APPROVED! WAITING FOR COUNTER PAYMENT
                             </p>
                         </div>
-                        <form action="{{ route('booking.simulate.success', $booking->id) }}" method="POST">
+                        <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-approve" style="width: 100%; justify-content: center; background: #22c55e;">
-                                <i class="ph-bold ph-hand-coins"></i> Mark as Paid (at Counter)
+                            <button type="submit" class="btn-mark-paid">
+                                <i class="ph-bold ph-hand-coins"></i> MARK AS PAID (AT COUNTER)
                             </button>
                         </form>
                     @endif
@@ -620,7 +728,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-delete">
-                            <i class="ph ph-trash"></i> Delete Booking
+                            <i class="ph-bold ph-trash"></i> DELETE BOOKING
                         </button>
                     </form>
                 </div>

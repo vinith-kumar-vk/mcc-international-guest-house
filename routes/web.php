@@ -14,7 +14,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/standard-rooms', function () {
-    return view('standard-rooms');
+    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+        ->whereDate('booking_date', '>=', now()->toDateString())
+        ->pluck('room_name')->toArray();
+    return view('standard-rooms', compact('bookedRooms'));
 })->name('standard.rooms');
 
 Route::get('/booking-form', function () {
@@ -23,11 +26,17 @@ Route::get('/booking-form', function () {
 })->name('booking.form.full');
 
 Route::get('/advance-rooms', function () {
-    return view('advance-rooms');
+    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+        ->whereDate('booking_date', '>=', now()->toDateString())
+        ->pluck('room_name')->toArray();
+    return view('advance-rooms', compact('bookedRooms'));
 })->name('advance.rooms');
 
 Route::get('/conference-rooms', function () {
-    return view('conference-rooms');
+    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+        ->whereDate('booking_date', '>=', now()->toDateString())
+        ->pluck('room_name')->toArray();
+    return view('conference-rooms', compact('bookedRooms'));
 })->name('conference.rooms');
 
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
@@ -63,9 +72,11 @@ use App\Http\Controllers\AdminController;
 Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
+    Route::get('/bookings/export', [AdminController::class, 'exportCsv'])->name('admin.bookings.export');
     Route::get('/bookings/{id}', [AdminController::class, 'show'])->name('admin.bookings.show');
     Route::post('/bookings/{id}/approve', [AdminController::class, 'adminApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
+    Route::post('/bookings/{id}/pay', [AdminController::class, 'markAsPaid'])->name('admin.bookings.pay');
     Route::delete('/bookings/{id}', [AdminController::class, 'destroy'])->name('admin.bookings.destroy');
 });
 

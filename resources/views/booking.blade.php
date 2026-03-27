@@ -8,20 +8,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        /* Fix ONLY for Proceed to Payment / Confirm Booking button */
+        #proceedBtn:not(:disabled) {
+            background-color: #ff6a00 !important;
+            color: #ffffff !important;
+            border-color: #ff6a00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+        }
+        #proceedBtn:not(:disabled):hover,
+        #proceedBtn:not(:disabled):focus {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:not(:disabled):active {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:disabled {
+            background-color: #ccc !important;
+            color: #888 !important;
+            border-color: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            scale: 1 !important;
+        }
+        #proceedBtn,
+        .confirm-booking-btn,
+        .confirm-booking-btn:active,
+        .confirm-booking-btn:focus,
+        #proceedBtn:active,
+        #proceedBtn:focus {
+            transform: none !important;
+            scale: 1 !important;
+            transition: none !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth
@@ -155,7 +203,7 @@
                     <div class="button-group" style="margin-top: 1.5rem;">
                         <button type="button" class="btn btn-outline" onclick="window.location.href='{{ route('home') }}'"><i
                                 class="ph-bold ph-arrow-left"></i> Back to Spaces</button>
-                        <button type="submit" class="btn" id="proceedBtn" disabled><i
+                        <button type="submit" class="btn confirm-booking-btn" id="proceedBtn" disabled><i
                                 class="ph-bold ph-credit-card"></i> Proceed to Payment</button>
                     </div>
                 </form>

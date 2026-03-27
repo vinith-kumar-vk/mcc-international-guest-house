@@ -8,20 +8,118 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        .success-wrapper {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .success-header {
+            background: var(--primary-color);
+            color: #ffffff;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .success-header h2 {
+            font-size: 2rem;
+            margin: 1rem 0 0.5rem;
+            font-weight: 800;
+        }
+
+        .success-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .success-icon-large {
+            font-size: 4.5rem;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .success-body {
+            padding: 2.5rem;
+        }
+
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .receipt-table th {
+            text-align: left;
+            padding: 12px 0;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .receipt-table td {
+            text-align: right;
+            padding: 12px 0;
+            color: #1e293b;
+            font-weight: 600;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .success-actions {
+            padding: 0 2.5rem 2.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-home {
+            background: #ff7a00 !important;
+            color: white !important;
+            padding: 1.1rem !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.3) !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .btn-home:hover {
+            background: #e66d00 !important;
+            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
+            color: #ffffff !important;
+            transform: none !important;
+            width: 100% !important;
+            padding: 1.1rem !important;
+        }
+    </style>
 </head>
 
 <body style="background: #f1f5f9;">
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
         </div>
         <div class="header-center">
-            <h1>MCC IGH</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth
@@ -111,12 +209,7 @@
             </div>
 
             <div class="success-actions">
-                @if($booking->approval_status === 'Approved')
-                    <button class="btn btn-outline" style="flex:1;" onclick="downloadDummyReceipt()">
-                        <i class="ph-bold ph-download-simple"></i> Download Receipt
-                    </button>
-                @endif
-                <button class="btn" style="flex:1;" onclick="window.location.href='{{ route('home') }}'"><i
+                <button class="btn-home" onclick="window.location.href='{{ route('home') }}'"><i
                         class="ph-bold ph-house"></i> Back to Home</button>
             </div>
         </div>

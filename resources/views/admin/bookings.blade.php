@@ -395,8 +395,20 @@
                 </button>
                 <h1>Booking Management</h1>
             </div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="btn btn-outline" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.85rem;"><i class="ph ph-file-arrow-down"></i> Export CSV</button>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="{{ route('admin.bookings.export', request()->only(['search','date','status','workspace'])) }}"
+                   style="display: inline-flex; align-items: center; gap: 0.5rem;
+                          background: #16a34a; color: #ffffff;
+                          padding: 0.65rem 1.4rem;
+                          border-radius: 10px;
+                          font-weight: 700; font-size: 0.85rem;
+                          text-decoration: none;
+                          letter-spacing: 0.3px;
+                          box-shadow: 0 2px 8px rgba(22,163,74,0.25);
+                          transition: background 0.2s ease, box-shadow 0.2s ease;">
+                    <i class="ph-bold ph-file-arrow-down" style="font-size: 1rem;"></i>
+                    Export CSV
+                </a>
             </div>
         </div>
 
