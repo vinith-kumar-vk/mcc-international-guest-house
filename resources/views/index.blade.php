@@ -10,440 +10,129 @@
     <!-- Phosphor Icons for Modern Aesthetics -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
-        /* ── Profile icon: lock size on all states ── */
-        .profile-btn {
-            background: none !important;
-            border: none !important;
-            padding: 4px !important;
-            width: auto !important;
-            height: auto !important;
-            min-width: unset !important;
-            min-height: unset !important;
-            line-height: 1 !important;
-            cursor: pointer;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            transform: none !important;
-            box-shadow: none !important;
-            transition: opacity 0.2s ease !important;
+        /* =============================================================
+           GLOBAL RESET & BASE
+        ============================================================= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; overflow-x: hidden; }
+
+        /* =============================================================
+           HERO SLIDER OVERLAYS & NAV (Base is in responsive.css)
+        ============================================================= */
+        .hero-prev, .hero-next {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px; background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%; color: #fff; font-size: 1.5rem; cursor: pointer;
+            z-index: 10; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .hero-prev { left: 30px; }
+        .hero-next { right: 30px; }
+        .hero-prev:hover, .hero-next:hover { background: #fff; color: #ff7a00; }
+
+        /* =============================================================
+           HERO WELCOME SECTION (Base is in responsive.css)
+        ============================================================= */
+        .hero-section { text-align: center; padding: 2.5rem 1.5rem 2rem; background: #f8fafc; }
+        .welcome-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .welcome-subtitle {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #64748b;
+            max-width: 700px;
+            margin: 1.25rem auto 0;
+            line-height: 1.6;
         }
 
-        .profile-btn:hover,
-        .profile-btn:focus,
-        .profile-btn:active {
-            background: none !important;
-            transform: none !important;
-            box-shadow: none !important;
-            width: auto !important;
-            height: auto !important;
-            padding: 4px !important;
-            opacity: 0.8;
+        /* =============================================================
+           PREMIUM FACILITY CARD (Base is in responsive.css)
+        ============================================================= */
+        .premium-facility-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 20px; padding: 3.5rem 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.4s cubic-bezier(0.165,0.84,0.44,1);
+            max-width: 900px; margin: 4rem auto;
+            opacity: 0; transform: translateY(30px);
         }
-
-        .profile-btn i,
-        .profile-btn .ph-fill {
-            font-size: 1.75rem !important;
-            line-height: 1 !important;
-            display: block !important;
-            width: auto !important;
-            height: auto !important;
-            transform: none !important;
-            transition: none !important;
+        .premium-facility-card.visible { opacity: 1; transform: translateY(0); }
+        .premium-facility-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .facility-title {
+            font-size: 2.2rem; font-weight: 800; color: #222;
+            margin-bottom: 1rem; display: inline-block; letter-spacing: -0.5px;
         }
-
-        /* ── Contact Us / Help Modal SEND button ── */
-        .help-send-btn {
-            background: #ff7a00 !important;
-            color: #ffffff !important;
-            border: none !important;
-            padding: 0.9rem 1.5rem !important;
-            border-radius: 12px !important;
-            font-size: 0.95rem !important;
-            font-weight: 800 !important;
-            letter-spacing: 0.5px !important;
-            text-transform: uppercase !important;
-            cursor: pointer !important;
-            width: 100% !important;
-            display: block !important;
-            transform: none !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+        .facility-divider {
+            width: 50px; height: 3px; background: #ff7a00;
+            margin: 1.5rem auto; border-radius: 5px; opacity: 0.6;
         }
-
-        .help-send-btn:hover {
-            background: #e66d00 !important;
-            box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45) !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 0.9rem 1.5rem !important;
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; margin-top: 2.5rem;
         }
-
-        .help-send-btn:focus,
-        .help-send-btn:active {
-            background: #ff7a00 !important;
-            transform: none !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
+        .feature-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 1rem; background: white; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: 0.3s;
         }
-
-        /* Prevent shrink on the modal close button too */
-        .help-modal-close {
-            transform: none !important;
-            transition: color 0.2s ease !important;
-        }
-
-        .help-modal-close:hover {
-            transform: none !important;
-        }
+        .feature-item i { font-size: 1.5rem; color: #ff7a00; }
+        .feature-item span { font-weight: 600; color: #444; font-size: 0.95rem; }
+        .feature-item:hover { background: #fff4ed; transform: scale(1.04); }
     </style>
 </head>
 
 <body>
-    <header class="header-container" style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
-        <div class="header-left">
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
-            </a>
-        </div>
-        <div class="header-center">
-            <h1 class="header-title">MCC International Guest House</h1>
-        </div>
-        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
-            <button class="help-btn" onclick="openHelpModal()">Help</button>
-            <div class="profile-dropdown">
-                <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
-                </button>
-                <div class="dropdown-menu" id="profileMenu">
-                    @auth
-                        <a href="#" class="dropdown-item logout">Logout</a>
-                    @else
-                        <a href="{{ route('login') }}" class="dropdown-item">Login</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header', ['showHelpBtn' => true])
 
-    <!-- MAIN IMAGE SLIDER SECTION (Full screen Edge-to-Edge) -->
-    <section class="main-image-slider" style="position: relative; width: 100%; height: 50vh; min-height: 450px; max-height: 650px; overflow: hidden; background: #000; margin-bottom: 2rem;">
-        
+    <!-- MAIN IMAGE SLIDER SECTION -->
+    <section class="main-image-slider">
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
-            <img src="{{ asset('assets/mcc.png') }}" alt="MCC IGH Dashboard" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-            <div class="hero-layer" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5%; pointer-events: none;">
-                <h2 class="slide-title" style="color: #ffffff; font-size: 3.5rem; font-weight: 800; margin-bottom: 0.8rem; text-shadow: 0 4px 12px rgba(0,0,0,0.6);">Welcome to MCC IGH</h2>
-                <p class="slide-subtitle" style="color: #ffffff; font-size: 1.25rem; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6);">Comfortable and secure guest house booking</p>
+            <img src="{{ asset('assets/mcc.png') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+                <h2 class="slide-title">Welcome to MCC IGH</h2>
+                <p class="slide-subtitle">Comfortable and secure guest house booking</p>
             </div>
         </div>
-
         <!-- Slide 2 -->
         <div class="hero-slide">
-            <img src="{{ asset('assets/mcc1.png') }}" alt="MCC IGH Premium" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-            <div class="hero-layer" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5%; pointer-events: none;">
-                <h2 class="slide-title" style="color: #ffffff; font-size: 3.5rem; font-weight: 800; margin-bottom: 0.8rem; text-shadow: 0 4px 12px rgba(0,0,0,0.6);">Premium Stay Experience</h2>
-                <p class="slide-subtitle" style="color: #ffffff; font-size: 1.25rem; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6);">Book rooms easily with modern facilities</p>
+            <img src="{{ asset('assets/mcc1.png') }}" alt="MCC IGH Premium" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+                <h2 class="slide-title">Premium Stay Experience</h2>
+                <p class="slide-subtitle">Book rooms easily with modern facilities</p>
             </div>
         </div>
-
         <!-- Slide 3 -->
         <div class="hero-slide">
-            <img src="{{ asset('assets/mcc2.png') }}" alt="MCC IGH Booking" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-            <div class="hero-layer" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5%; pointer-events: none;">
-                <h2 class="slide-title" style="color: #ffffff; font-size: 3.5rem; font-weight: 800; margin-bottom: 0.8rem; text-shadow: 0 4px 12px rgba(0,0,0,0.6);">Simple & Fast Booking</h2>
-                <p class="slide-subtitle" style="color: #ffffff; font-size: 1.25rem; font-weight: 500; text-shadow: 0 2px 8px rgba(0,0,0,0.6);">Plan your stay with ease and convenience</p>
+            <img src="{{ asset('assets/mcc2.png') }}" alt="MCC IGH Booking" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+                <h2 class="slide-title">Simple &amp; Fast Booking</h2>
+                <p class="slide-subtitle">Plan your stay with ease and convenience</p>
             </div>
         </div>
-
-        <!-- Minimalist Flow Controls -->
-        <div class="hero-slider-arrow left">
-            <button class="hero-prev"><i class="ph-bold ph-caret-left"></i></button>
-        </div>
-        <div class="hero-slider-arrow right">
-            <button class="hero-next"><i class="ph-bold ph-caret-right"></i></button>
-        </div>
-        
-        <!-- Subtle Tracking Bands -->
-        <div class="hero-dots" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
-            <div class="hero-dot active" style="width: 35px; height: 3px; background: var(--primary-color); cursor: pointer; transition: 0.3s ease;"></div>
-            <div class="hero-dot" style="width: 35px; height: 3px; background: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s ease;"></div>
-            <div class="hero-dot" style="width: 35px; height: 3px; background: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s ease;"></div>
+        <!-- Nav Arrows -->
+        <div class="hero-slider-arrow left"><button class="hero-prev"><i class="ph-bold ph-caret-left"></i></button></div>
+        <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
+        <!-- Dots -->
+        <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
+            <div class="hero-dot active" style="width:30px;height:3px;background:#ff7a00;cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
         </div>
     </section>
 
-    <!-- Script & Styles for Slider -->
-    <style>
-        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
-        .hero-slide.active-slide { opacity: 1; z-index: 2; }
-        
-        .hero-prev:hover i, .hero-next:hover i { color: var(--primary-color) !important; transform: scale(1.1); }
-        .hero-prev:hover { transform: translateY(-50%) translateX(-4px); }
-        .hero-next:hover { transform: translateY(-50%) translateX(4px); }
-        
-        /* High-fidelity Text Animation */
-        .hero-slide .slide-title { transform: translateY(25px); opacity: 0; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s; }
-        .hero-slide .slide-subtitle { transform: translateY(20px); opacity: 0; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s; }
-        .hero-slide.active-slide .slide-title, .hero-slide.active-slide .slide-subtitle { transform: translateY(0); opacity: 1; }
-
-        /* Header Centering */
-        .header-container {
-            position: relative;
-        }
-        .header-title {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            white-space: nowrap;
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .header-logo {
-            height: 50px !important;
-            width: auto !important;
-            object-fit: contain !important;
-            image-rendering: -webkit-optimize-contrast !important;
-            image-rendering: crisp-edges !important;
-        }
-
-        /* Help Modal Styles */
-        .help-btn {
-            background: none; border: none; font-family: 'Inter', sans-serif;
-            font-size: 0.95rem; font-weight: 600; color: #444; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; transition: color 0.3s;
-        }
-        .help-btn:hover { color: var(--primary-color); }
-
-        .help-modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-            display: none; align-items: center; justify-content: center; z-index: 6000;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
-        .help-modal-overlay.active { display: flex; opacity: 1; visibility: visible; }
-        .help-modal-card {
-            background: white; border-radius: 16px; width: 100%; max-width: 600px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2); position: relative;
-            padding: 40px; animation: modalSlideUp 0.4s ease; margin: 20px;
-        }
-        @keyframes modalSlideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .help-modal-close {
-            position: absolute !important; top: 20px !important; right: 20px !important; left: auto !important;
-            background: none !important; border: none !important; box-shadow: none !important;
-            font-size: 1.5rem !important; color: #999 !important; cursor: pointer; transition: color 0.3s;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            width: 32px !important; height: 32px !important; padding: 0 !important;
-            z-index: 10;
-        }
-        .help-modal-close:hover { color: #333 !important; background: none !important; box-shadow: none !important; transform: none !important; }
-        .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
-        .help-form { display: flex; flex-direction: column; gap: 20px; }
-        .help-form-row { display: flex; gap: 20px; }
-        .help-input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .help-input-group.full-width { width: 100%; }
-        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
-        .help-input-group input, .help-input-group textarea {
-            padding: 14px 16px !important; border: 1px solid #ddd !important; border-radius: 8px !important;
-            font-family: inherit; font-size: 1rem !important; transition: all 0.3s; background: #fafafa !important;
-            width: 100%;
-        }
-        .help-input-group input:focus, .help-input-group textarea:focus {
-            border-color: var(--primary-color) !important; outline: none !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
-        }
-
-        .custom-dropdown { position: relative; width: 100%; }
-        .dropdown-selected {
-            padding: 14px 16px; border: 1px solid #ddd; border-radius: 8px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; background: #fafafa; transition: 0.3s;
-        }
-        .dropdown-selected:hover { border-color: #bbb; }
-        .dropdown-selected span { color: #333; font-weight: 500; }
-        .dropdown-selected i { color: #999; font-size: 1.2rem; }
-        .dropdown-options {
-            position: absolute; top: calc(100% + 5px); left: 0; right: 0;
-            background: white; border: 1px solid #ddd; border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 10;
-            max-height: 250px; overflow-y: auto; display: none;
-        }
-        .dropdown-options.active { display: block; }
-        .dropdown-option {
-            padding: 12px 16px; font-size: 0.95rem; color: #444; cursor: pointer;
-            transition: background 0.2s; border-bottom: 1px solid #f5f5f5;
-        }
-        .dropdown-option:last-child { border-bottom: none; }
-        .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
-        .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
-        .btn {
-            background: #ff7a00 !important;
-            color: #ffffff !important;
-            border: none !important;
-            padding: 0.9rem 1.6rem !important;
-            font-size: 0.95rem !important;
-            font-weight: 800 !important;
-            border-radius: 12px !important;
-            cursor: pointer !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 8px !important;
-            text-decoration: none !important;
-            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25) !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.8px !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        .btn:hover {
-            background: #e66d00 !important;
-            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35) !important;
-            color: #ffffff !important;
-            transform: none !important;
-            padding: 0.9rem 1.6rem !important;
-        }
-
-        .btn-outline {
-            background: transparent !important;
-            color: #ff7a00 !important;
-            border: 2px solid #ff7a00 !important;
-            box-shadow: none !important;
-            transform: none !important;
-        }
-
-        .btn-outline:hover {
-            background: #ff7a00 !important;
-            color: #ffffff !important;
-            transform: none !important;
-        }
-
-        .help-send-btn {
-            background: #ff7a00 !important;
-            color: white !important;
-            border: none !important;
-            padding: 1.1rem !important;
-            border-radius: 12px !important;
-            font-size: 1.1rem !important;
-            font-weight: 800 !important;
-            cursor: pointer !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
-            width: 100% !important;
-            text-align: center !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25) !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        .help-send-btn:hover {
-            background: #e66d00 !important;
-            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35) !important;
-            transform: none !important;
-            padding: 1.1rem !important;
-            width: 100% !important;
-        }
-        
-        @media (max-width: 600px) {
-            .help-form-row { flex-direction: column; gap: 20px; }
-            .help-modal-card { padding: 30px 20px; }
-        }
-
-        @media (max-width: 768px) {
-            .main-image-slider { height: 380px !important; min-height: unset; margin-bottom: 1.5rem !important; }
-            .hero-layer h2 { font-size: 2.2rem !important; margin-bottom: 0.5rem !important; }
-            .hero-layer p { font-size: 1rem !important; }
-            .hero-prev i, .hero-next i { font-size: 2.2rem !important; }
-        }
-
-        /* Premium Facilities Section Styles */
-        .premium-facility-card {
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            border-radius: 20px;
-            padding: 3.5rem 2rem;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-            max-width: 900px;
-            margin: 4rem auto;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        .premium-facility-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .premium-facility-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        }
-        .facility-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #222;
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-            letter-spacing: -0.5px;
-        }
-        .dashboard-rooms-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-            max-width: 1250px; margin: 0 auto;
-        }
-        @media (max-width: 1024px) { .dashboard-rooms-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .dashboard-rooms-grid { grid-template-columns: 1fr; } }
-        .premium-facility-card:hover .facility-title::after {
-            width: 80px;
-        }
-        .facility-divider {
-            width: 50px;
-            height: 3px;
-            background: var(--primary-color);
-            margin: 1.5rem auto;
-            border-radius: 5px;
-            opacity: 0.6;
-        }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            text-align: left;
-        }
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 1rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: 0.3s;
-        }
-        .feature-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-        .feature-item span {
-            font-weight: 600;
-            color: #444;
-            font-size: 0.95rem;
-        }
-        .feature-item:hover {
-            background: #fff4ed;
-            transform: scale(1.05);
-        }
-    </style>
+    <!-- Slider Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const slider = document.querySelector('.main-image-slider');
@@ -519,18 +208,18 @@
     <main>
 
         <!-- HERO SECTION -->
-        <section class="hero-section" style="text-align: center; padding: 2rem 20px 1.5rem; background: var(--bg-color); margin: 0; width: 100%; max-width: 100%;">
-            <h1 class="welcome-animate" style="font-size: 3.5rem; font-weight: 850; color: var(--text-color); margin-bottom: 8px; letter-spacing: -2px; position: relative; display: inline-block;">Welcome to MCC IGH
-                <span style="position: absolute; width: 40%; height: 5px; bottom: -8px; left: 30%; background-color: var(--primary-color); border-radius: 4px;"></span>
+        <section class="hero-section">
+            <h1 class="welcome-title">Welcome to MCC IGH
+                <span style="position:absolute;width:40%;height:5px;bottom:-8px;left:30%;background-color:#ff7a00;border-radius:4px;"></span>
             </h1>
-            <p class="welcome-animate" style="font-size: 1.25rem; font-weight: 500; color: var(--text-light); max-width: 800px; margin: 1.25rem auto 0; line-height: 1.6; animation-delay: 0.15s;">Book comfortable guest house rooms effortlessly and manage your professional stay with ease.</p>
+            <p class="welcome-subtitle">Book comfortable guest house rooms effortlessly and manage your professional stay with ease.</p>
         </section>
 
         <!-- EXPLORE OUR ROOMS RE-INTEGRATED SLIDER -->
         <section class="explore-rooms-section">
             <div class="slider-master-container">
                 <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                    <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Explore Our Rooms</h2>
+                    <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Explore Our Rooms</h2>
                 </div>
 
                 <div class="slider-outer-frame">
@@ -628,9 +317,9 @@
         <!-- ROOM CATEGORIES COMPARISON -->
         <section style="max-width: 1250px; margin: 0 auto 3rem; padding: 0 1rem;">
             <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-color);">Room Categories</h2>
+                <h2 style="font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: var(--text-color);">Room Categories</h2>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
                 <!-- Standard Rooms Info -->
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">STANDARD ROOMS</h3>

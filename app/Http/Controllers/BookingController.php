@@ -109,8 +109,8 @@ class BookingController extends Controller
             Log::error('Failed to send booking notification for ID ' . $booking->id . ': ' . $e->getMessage());
         }
 
-        // 4. Redirect to the success page (waiting for approval)
-        return redirect()->route('checkout.success')->with('success', 'Booking submitted and waiting for approval!');
+        // 4. Redirect to the payment page
+        return redirect()->route('payment.page', ['id' => $booking->id])->with('success', 'Booking submitted. Please complete the payment.');
     }
 
     public function simulateSuccess($id)
@@ -131,6 +131,6 @@ class BookingController extends Controller
             'payment_status' => 'Failed'
         ]);
 
-        return redirect()->route('checkout.failure')->with('error', 'Payment cancelled.');
+        return redirect()->route('checkout.failure', ['id' => $id])->with('error', 'Payment cancelled.');
     }
 }

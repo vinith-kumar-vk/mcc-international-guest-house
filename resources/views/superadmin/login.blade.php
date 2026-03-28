@@ -105,6 +105,17 @@
             text-align: center;
             border: 1px solid #fecaca;
         }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+                margin: 1rem;
+                box-shadow: none;
+                border: none;
+            }
+            .logo { font-size: 1.25rem; }
+            .form-title { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>

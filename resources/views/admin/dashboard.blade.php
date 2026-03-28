@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
             --sidebar-width: 260px;
@@ -136,7 +137,7 @@
         .notification-item .time { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; }
 
         .admin-body {
-            padding: 1.5rem 2.5rem 3rem 2rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
+            padding: 2.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         /* Stats Cards */
@@ -287,28 +288,6 @@
         .usage-bar-bg { height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
         .usage-bar-fill { height: 100%; background: var(--primary-color); }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .row-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            #sidebarToggle {
-                display: flex !important;
-            }
-            .admin-main { 
-                margin-left: 0; 
-                width: 100%;
-            }
-            .sidebar { transform: translateX(-100%); }
-            .top-navbar { padding: 0 1rem; }
-            .admin-body { padding: 1rem; }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .nav-right .user-info div:first-child { display: none; }
-        }
     </style>
 </head>
 <body>
@@ -687,17 +666,6 @@
     </main>
 
     <script>
-        // Sidebar Toggle
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.querySelector('.sidebar');
-        
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
-        }
-
         // Notification Toggle
         const notifToggle = document.getElementById('notifToggle');
         const notifDropdown = document.getElementById('notifDropdown');
@@ -711,16 +679,6 @@
 
         document.addEventListener('click', (event) => {
             if (notifDropdown) notifDropdown.classList.remove('active');
-            
-            // Mobile sidebar closing logic
-            const toggle = document.getElementById('sidebarToggle');
-            if (window.innerWidth <= 768 && 
-                sidebar && toggle &&
-                !sidebar.contains(event.target) && 
-                !toggle.contains(event.target) && 
-                sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-            }
         });
 
         let revenueChart;
@@ -778,6 +736,29 @@
                 }
             });
         }
+
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
 
         function switchChart(type, btn) {
             document.querySelectorAll('.chart-toggle').forEach(b => b.classList.remove('active'));

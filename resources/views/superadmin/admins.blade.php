@@ -6,6 +6,8 @@
     <title>Manage Admins - SuperAdmin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
             --sidebar-width: 260px;
@@ -124,7 +126,12 @@
 
     <div class="main-content">
         <div class="topbar">
-            <div style="font-weight: 700; font-size: 1.1rem;">Manage Admin Accounts</div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                </button>
+                <div style="font-weight: 700; font-size: 1.1rem;">Manage Admin Accounts</div>
+            </div>
         </div>
 
         <div class="page-body">
@@ -230,6 +237,23 @@
     </div>
 
     <script>
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1024 && sidebar && !sidebar.contains(event.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 

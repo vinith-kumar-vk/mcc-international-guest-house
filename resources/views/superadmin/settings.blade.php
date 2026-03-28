@@ -6,6 +6,8 @@
     <title>System Settings - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
             --sidebar-width: 280px;
@@ -200,9 +202,14 @@
     </div>
 
     <main class="main-content">
-        <div class="header">
-            <i class="ph ph-gear-six" style="font-size: 2rem; color: var(--primary-color);"></i>
-            <h1>System Configuration</h1>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
+                <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+            </button>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="ph ph-gear-six" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <h1 style="font-size: 1.5rem; margin: 0; color: #1e293b;">System Configuration</h1>
+            </div>
         </div>
 
         @if(session('success'))
@@ -245,5 +252,23 @@
             </ol>
         </div>
     </main>
+    <script>
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1024 && sidebar && !sidebar.contains(event.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
             --sidebar-width: 260px;
@@ -296,9 +298,6 @@
         .progress-bg   { height: 6px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 4px; }
         .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; }
 
-        @media (max-width: 1024px) {
-            .row-2, .row-2-equal { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
@@ -340,7 +339,12 @@
     <div class="main-content">
         <!-- Topbar -->
         <div class="topbar">
-            <div class="topbar-title">System Overview</div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                </button>
+                <div class="topbar-title">System Overview</div>
+            </div>
             <div class="topbar-right">
                 <span class="badge-pill"><i class="ph-fill ph-shield-check"></i> SuperAdmin</span>
                 <div style="font-size: 0.8rem; color: var(--muted);">{{ now()->format('d M Y, H:i') }}</div>
@@ -571,6 +575,29 @@
     </div>
 
     <script>
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+
         // Revenue Chart
         const ctx = document.getElementById('revenueChart').getContext('2d');
         new Chart(ctx, {

@@ -8,25 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
-        .rooms-grid {
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 2rem !important;
-            margin-top: 2rem !important;
-        }
-
-        @media (max-width: 1024px) {
-            .rooms-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .rooms-grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
+        /* Room grid base is in responsive.css, but we keep our specific gap/margin if different */
 
         .modal-overlay {
             position: fixed;
@@ -429,16 +413,6 @@
             scale: 1 !important;
         }
 
-        @media (max-width: 600px) {
-            .help-form-row {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .help-modal-card {
-                padding: 30px 20px;
-            }
-        }
 
         /* View Details button hover/active fix */
         .card-actions .btn-outline:hover,
@@ -476,22 +450,7 @@
 </head>
 
 <body style="background: #fbfbfb;">
-    <header class="header-container"
-        style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;">
-        <div class="header-left">
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo"
-                    style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
-            </a>
-        </div>
-        <div class="header-center">
-            <h1 class="header-title">MCC International Guest House</h1>
-        </div>
-        <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
-            <button class="help-btn" onclick="openHelpModal()">Help</button>
-            <a href="{{ route('home') }}" class="btn btn-outline" style="text-decoration: none;">Dashboard</a>
-        </div>
-    </header>
+    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard'], 'showHelpBtn' => true])
 
     <main style="padding-top: 100px; padding-bottom: 80px;">
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">

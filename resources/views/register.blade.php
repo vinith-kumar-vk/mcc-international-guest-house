@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - MCC IGH</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
@@ -221,19 +222,7 @@
     </style>
 </head>
 <body class="auth-page">
-    <header>
-        <div class="header-left">
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
-            </a>
-        </div>
-        <div class="header-center">
-            <h1>MCC International Guest House</h1>
-        </div>
-        <div class="header-right">
-            <a href="{{ route('home') }}" class="btn btn-outline" style="width: auto; padding: 0.5rem 1.2rem;">Back to Home</a>
-        </div>
-    </header>
+    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Back to Home']])
 
     <main class="register-container">
         <div class="register-card">

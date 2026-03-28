@@ -8,31 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 </head>
 
 <body style="background: #f1f5f9;">
-    <header>
-        <div class="header-left">
-            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
-        </div>
-        <div class="header-center">
-            <h1>MCC International Guest House</h1>
-        </div>
-        <div class="header-right">
-            <div class="profile-dropdown">
-                <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
-                </button>
-                <div class="dropdown-menu" id="profileMenu">
-                    @auth
-                        <a href="#" class="dropdown-item logout">Logout</a>
-                    @else
-                        <a href="#" class="dropdown-item">Login</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header')
     <main style="padding: 2rem 1rem;">
 
         <div class="pg-wrapper">

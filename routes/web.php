@@ -57,8 +57,8 @@ Route::get('/success', function () {
     return view('success', compact('booking'));
 })->name('checkout.success');
 
-Route::get('/failure', function () {
-    return view('failure');
+Route::get('/failure/{id?}', function ($id = null) {
+    return view('failure', compact('id'));
 })->name('checkout.failure');
 
 // Admin Auth
@@ -88,6 +88,19 @@ Route::get('/admin/bookings/{id}/reject', [AdminController::class, 'reject'])->n
 Route::get('/superadmin/login', [LoginController::class, 'showSuperAdminLogin'])->name('superadmin.login');
 Route::post('/superadmin/login', [LoginController::class, 'superAdminLogin'])->name('superadmin.login.post');
 Route::post('/superadmin/logout', [LoginController::class, 'superAdminLogout'])->name('superadmin.logout');
+
+// Unified Logout Route for Shared Header
+Route::post('/logout', function () {
+    $user = Auth::user();
+    $role = $user ? $user->role : 'guest';
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    
+    if ($role === 'superadmin') return redirect()->route('superadmin.login');
+    if ($role === 'admin') return redirect()->route('admin.login');
+    return redirect()->route('login');
+})->name('logout');
 
 // SuperAdmin Area
 Route::prefix('superadmin')->middleware('superadmin.auth')->group(function () {

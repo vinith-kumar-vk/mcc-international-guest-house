@@ -7,37 +7,22 @@
     <title>Failure - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 </head>
 
 <body>
-    <header>
-        <div class="header-left">
-            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
-        </div>
-        <div class="header-center">
-            <h1>MCC International Guest House</h1>
-        </div>
-        <div class="header-right">
-            <div class="profile-dropdown">
-                <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
-                </button>
-                <div class="dropdown-menu" id="profileMenu">
-                    @auth
-                        <a href="#" class="dropdown-item logout">Logout</a>
-                    @else
-                        <a href="#" class="dropdown-item">Login</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header')
     <main>
         <div class="status-container">
             <div class="status-icon fail-icon">✗</div>
             <h2>Payment Failed</h2>
             <p>Your booking was cancelled. Please try again.</p>
-            <button onclick="window.location.href='{{ route('home') }}'" class="btn">Back to Home</button>
+            <div class="button-group" style="display:flex; justify-content:center; gap: 1rem;">
+                @if(isset($id))
+                    <button onclick="window.location.href='{{ route('payment.page', $id) }}'" class="btn">Retry Payment</button>
+                @endif
+                <button onclick="window.location.href='{{ route('home') }}'" class="btn btn-outline" style="background:#fff; color:var(--primary-color); border: 2px solid var(--primary-color);">Back to Home</button>
+            </div>
         </div>
     </main>
 </body>
