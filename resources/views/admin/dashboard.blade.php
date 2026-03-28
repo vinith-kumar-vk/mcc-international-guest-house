@@ -470,7 +470,7 @@
                                 <i class="ph ph-file-search" style="color: var(--info);"></i>
                                 Reports
                             </a>
-                            <a href="#" class="action-btn" onclick="alert('Export processing...')">
+                            <a href="{{ route('admin.bookings.export') }}" class="action-btn">
                                 <i class="ph ph-export" style="color: var(--primary-color);"></i>
                                 CSV
                             </a>
@@ -575,7 +575,9 @@
                 <div class="section-header">
                     <h3><i class="ph-bold ph-clock-counter-clockwise" style="color: var(--primary-color);"></i> Recent Bookings</h3>
                     <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn btn-outline" style="padding:0.35rem 0.75rem; font-size:0.7rem;"><i class="ph ph-download"></i> CSV</button>
+                        <a href="{{ route('admin.bookings.export') }}" class="btn btn-outline" style="padding:0.35rem 0.75rem; font-size:0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
+                            <i class="ph ph-download"></i> CSV
+                        </a>
                         <a href="{{ route('admin.bookings') }}" style="font-size: 0.8rem; color: var(--primary-color); text-decoration: none; font-weight: 600;">View All</a>
                     </div>
                 </div>

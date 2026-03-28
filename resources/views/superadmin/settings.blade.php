@@ -175,10 +175,19 @@
             </div>
         </div>
         <div class="sidebar-menu">
-            <a href="{{ route('superadmin.dashboard') }}"><i class="ph ph-squares-four"></i> Overview</a>
-            <a href="{{ route('superadmin.settings') }}" class="active"><i class="ph ph-shield-star"></i> System Settings</a>
+            <a href="{{ route('superadmin.dashboard') }}" class="{{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
+                <i class="ph ph-squares-four"></i> Overview
+            </a>
+            <a href="{{ route('superadmin.admins') }}" class="{{ Route::is('superadmin.admins') ? 'active' : '' }}">
+                <i class="ph ph-users"></i> Manage Admins
+            </a>
+            <a href="{{ route('superadmin.settings') }}" class="{{ Route::is('superadmin.settings') ? 'active' : '' }}">
+                <i class="ph ph-gear"></i> System Settings
+            </a>
             <div style="padding: 1rem 0; color: #94a3b8; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; margin-top: 1rem;">Resources</div>
-            <a href="{{ route('home') }}"><i class="ph ph-globe"></i> Visit Site</a>
+            <a href="{{ route('home') }}">
+                <i class="ph ph-globe"></i> Visit Site
+            </a>
         </div>
         <div class="sidebar-footer">
             <form action="{{ route('superadmin.logout') }}" method="POST">

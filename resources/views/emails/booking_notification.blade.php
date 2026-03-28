@@ -142,6 +142,12 @@
                     <th>Amount</th>
                     <td>₹{{ number_format($booking->total_price, 2) }}</td>
                 </tr>
+                @if($booking->referral_attachment)
+                <tr>
+                    <th>Referral</th>
+                    <td><span class="badge">Attached</span></td>
+                </tr>
+                @endif
             </table>
 
             <p style="text-align: center; color: #666; font-size: 14px; margin-bottom: 20px;">

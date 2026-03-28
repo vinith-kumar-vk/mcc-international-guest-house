@@ -15,7 +15,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session()->has('admin_logged_in')) {
+        if (!\Illuminate\Support\Facades\Auth::check() || !in_array(\Illuminate\Support\Facades\Auth::user()->role, ['admin', 'superadmin'])) {
             return redirect()->route('admin.login')->with('error', 'Please login to access admin area');
         }
         return $next($request);

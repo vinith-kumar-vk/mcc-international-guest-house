@@ -15,7 +15,7 @@ class SuperAdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session()->has('superadmin_logged_in')) {
+        if (!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->role !== 'superadmin') {
             return redirect()->route('superadmin.login')->with('error', 'Please login to access superadmin area');
         }
         return $next($request);

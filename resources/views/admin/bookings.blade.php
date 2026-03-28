@@ -478,8 +478,15 @@
                         <tr>
                             <td>#{{ $booking->id }}</td>
                             <td>
-                                <div class="customer-name">{{ $booking->name }}</div>
-                                <div class="customer-id">{{ $booking->email }}</div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <div>
+                                        <div class="customer-name">{{ $booking->name }}</div>
+                                        <div class="customer-id">{{ $booking->email }}</div>
+                                    </div>
+                                    @if($booking->referral_attachment)
+                                        <i class="ph-bold ph-paperclip" style="color: var(--primary-color);" title="Has Referral Attachment"></i>
+                                    @endif
+                                </div>
                             </td>
                             <td>{{ $booking->room_name }}</td>
                             <td style="white-space: nowrap;">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -14,7 +15,9 @@ class LoginController extends Controller
 
     public function adminLogin(Request $request)
     {
-        if ($request->email === 'admin@mccigh.com' && $request->password === 'admin123') {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials + ['role' => 'admin'])) {
             session(['admin_logged_in' => true]);
             return redirect()->route('admin.dashboard');
         }
@@ -23,6 +26,7 @@ class LoginController extends Controller
 
     public function adminLogout()
     {
+        Auth::logout();
         session()->forget('admin_logged_in');
         return redirect()->route('admin.login');
     }
@@ -35,7 +39,9 @@ class LoginController extends Controller
 
     public function superAdminLogin(Request $request)
     {
-        if ($request->email === 'superadmin@mccigh.com' && $request->password === 'superadmin123') {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials + ['role' => 'superadmin'])) {
             session(['superadmin_logged_in' => true]);
             return redirect()->route('superadmin.dashboard');
         }
@@ -44,6 +50,7 @@ class LoginController extends Controller
 
     public function superAdminLogout()
     {
+        Auth::logout();
         session()->forget('superadmin_logged_in');
         return redirect()->route('superadmin.login');
     }

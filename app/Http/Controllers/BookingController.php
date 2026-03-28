@@ -37,6 +37,7 @@ class BookingController extends Controller
             'clock_in' => 'required|date',
             'clock_out' => 'required|date|after:clock_in',
             'department_other' => 'nullable|string',
+            'referral_attachment' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // Max 5MB
         ]);
 
         if ($request->department === 'Other' && $request->filled('department_other')) {
@@ -66,6 +67,14 @@ class BookingController extends Controller
             return back()->withInput()->with('error', 'Selected workspace is already booked for this time slot.');
         }
 
+        // Handle File Upload
+        $attachmentPath = null;
+        if ($request->hasFile('referral_attachment')) {
+            $file = $request->file('referral_attachment');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $attachmentPath = $file->storeAs('referrals', $fileName, 'public');
+        }
+
         // 2. Create the booking locally
         $booking = Booking::create(array_merge($validated, [
             'booking_date' => $clockIn->toDateString(),
@@ -73,7 +82,8 @@ class BookingController extends Controller
             'end_time' => $clockOut->toTimeString(),
             'total_price' => $totalPrice,
             'payment_status' => 'Pending',
-            'approval_status' => 'Pending'
+            'approval_status' => 'Pending',
+            'referral_attachment' => $attachmentPath
         ]));
 
         // 3. Send notification email to the Principal

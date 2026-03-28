@@ -108,7 +108,9 @@
         }
 
         .form-input,
-        .form-select {
+        .form-select,
+        input.form-input,
+        select.form-select {
             height: 44px;
             /* Perfect normalized 44px field height */
             padding: 0 1rem;
@@ -120,7 +122,17 @@
             background: #ffffff;
             width: 100%;
             box-sizing: border-box;
-            color: var(--text-color);
+            color: #333333 !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #333333 !important;
+            font-weight: 500 !important;
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af !important;
+            font-weight: 400 !important;
+            -webkit-text-fill-color: #9ca3af !important;
+            opacity: 1 !important;
         }
 
         .form-input:hover,
@@ -403,7 +415,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('booking.store') }}" method="POST">
+                <form action="{{ route('booking.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="room_name" value="{{ $roomId }}">
 
@@ -561,6 +573,13 @@
                                 <input type="datetime-local" name="clock_out" class="form-input" value="{{ old('clock_out') }}" required>
                                 <div class="form-helper">Select your intended departure</div>
                             </div>
+                        </div>
+
+                        <!-- Referral Attachment -->
+                        <div class="form-group full-width" style="margin-top: 1.5rem;">
+                            <label class="form-label">Referral Attachment</label>
+                            <input type="file" name="referral_attachment" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                            <div class="form-helper">Upload a referral document if applicable (PDF, Image, etc.)</div>
                         </div>
 
                         <!-- Submit -->

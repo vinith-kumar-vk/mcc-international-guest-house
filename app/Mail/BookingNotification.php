@@ -51,6 +51,13 @@ class BookingNotification extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $attachments = [];
+
+        if ($this->booking->referral_attachment) {
+            $attachments[] = \Illuminate\Mail\Mailables\Attachment::fromPath(storage_path('app/public/' . $this->booking->referral_attachment))
+                ->as('referral_document.' . pathinfo($this->booking->referral_attachment, PATHINFO_EXTENSION));
+        }
+
+        return $attachments;
     }
 }

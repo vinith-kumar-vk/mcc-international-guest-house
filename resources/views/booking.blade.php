@@ -121,7 +121,7 @@
                     </div>
                 @endif
 
-                <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" onsubmit="proceedToPayment(event)">
+                <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" onsubmit="proceedToPayment(event)" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="room_name" id="hidden_room_name" value="{{ request('room') }}">
                     <input type="hidden" name="total_price" id="hidden_total_price">
@@ -198,6 +198,12 @@
                             I agree to the <a href="#" onclick="event.preventDefault()">Terms & Conditions</a> and
                             cancellation policy.
                         </label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem; margin-bottom: 2rem;">
+                        <label for="referral_attachment" style="font-weight: 600; color: var(--text-color); margin-bottom: 0.5rem; display: block;">Referral Attachment</label>
+                        <input type="file" id="referral_attachment" name="referral_attachment" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <small class="form-helper" style="color: var(--text-light); margin-top: 0.25rem; display: block;">Upload a referral document if applicable (PDF, Image, etc.)</small>
                     </div>
 
                     <div class="button-group" style="margin-top: 1.5rem;">

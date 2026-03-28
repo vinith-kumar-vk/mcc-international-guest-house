@@ -597,6 +597,17 @@
                             <span class="info-label">ID / GST</span>
                             <span class="info-value">PP: {{ $booking->passport_number ?: 'N/A' }} | GST: {{ $booking->gst_id ?: 'N/A' }}</span>
                         </div>
+                        @if($booking->referral_attachment)
+                        <div class="info-item" style="grid-column: 1 / -1; margin-top: 1rem;">
+                            <span class="info-label">Referral Attachment</span>
+                            <span class="info-value">
+                                <a href="{{ asset('storage/' . $booking->referral_attachment) }}" target="_blank" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #ff7a00; font-weight: 700;">
+                                    <i class="ph-bold ph-file-arrow-down" style="font-size: 1.25rem;"></i>
+                                    View Attachment
+                                </a>
+                            </span>
+                        </div>
+                        @endif
                     </div>
                 </div>
 

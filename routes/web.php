@@ -94,6 +94,12 @@ Route::prefix('superadmin')->middleware('superadmin.auth')->group(function () {
     Route::get('/', [SuperAdminController::class, 'index'])->name('superadmin.dashboard');
     Route::get('/settings', [SuperAdminController::class, 'settings'])->name('superadmin.settings');
     Route::post('/settings', [SuperAdminController::class, 'updateSettings'])->name('superadmin.settings.update');
+
+    // Admin Management
+    Route::get('/admins', [SuperAdminController::class, 'manageAdmins'])->name('superadmin.admins');
+    Route::post('/admins', [SuperAdminController::class, 'storeAdmin'])->name('superadmin.admins.store');
+    Route::post('/admins/{id}', [SuperAdminController::class, 'updateAdmin'])->name('superadmin.admins.update');
+    Route::delete('/admins/{id}', [SuperAdminController::class, 'deleteAdmin'])->name('superadmin.admins.delete');
 });
 
 Route::get('/approval-status', function () {

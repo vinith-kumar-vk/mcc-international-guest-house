@@ -313,10 +313,13 @@
             <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px; font-weight: 600;">SUPERADMIN PANEL</div>
         </div>
         <nav class="sidebar-menu">
-            <a href="{{ route('superadmin.dashboard') }}" class="menu-item active">
+            <a href="{{ route('superadmin.dashboard') }}" class="menu-item {{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
                 <i class="ph ph-squares-four"></i> Overview
             </a>
-            <a href="{{ route('superadmin.settings') }}" class="menu-item">
+            <a href="{{ route('superadmin.admins') }}" class="menu-item {{ Route::is('superadmin.admins') ? 'active' : '' }}">
+                <i class="ph ph-users"></i> Manage Admins
+            </a>
+            <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
             <a href="{{ route('home') }}" class="menu-item">

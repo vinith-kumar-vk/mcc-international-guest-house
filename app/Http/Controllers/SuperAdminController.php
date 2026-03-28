@@ -100,4 +100,56 @@ class SuperAdminController extends Controller
 
         return redirect()->back()->with('success', 'System settings updated successfully.');
     }
+
+    public function manageAdmins()
+    {
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        return view('superadmin.admins', compact('admins'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'role' => 'admin',
+        ]);
+
+        return redirect()->back()->with('success', 'Admin user created successfully.');
+    }
+
+    public function updateAdmin(Request $request, $id)
+    {
+        $admin = \App\Models\User::where('role', 'admin')->findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        if ($request->filled('password')) {
+            $admin->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        }
+        $admin->save();
+
+        return redirect()->back()->with('success', 'Admin credentials updated successfully.');
+    }
+
+    public function deleteAdmin($id)
+    {
+        $admin = \App\Models\User::where('role', 'admin')->findOrFail($id);
+        $admin->delete();
+
+        return redirect()->back()->with('success', 'Admin user removed.');
+    }
 }

@@ -54,12 +54,7 @@
         .facility-item i { font-size: 0.9rem; color: var(--primary-color); }
 
         /* Help Modal Styles */
-        .help-btn {
-            background: none; border: none; font-family: 'Inter', sans-serif;
-            font-size: 0.95rem; font-weight: 600; color: #444; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; transition: color 0.3s;
-        }
-        .help-btn:hover { color: var(--primary-color); }
+
 
         .help-modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
