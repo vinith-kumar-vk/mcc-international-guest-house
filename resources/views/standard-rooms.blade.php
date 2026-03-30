@@ -452,7 +452,7 @@
 <body style="background: #fbfbfb;">
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard'], 'showHelpBtn' => true])
 
-    <main style="padding-top: 100px; padding-bottom: 80px;">
+    <main>
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
             <!-- Breadcrumbs -->
             <div class="breadcrumb" style="font-size: 1rem; margin-bottom: 1.5rem;">
@@ -539,6 +539,7 @@
             </div>
         </div>
     </main>
+    @include('partials.footer')
 
     <!-- Modal Modal -->
     <div class="modal-overlay" id="detailsModal">

@@ -44,13 +44,28 @@
             padding: 0.75rem 1rem; color: var(--danger); cursor: pointer; font-weight: 600; border-radius: 8px; font-size: 0.9rem;
         }
 
-        .main-content { margin-left: var(--sidebar-width); flex: 1; }
+        .main-content { 
+            margin-left: var(--sidebar-width); 
+            flex: 1; 
+            min-height: 100vh;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
         .topbar {
-            height: 64px; background: white; border-bottom: 1px solid var(--border);
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
             position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
-        .page-body { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .page-body { padding: 2.5rem; max-width: 1400px; width: 100%; box-sizing: border-box; }
+        .topbar-right { display: flex; align-items: center; gap: 1rem; }
+        .badge-pill { 
+            background: rgba(255, 122, 0, 0.1); color: var(--primary); 
+            font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem; 
+            border-radius: 999px; border: 1px solid rgba(255,122,0,0.2); 
+            display: flex; align-items: center; gap: 0.4rem;
+        }
 
         .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
@@ -94,6 +109,19 @@
 
         .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500; }
         .alert-success { background: #f0fdf4; color: #14532d; border: 1px solid #bbf7d0; }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            #sidebarToggle { display: flex !important; }
+            .page-body { padding: 1rem; }
+            .card { padding: 1rem; overflow: hidden; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .btn-primary { width: 100%; justify-content: center; }
+            .topbar { padding: 0 1rem; height: 68px; }
+            .topbar-right { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -127,10 +155,14 @@
     <div class="main-content">
         <div class="topbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
-                <div style="font-weight: 700; font-size: 1.1rem;">Manage Admin Accounts</div>
+                <div style="font-weight: 700; font-size: 1.15rem; color: var(--text);">Manage Admin Accounts</div>
+            </div>
+            <div class="topbar-right">
+                <span class="badge-pill"><i class="ph-fill ph-shield-check"></i> SuperAdmin</span>
+                <div style="font-size: 0.82rem; color: var(--muted); font-weight: 500;">{{ now()->format('d M Y, H:i') }}</div>
             </div>
         </div>
 
@@ -147,39 +179,41 @@
                     </button>
                 </div>
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($admins as $admin)
-                        <tr>
-                            <td style="font-weight: 600;">{{ $admin->name }}</td>
-                            <td>{{ $admin->email }}</td>
-                            <td style="color: var(--muted);">{{ $admin->created_at->format('d M Y') }}</td>
-                            <td>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <button class="btn btn-outline" 
-                                            onclick="editAdmin({{ $admin->id }}, '{{ $admin->name }}', '{{ $admin->email }}')">
-                                        <i class="ph ph-pencil-simple"></i>
-                                    </button>
-                                    <form action="{{ route('superadmin.admins.delete', $admin->id) }}" method="POST" onsubmit="return confirm('Remove this admin?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="ph ph-trash"></i>
+                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;">
+                    <table class="data-table" style="min-width: 600px;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($admins as $admin)
+                            <tr>
+                                <td style="font-weight: 600;">{{ $admin->name }}</td>
+                                <td>{{ $admin->email }}</td>
+                                <td style="color: var(--muted);">{{ $admin->created_at->format('d M Y') }}</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-outline" 
+                                                onclick="editAdmin({{ $admin->id }}, '{{ $admin->name }}', '{{ $admin->email }}')">
+                                            <i class="ph ph-pencil-simple"></i>
                                         </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                        <form action="{{ route('superadmin.admins.delete', $admin->id) }}" method="POST" onsubmit="return confirm('Remove this admin?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="ph ph-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

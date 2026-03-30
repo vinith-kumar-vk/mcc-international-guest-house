@@ -259,15 +259,22 @@
 
         .form-section-title {
             font-size: 1.15rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary-color);
             padding-bottom: 0.6rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            border-bottom: 2px solid rgba(255, 122, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.2px;
+        }
+
+        .form-section-title i {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            color: var(--primary-color);
         }
 
         .section-divider {
@@ -337,13 +344,53 @@
             margin: 0;
             margin-top: 5px;
         }
+
+        /* ── RESPONSIVE FIXES ── */
+        @media (max-width: 768px) {
+            .form-grid, .paired-row {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+                align-items: start !important;
+            }
+            .form-group {
+                margin-top: 0 !important;
+            }
+            .dynamic-field {
+                margin-top: 0 !important;
+            }
+            #otherDepartmentWrapper {
+                margin-top: 5px !important;
+            }
+            .form-container {
+                padding: 1.5rem 1.25rem !important;
+            }
+            .form-section-title {
+                font-size: 1.1rem !important;
+                margin-top: 1.5rem !important;
+            }
+            .submit-btn {
+                padding: 1rem !important;
+                font-size: 0.95rem !important;
+            }
+            .form-radio-group {
+                gap: 1rem !important;
+                flex-wrap: wrap;
+            }
+            .form-label {
+                font-size: 0.85rem !important;
+            }
+            .form-helper {
+                font-size: 0.75rem !important;
+                line-height: 1.3 !important;
+            }
+        }
     </style>
 </head>
 
 <body style="background: var(--bg-color);">
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard']])
 
-    <main style="padding-bottom: 60px; padding-left: 1rem; padding-right: 1rem;">
+    <main>
         <div style="max-width: 820px; margin: 2rem auto;">
 
             <!-- Breadcrumbs ALIGNED EXACTLY WITH HEADER & FORM -->
@@ -398,7 +445,7 @@
                             Personal Details</div>
 
                         <!-- Nationality -->
-                        <div class="form-group full-width" style="margin-bottom: 0.5rem;">
+                        <div class="form-group full-width" style="margin-bottom: 1.5rem;">
                             <label class="form-label">Nationality <span>*</span></label>
                             <div class="form-radio-group">
                                 <label class="radio-label"><input type="radio" name="nationality" value="Indian"
@@ -432,8 +479,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group dynamic-field student-field full-width" id="streamFieldGroup"
-                            style="margin-top: -0.5rem;">
+                        <div class="form-group dynamic-field student-field full-width" id="streamFieldGroup">
                             <label class="form-label">Stream <span>*</span></label>
                             <div class="form-radio-group">
                                 <label class="radio-label"><input type="radio" name="stream" value="Aided"
@@ -495,7 +541,6 @@
                             </div>
                         </div>
 
-                        <!-- Primary Guest -->
                         <div class="form-group full-width">
                             <label class="form-label">Primary Guest Name</label>
                             <input type="text" name="primary_guest_name" class="form-input"
@@ -563,6 +608,7 @@
             </div><!-- /.form-container -->
         </div>
     </main>
+    @include('partials.footer')
 
     <script>
         function toggleStudentFields() {

@@ -30,7 +30,6 @@
             justify-content: center !important;
             align-items: center !important;
             flex-grow: 1 !important;
-            padding: 20px !important;
             box-sizing: border-box !important;
         }
 
@@ -250,7 +249,20 @@
                 <h2>Welcome Back</h2>
                 <p>Login to manage your bookings</p>
             </div>
-            <form action="#" class="auth-form">
+            <form action="{{ route('login.post') }}" method="POST" class="auth-form">
+                @csrf
+                @if ($errors->any())
+                    <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem;">
+                        @foreach ($errors->all() as $error)
+                            <p style="margin: 0;">{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
+                @if (session('success'))
+                    <div style="background: #dcfce7; color: #166534; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem;">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="form-group">
                     <label>Email Address</label>
                     <div class="input-field-wrap">

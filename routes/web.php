@@ -6,8 +6,10 @@ use App\Models\Booking;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\LoginController;
 
-Route::get('/login', function () { return view('login'); })->name('login');
-Route::get('/register', function () { return view('register'); })->name('register');
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::get('/register', [LoginController::class, 'showRegister'])->name('register');
+Route::post('/register', [LoginController::class, 'register'])->name('register.post');
 
 Route::get('/', function () {
     return view('index');

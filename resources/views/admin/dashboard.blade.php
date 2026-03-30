@@ -94,9 +94,10 @@
         }
 
         .top-navbar {
-            height: 64px; background: white; border-bottom: 1px solid var(--border);
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
             position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .nav-right { display: flex; align-items: center; gap: 1.25rem; }
@@ -107,9 +108,10 @@
         }
 
         .notification-badge {
-            position: absolute; top: -5px; right: -5px; background: var(--danger); color: white;
-            font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; border: 2px solid white; font-weight: 700;
+            position: absolute; top: -3px; right: -5px; background: var(--danger); color: white;
+            font-size: 0.65rem; min-width: 18px; height: 18px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; border: 2px solid white; font-weight: 800;
+            padding: 0 4px;
         }
 
         .notification-dropdown {
@@ -320,8 +322,8 @@
     <main class="admin-main">
         <div class="top-navbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center;">
-                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary-color) !important; background: white !important; color: var(--primary-color) !important; box-shadow: none !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
                 <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">Dashboard Overview</div>
             </div>

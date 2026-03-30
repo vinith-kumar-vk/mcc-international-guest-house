@@ -58,37 +58,50 @@
         /* =============================================================
            PREMIUM FACILITY CARD (Base is in responsive.css)
         ============================================================= */
+        /*  FACILITY SECTION  */
         .premium-facility-card {
-            background: linear-gradient(135deg, #fff, #f8f9fa);
-            border-radius: 20px; padding: 3.5rem 2rem;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.4s cubic-bezier(0.165,0.84,0.44,1);
+            background: linear-gradient(135deg, #fff, #fbfbfb);
+            border-radius: 24px; padding: 4rem 2rem;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.04);
+            border: 1px solid #f1f1f1;
+            transition: all 0.5s cubic-bezier(0.165,0.84,0.44,1);
             max-width: 900px; margin: 4rem auto;
             opacity: 0; transform: translateY(30px);
+            text-align: center;
         }
         .premium-facility-card.visible { opacity: 1; transform: translateY(0); }
-        .premium-facility-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .premium-facility-card:hover { transform: translateY(-5px); box-shadow: 0 15px 60px rgba(0,0,0,0.08); }
         .facility-title {
-            font-size: 2.2rem; font-weight: 800; color: #222;
-            margin-bottom: 1rem; display: inline-block; letter-spacing: -0.5px;
+            font-size: 2.2rem; font-weight: 800; color: #111;
+            margin-bottom: 0.5rem; display: inline-block; letter-spacing: -0.5px;
         }
         .facility-divider {
             width: 50px; height: 3px; background: #ff7a00;
-            margin: 1.5rem auto; border-radius: 5px; opacity: 0.6;
+            margin: 1.5rem auto; border-radius: 5px; opacity: 0.8;
         }
         .feature-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem; margin-top: 2.5rem;
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem; 
+            margin-top: 3rem;
+            width: 100%;
+        }
+        @media (max-width: 650px) {
+            .feature-grid { grid-template-columns: 1fr; }
+            .premium-facility-card { padding: 3rem 1.5rem; margin: 3rem auto; }
+            .facility-title { font-size: 1.8rem; }
         }
         .feature-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 1rem; background: white; border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: 0.3s;
+            display: flex; align-items: center; gap: 15px;
+            padding: 1.25rem 1.5rem; background: white; border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02); 
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            text-align: left;
         }
-        .feature-item i { font-size: 1.5rem; color: #ff7a00; }
-        .feature-item span { font-weight: 600; color: #444; font-size: 0.95rem; }
-        .feature-item:hover { background: #fff4ed; transform: scale(1.04); }
+        .feature-item i { font-size: 1.8rem; color: #ff7a00; flex-shrink: 0; }
+        .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
+        .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }
     </style>
 </head>
 
@@ -219,27 +232,27 @@
         <section class="explore-rooms-section">
             <div class="slider-master-container">
                 <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                    <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Explore Our Rooms</h2>
+                    <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Room Categories</h2>
                 </div>
 
                 <div class="slider-outer-frame">
                     <button type="button" id="roomPrevBtn" class="room-nav-btn left" aria-label="Previous">‹</button>
                     
-                    <div id="cardsCarousel" class="cards-container">
+                    <div id="cardsCarousel" class="cards-container" style="align-items: stretch;">
                         @php
                             $roomCards = [
-                                ['badge' => 'Standard', 'badgeClass' => 'standard-badge', 'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Standard Rooms', 'desc' => 'Comfortable accommodations designed for short and efficient stays.', 'route' => 'standard.rooms', 'btnText' => 'Explore Standard'],
-                                ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Advance Rooms', 'desc' => 'Premium guest rooms tailored for extended comfort and privacy.', 'route' => 'advance.rooms', 'btnText' => 'Explore Advance'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Conference Hall', 'desc' => 'Dedicated interactive halls for large meetings and events.', 'route' => 'conference.rooms', 'btnText' => 'Explore Halls'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Glass Room', 'desc' => 'Premium transparent facility for collaborative sessions.', 'route' => 'conference.rooms', 'btnText' => 'Explore Halls'],
-                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Suite Room', 'desc' => 'Luxury stay with premium comfort and privacy. <strong>Room No: 202</strong>', 'route' => 'advance.rooms', 'btnText' => 'Explore Suite'],
+                                ['badge' => 'Standard', 'badgeClass' => 'standard-badge', 'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Standard Rooms', 'desc' => 'Comfortable accommodations designed for short and efficient stays.', 'route' => 'standard.rooms', 'btnText' => 'EXPLORE STANDARD'],
+                                ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Advance Rooms', 'desc' => 'Premium guest rooms tailored for extended comfort and privacy.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
+                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Conference Hall', 'desc' => 'Dedicated interactive halls for large meetings and events.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Glass Room', 'desc' => 'Premium transparent facility for collaborative sessions.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Suite Room', 'desc' => 'Luxury stay with premium comfort and privacy.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE SUITE'],
                             ];
                         @endphp
 
                         @for ($i = 0; $i < 2; $i++)
                             @foreach ($roomCards as $card)
                                 <div class="card slider-card">
-                                    <div class="card-image-wrapper">
+                                    <div class="card-image-wrapper" style="height: 160px;">
                                         <span class="badge {{ $card['badgeClass'] }}" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">{{ $card['badge'] }}</span>
                                         <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}">
                                     </div>
@@ -247,7 +260,7 @@
                                         <h2>{{ $card['title'] }}</h2>
                                         <p class="description">{!! $card['desc'] !!}</p>
                                         <p class="gst-text">+ 5% GST applicable</p>
-                                        <div style="margin-top: 1rem;">
+                                        <div class="card-btn-wrapper">
                                             <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center;">{{ $card['btnText'] }}</a>
                                         </div>
                                     </div>
@@ -319,7 +332,7 @@
             <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
                 <h2 style="font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: var(--text-color);">Room Categories</h2>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: stretch;">
                 <!-- Standard Rooms Info -->
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">STANDARD ROOMS</h3>
@@ -345,49 +358,50 @@
 
         <!-- CATEGORY SELECTION (TIGHTER BALANCED) -->
         <section style="max-width: 1350px; margin: 0 auto 5rem; padding: 0 1.25rem;">
-            <div class="dashboard-rooms-grid">
+            <div class="dashboard-rooms-grid" style="align-items: stretch;">
                 <!-- Standard Rooms -->
-                <div class="card premium-card" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
                         <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Standard Rooms" style="width: 100%; height: 100%; object-fit: cover;">
                         <span class="badge" style="background: #e5e7eb; color: #333; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
                     </div>
-                    <div class="card-content" style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column;">
-                        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Standard Rooms</h2>
-                        <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Comfortable accommodations designed for short and efficient stays with essential amenities.</p>
-                        <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
-                        <div style="margin-top: auto;">
+                    <div class="card-content">
+                        <h2>Standard Rooms</h2>
+                        <p class="description">Comfortable accommodations designed for short and efficient stays with essential amenities.</p>
+                        <p class="gst-text">+ 5% GST applicable</p>
+                        <div class="card-btn-wrapper">
                             <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Advance Rooms -->
-                <div class="card premium-card" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
                         <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Advance Rooms" style="width: 100%; height: 100%; object-fit: cover;">
                         <span class="badge" style="background: var(--primary-color); color: white; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
                     </div>
-                    <div class="card-content" style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column;">
-                        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Advance Rooms</h2>
-                        <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Premium guest rooms tailored for extended comfort, delegates, and specific reservations.</p>
-                        <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
-                        <div style="margin-top: auto;">
+                    <div class="card-content">
+                        <h2>Advance Rooms</h2>
+                        <p class="description">Premium guest rooms tailored for extended comfort, delegates, and specific reservations.</p>
+                        <p class="gst-text">+ 5% GST applicable</p>
+                        <div class="card-btn-wrapper">
                             <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="card premium-card" style="display: flex; flex-direction: column; height: 100%;">
+                <!-- Conference / Glass Rooms -->
+                <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
                         <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Conference Rooms" style="width: 100%; height: 100%; object-fit: cover;">
                         <span class="badge" style="background: #3b82f6; color: white; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Conference</span>
                     </div>
-                    <div class="card-content" style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column;">
-                        <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Conference / Glass Rooms</h2>
-                        <p class="description" style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.25rem;">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
-                        <p class="gst-text" style="font-size: 0.8rem; color: #888; margin-bottom: 0.75rem;">+ 5% GST applicable</p>
-                        <div style="margin-top: auto;">
+                    <div class="card-content">
+                        <h2>Conference / Glass Rooms</h2>
+                        <p class="description">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
+                        <p class="gst-text">+ 5% GST applicable</p>
+                        <div class="card-btn-wrapper">
                             <a href="{{ route('conference.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
@@ -441,181 +455,7 @@
         </script>
     </main>
 
-    <!-- FOOTER SECTION -->
-    <footer class="main-footer">
-        <style>
-            /* ── Footer-scoped enhancements ── */
-            .main-footer {
-                background: linear-gradient(180deg, #fff7f0 0%, #f3f4f6 100%) !important;
-                border-top: 3px solid #ff6a00 !important;
-                color: #444 !important;
-            }
-            .main-footer .footer-column h4 {
-                color: #222 !important;
-            }
-            .main-footer .footer-column ul li,
-            .main-footer .footer-column ul li a,
-            .main-footer .footer-column p,
-            .main-footer .footer-contact-link {
-                color: #555 !important;
-            }
-            .main-footer .footer-column ul li a:hover,
-            .main-footer .footer-contact-link:hover {
-                color: #ff6a00 !important;
-            }
-            .main-footer .footer-content {
-                padding: 2rem 2rem 1.5rem !important;
-            }
-            .main-footer .footer-column h4 {
-                font-weight: 700 !important;
-                margin-bottom: 0.8rem !important;
-                padding-bottom: 0.5rem !important;
-                position: relative;
-                display: inline-block;
-            }
-            .main-footer .footer-column h4::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 30px;
-                height: 2px;
-                background: var(--primary-color);
-                border-radius: 2px;
-            }
-            /* Quick Links hover */
-            .main-footer .footer-column ul { list-style: none; padding: 0; margin: 0; }
-            .main-footer .footer-column ul li { margin-bottom: 0.4rem; }
-            .main-footer .footer-column ul li a {
-                transition: color 0.3s ease, transform 0.2s ease;
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                text-decoration: none;
-            }
-            .main-footer .footer-column ul li a:hover {
-                color: var(--primary-color) !important;
-                transform: translateX(2px);
-            }
-            /* Contact links */
-            .main-footer .footer-contact-link {
-                color: inherit;
-                text-decoration: none;
-                transition: color 0.3s ease;
-            }
-            .main-footer .footer-contact-link:hover {
-                color: var(--primary-color) !important;
-            }
-            .main-footer .footer-column ul li i {
-                width: 18px;
-                text-align: center;
-                flex-shrink: 0;
-            }
-            /* Social icons */
-            .footer-social-icons {
-                display: flex;
-                gap: 10px;
-                margin-top: 1rem;
-            }
-            .footer-social-icons a {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: rgba(0,0,0,0.06);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #888;
-                font-size: 1rem;
-                text-decoration: none;
-                transition: all 0.3s ease;
-            }
-            .footer-social-icons a:hover {
-                background: var(--primary-color) !important;
-                color: #fff !important;
-                transform: translateY(-2px);
-            }
-            /* Address line spacing */
-            .main-footer .footer-address-text {
-                line-height: 1.8;
-            }
-            /* Footer bottom bar */
-            .main-footer .footer-bottom {
-                border-top: 1px solid rgba(0,0,0,0.06) !important;
-                padding: 1rem 2rem !important;
-                background: rgba(0,0,0,0.03) !important;
-                text-align: center;
-                color: #888 !important;
-            }
-            /* Mobile responsive */
-            @media (max-width: 768px) {
-                .main-footer .footer-content {
-                    flex-direction: column !important;
-                    text-align: center !important;
-                    gap: 2rem !important;
-                }
-                .main-footer .footer-column {
-                    width: 100% !important;
-                    text-align: center;
-                }
-                .main-footer .footer-column h4 {
-                    display: block;
-                }
-                .main-footer .footer-column h4::after {
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-                .main-footer .footer-column ul li a {
-                    justify-content: center;
-                }
-                .main-footer .footer-column p {
-                    justify-content: center;
-                }
-                .footer-social-icons {
-                    justify-content: center;
-                }
-                .main-footer .footer-column ul li {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 6px;
-                }
-                .main-footer .footer-bottom {
-                    font-size: 0.8rem !important;
-                    padding: 0.8rem 1rem !important;
-                }
-            }
-        </style>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="javascript:void(0)" onclick="document.querySelector('.main-image-slider').scrollIntoView({behavior:'smooth'})"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Home</a></li>
-                    <li><a href="javascript:void(0)" onclick="document.querySelector('.explore-rooms-section').scrollIntoView({behavior:'smooth'})"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Spaces</a></li>
-                    <li><a href="javascript:void(0)" onclick="openHelpModal()"><i class="ph-bold ph-caret-right" style="font-size: 0.8rem;"></i> Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Contact Info</h4>
-                <ul>
-                    <li><i class="ph-fill ph-envelope-simple"></i> <a href="mailto:contact@mmip.example.com" class="footer-contact-link">contact@mmip.example.com</a></li>
-                    <li><i class="ph-fill ph-phone"></i> <a href="tel:+919876543210" class="footer-contact-link">+91 98765 43210</a></li>
-                </ul>
-                <div class="footer-social-icons">
-                    <a href="https://wa.me/919876543210" target="_blank" rel="noopener" title="WhatsApp"><i class="ph-bold ph-whatsapp-logo"></i></a>
-                    <a href="mailto:contact@mmip.example.com" title="Email"><i class="ph-bold ph-envelope-simple"></i></a>
-                    <a href="tel:+919876543210" title="Call"><i class="ph-bold ph-phone"></i></a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h4>Address</h4>
-                <p><i class="ph-fill ph-map-pin" style="margin-top: 0.3rem;"></i> <span class="footer-address-text">MCC MRF Innovation Park,<br>Madras Christian College,<br>Tambaram East,<br>Chennai - 600059,<br>Tamil Nadu, India</span></p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 MCC-MRF Innovation Park. All rights reserved.</p>
-        </div>
-    </footer>
+    @include('partials.footer')
 
     <!-- Modal confirmation overlay -->
     <div class="modal-overlay" id="bookingModal">

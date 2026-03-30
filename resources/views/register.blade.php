@@ -210,7 +210,6 @@
         }
         
         .register-container {
-            padding-top: 40px !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -230,7 +229,17 @@
                 <h2>Join MMIP</h2>
                 <p>Register to start booking spaces effortlessly</p>
             </div>
-            <form action="#" class="auth-form">
+            <form action="{{ route('register.post') }}" method="POST" class="auth-form">
+                @csrf
+                @if ($errors->any())
+                    <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="form-group">
                     <label>Full Name</label>
                     <div class="input-field-wrap">

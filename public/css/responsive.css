@@ -81,10 +81,10 @@ header, .main-header, .header-container {
 /* ── EXPLORE ROOMS SLIDER (SHARED) ── */
 .explore-rooms-section { padding: 2rem 0; overflow: hidden; }
 .slider-master-container { max-width: 1400px; margin: 0 auto; position: relative; }
-.slider-outer-frame { position: relative; padding: 0 50px; }
-.cards-container { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; padding: 20px 5px; scrollbar-width: none; }
+.slider-outer-frame { position: relative; padding: 0 24px; }
+.cards-container { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding: 24px 0; scrollbar-width: none; }
 .cards-container::-webkit-scrollbar { display: none; }
-.slider-card { flex: 0 0 300px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.3s; }
+.slider-card { flex: 0 0 320px; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: all 0.3s ease; }
 .room-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; background: white; border: 1px solid #ddd; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 .room-nav-btn.left { left: 0; }
 .room-nav-btn.right { right: 0; }
@@ -141,9 +141,9 @@ header, .main-header, .header-container {
     .slider-card { flex: 0 0 240px !important; }
     .help-modal-card { padding: 24px 16px !important; }
     .help-form-row { flex-direction: column !important; gap: 16px !important; }
-    .premium-facility-card { padding: 2rem 1.25rem !important; margin: 2rem 0.75rem !important; }
-    .facility-title { font-size: 1.5rem !important; }
-    .feature-grid { grid-template-columns: 1fr 1fr !important; gap: 1rem !important; }
+    .premium-facility-card { padding: 3rem 1.5rem !important; margin: 3rem 1rem !important; }
+    .facility-title { font-size: 1.6rem !important; }
+    .feature-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
 }
 
 /* ── BREAKPOINT: 768px – 1279px (TABLET) ── */

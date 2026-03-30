@@ -111,7 +111,7 @@
 
 <body style="background: #f1f5f9;">
     @include('partials.header')
-    <main style="padding: 2rem 1rem;">
+    <main>
         <div class="success-wrapper">
             <div class="success-header">
                 @if($booking->approval_status === 'Pending')

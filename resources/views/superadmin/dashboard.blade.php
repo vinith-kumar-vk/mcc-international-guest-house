@@ -28,8 +28,10 @@
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
-            display: flex;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            display: flex;
         }
 
         /* ── Sidebar ── */
@@ -116,10 +118,12 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg);
         }
 
         .topbar {
-            height: 64px;
+            height: 72px;
             background: white;
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -129,6 +133,7 @@
             position: sticky;
             top: 0;
             z-index: 90;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .topbar-title {
@@ -340,8 +345,8 @@
         <!-- Topbar -->
         <div class="topbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
                 <div class="topbar-title">System Overview</div>
             </div>
