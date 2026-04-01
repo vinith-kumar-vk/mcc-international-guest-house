@@ -114,7 +114,7 @@
         .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
         .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
         .help-send-btn {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             border: none !important;
             padding: 0.9rem 1.5rem !important;
@@ -131,7 +131,7 @@
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
         }
         .help-send-btn:hover {
-            background: #e66d00 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45) !important;
             transform: none !important;
             width: 100% !important;
@@ -139,7 +139,7 @@
         }
         .help-send-btn:focus,
         .help-send-btn:active {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             transform: none !important;
             box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
         }
@@ -149,9 +149,9 @@
         /* View Details button hover/active fix */
         .card-actions .btn-outline:hover,
         .card-actions .btn-outline:focus {
-            background-color: #ff6a00 !important;
+            background-color: var(--primary-color) !important;
             color: #ffffff !important;
-            border-color: #ff6a00 !important;
+            border-color: var(--primary-color) !important;
         }
         .card-actions .btn-outline:active {
             background-color: #e06000 !important;
@@ -172,6 +172,7 @@
             font-weight: 700;
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body style="background: #fbfbfb;">
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard'], 'showHelpBtn' => true])

@@ -304,6 +304,7 @@
         .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; }
 
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
 
@@ -612,7 +613,7 @@
                 datasets: [{
                     label: 'Revenue (₹)',
                     data: {!! json_encode($monthlyRevenue->pluck('revenue')) !!},
-                    backgroundColor: 'rgba(255, 122, 0, 0.85)',
+                    backgroundColor: `rgba(${window.primaryColorRGB}, 0.85)`,
                     borderRadius: 6,
                     borderSkipped: false,
                 }, {

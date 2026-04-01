@@ -31,7 +31,7 @@
         }
         .hero-prev { left: 30px; }
         .hero-next { right: 30px; }
-        .hero-prev:hover, .hero-next:hover { background: #fff; color: #ff7a00; }
+        .hero-prev:hover, .hero-next:hover { background: #fff; color: var(--primary-color); }
 
         /* =============================================================
            HERO WELCOME SECTION (Base is in responsive.css)
@@ -76,7 +76,7 @@
             margin-bottom: 0.5rem; display: inline-block; letter-spacing: -0.5px;
         }
         .facility-divider {
-            width: 50px; height: 3px; background: #ff7a00;
+            width: 50px; height: 3px; background: var(--primary-color);
             margin: 1.5rem auto; border-radius: 5px; opacity: 0.8;
         }
         .feature-grid {
@@ -99,10 +99,11 @@
             transition: all 0.3s ease;
             text-align: left;
         }
-        .feature-item i { font-size: 1.8rem; color: #ff7a00; flex-shrink: 0; }
+        .feature-item i { font-size: 1.8rem; color: var(--primary-color); flex-shrink: 0; }
         .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
         .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 
 <body>
@@ -139,7 +140,7 @@
         <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
         <!-- Dots -->
         <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
-            <div class="hero-dot active" style="width:30px;height:3px;background:#ff7a00;cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot active" style="width:30px;height:3px;background:var(--primary-color);cursor:pointer;transition:0.3s;"></div>
             <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
             <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
         </div>

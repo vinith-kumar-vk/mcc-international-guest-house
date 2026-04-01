@@ -12,7 +12,7 @@
         :root {
             --sidebar-width: 280px;
             --admin-bg: #f8fafc;
-            --primary-color: #ff7a00;
+            --primary-color: {{ $settings['primary_color'] ?? '#ff7a00' }};
             --border: #e2e8f0;
             --success: #22c55e;
             --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -168,6 +168,7 @@
             color: var(--primary-color);
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="sidebar">
@@ -236,6 +237,22 @@
                     <i class="ph-fill ph-check-circle"></i> <strong>Configuration Active:</strong> This account will be used to <strong>send all notifications</strong> and it will also <strong>receive the initial approval links</strong>. This ensures a centralized control from a single secure account.
                 </div>
 
+                <div style="padding: 1.5rem; background: #fffcf0; border: 1px solid #fef3c7; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="font-size: 1rem; color: #92400e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="ph ph-palette"></i> Appearance & Branding
+                    </h3>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Global Primary Color</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="color" name="primary_color" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" style="width: 50px; height: 50px; padding: 2px; cursor: pointer; border: 2px solid #e2e8f0; border-radius: 8px;">
+                            <input type="text" id="colorCode" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" readonly style="flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; font-family: monospace; color: #64748b;">
+                        </div>
+                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 8px;">
+                            <i class="ph ph-info"></i> This color will be applied across all user interfaces as the primary theme color.
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-save">Save Configuration</button>
             </form>
         </div>
@@ -269,6 +286,16 @@
                 sidebar.classList.remove('open');
             }
         });
+
+        // Color Sync
+        const colorInput = document.querySelector('input[type="color"]');
+        const colorCode = document.getElementById('colorCode');
+        
+        if (colorInput && colorCode) {
+            colorInput.addEventListener('input', (e) => {
+                colorCode.value = e.target.value.toUpperCase();
+            });
+        }
     </script>
 </body>
 </html>

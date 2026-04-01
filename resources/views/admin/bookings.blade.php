@@ -361,6 +361,7 @@
             border-color: var(--primary-color);
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="sidebar">

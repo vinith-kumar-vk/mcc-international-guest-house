@@ -1,7 +1,7 @@
 <header class="header-container">
     <div class="header-left">
         <button class="hamburger-btn" onclick="toggleGuestNav(event)" id="guestHamburger">
-            <i class="ph ph-list" style="font-size: 1.5rem; color: #ff7a00;"></i>
+            <i class="ph ph-list" style="font-size: 1.5rem; color: var(--primary-color);"></i>
         </button>
         <a href="{{ route('home') }}">
             <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo">
@@ -20,7 +20,7 @@
         @else
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle" style="color:#ff7a00; font-size:1.75rem;"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color); font-size:1.75rem;"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth

@@ -177,7 +177,7 @@
         }
 
         .submit-btn {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             border: none !important;
             padding: 1.1rem 2rem !important;
@@ -200,7 +200,7 @@
         }
 
         .submit-btn:hover {
-            background: #e66d00 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
             color: #ffffff !important;
             transform: none !important;
@@ -209,12 +209,12 @@
         }
 
         .submit-btn:active {
-            background: #cc5e00 !important;
+            background: var(--primary-color) !important;
             transform: none !important;
         }
 
         .btn {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             border: none !important;
             padding: 0.9rem 1.6rem !important;
@@ -236,7 +236,7 @@
         }
 
         .btn:hover {
-            background: #e66d00 !important;
+            background: var(--primary-color) !important;
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35) !important;
             color: #ffffff !important;
             transform: none !important;
@@ -245,14 +245,14 @@
 
         .btn-outline {
             background: transparent !important;
-            color: #ff7a00 !important;
-            border: 2px solid #ff7a00 !important;
+            color: var(--primary-color) !important;
+            border: 2px solid var(--primary-color) !important;
             box-shadow: none !important;
             transform: none !important;
         }
 
         .btn-outline:hover {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             transform: none !important;
         }
@@ -385,6 +385,7 @@
             }
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 
 <body style="background: var(--bg-color);">

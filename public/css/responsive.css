@@ -36,7 +36,7 @@ header, .main-header, .header-container {
 
 /* ── BUTTONS ────────────────────────────────────────────────── */
 .btn {
-    background: #ff7a00 !important; color: #fff !important; border: none !important;
+    background: var(--primary-color) !important; color: #fff !important; border: none !important;
     padding: 0.75rem 1.4rem !important; font-size: 0.875rem !important; font-weight: 700 !important;
     border-radius: 10px !important; cursor: pointer !important; display: inline-flex !important;
     align-items: center !important; justify-content: center !important; gap: 6px !important;
@@ -44,9 +44,9 @@ header, .main-header, .header-container {
     text-transform: uppercase !important; letter-spacing: .6px !important;
     transition: all .2s ease !important;
 }
-.btn:hover { background: #e66d00 !important; box-shadow: 0 6px 20px rgba(255,122,0,.35) !important; }
-.btn-outline { background: transparent !important; color: #ff7a00 !important; border: 2px solid #ff7a00 !important; box-shadow: none !important; }
-.btn-outline:hover { background: #ff7a00 !important; color: #fff !important; }
+.btn:hover { background: var(--primary-color) !important; box-shadow: 0 6px 20px rgba(255,122,0,.35) !important; }
+.btn-outline { background: transparent !important; color: var(--primary-color) !important; border: 2px solid var(--primary-color) !important; box-shadow: none !important; }
+.btn-outline:hover { background: var(--primary-color) !important; color: #fff !important; }
 
 /* ── HELP BUTTON ── */
 .help-btn {
@@ -54,7 +54,7 @@ header, .main-header, .header-container {
     color: #475569; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
     padding: 6px 10px; transition: color 0.2s; white-space: nowrap;
 }
-.help-btn:hover { color: #ff7a00; }
+.help-btn:hover { color: var(--primary-color); }
 
 /* ── MODALS ── */
 .modal-overlay, .help-modal-overlay {
@@ -224,7 +224,7 @@ header, .main-header, .header-container {
     color: #475569; text-decoration: none; border-radius: 8px; font-weight: 500;
     font-size: 0.95rem; transition: all 0.2s;
 }
-.nav-item:hover, .nav-item.active { background: rgba(255, 122, 0, 0.1); color: #ff7a00; }
+.nav-item:hover, .nav-item.active { background: rgba(255, 122, 0, 0.1); color: var(--primary-color); }
 
 @media (max-width: 1024px) {
     .hamburger-btn { display: flex !important; }

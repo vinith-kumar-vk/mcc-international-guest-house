@@ -481,6 +481,7 @@
         }
 
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="sidebar">

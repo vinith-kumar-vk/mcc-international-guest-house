@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
-use Razorpay\Api\Api;
-use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingNotification;
@@ -109,28 +107,7 @@ class BookingController extends Controller
             Log::error('Failed to send booking notification for ID ' . $booking->id . ': ' . $e->getMessage());
         }
 
-        // 4. Redirect to the payment page
-        return redirect()->route('payment.page', ['id' => $booking->id])->with('success', 'Booking submitted. Please complete the payment.');
-    }
-
-    public function simulateSuccess($id)
-    {
-        $booking = Booking::findOrFail($id);
-        $booking->update([
-            'payment_status' => 'Paid',
-            'razorpay_payment_id' => 'DUMMY_' . uniqid()
-        ]);
-
-        return redirect()->route('checkout.success')->with('success', 'Payment successful!');
-    }
-
-    public function simulateFailure($id)
-    {
-        $booking = Booking::findOrFail($id);
-        $booking->update([
-            'payment_status' => 'Failed'
-        ]);
-
-        return redirect()->route('checkout.failure', ['id' => $id])->with('error', 'Payment cancelled.');
+        // 4. Redirect directly to the success page
+        return redirect()->route('checkout.success', ['id' => $booking->id])->with('success', 'Booking submitted. Your request has been sent for approval.');
     }
 }

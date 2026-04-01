@@ -291,6 +291,7 @@
         .usage-bar-fill { height: 100%; background: var(--primary-color); }
 
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="sidebar">
@@ -706,13 +707,13 @@
                     datasets: [{
                         label: 'Revenue (₹)',
                         data: data,
-                        borderColor: '#ff7a00',
-                        backgroundColor: 'rgba(255, 122, 0, 0.05)',
+                        borderColor: window.primaryColor,
+                        backgroundColor: `rgba(${window.primaryColorRGB}, 0.05)`,
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,
                         pointBackgroundColor: '#fff',
-                        pointBorderColor: '#ff7a00',
+                        pointBorderColor: window.primaryColor,
                         pointRadius: 3,
                         pointHoverRadius: 5
                     }]

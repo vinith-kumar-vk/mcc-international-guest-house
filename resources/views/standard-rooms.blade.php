@@ -377,7 +377,7 @@
         }
 
         .help-send-btn {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             border: none !important;
             padding: 0.9rem 1.5rem !important;
@@ -403,7 +403,7 @@
 
         .help-send-btn:focus,
         .help-send-btn:active {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             transform: none !important;
             box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
         }
@@ -417,9 +417,9 @@
         /* View Details button hover/active fix */
         .card-actions .btn-outline:hover,
         .card-actions .btn-outline:active {
-            background: #ff6a00 !important;
+            background: var(--primary-color) !important;
             color: #fff !important;
-            border-color: #ff6a00 !important;
+            border-color: var(--primary-color) !important;
         }
 
         /* Header Centering */
@@ -447,6 +447,7 @@
             image-rendering: crisp-edges !important;
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 
 <body style="background: #fbfbfb;">

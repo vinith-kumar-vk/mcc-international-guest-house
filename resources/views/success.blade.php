@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    @include('partials.dynamic-styles')
     <style>
         .success-wrapper {
             background: #ffffff;
@@ -77,7 +78,7 @@
         }
 
         .btn-home {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: white !important;
             padding: 1.1rem !important;
             border-radius: 12px !important;
@@ -99,7 +100,8 @@
         }
 
         .btn-home:hover {
-            background: #e66d00 !important;
+            background: var(--primary-color) !important;
+            filter: brightness(90%);
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
             color: #ffffff !important;
             transform: none !important;
@@ -116,8 +118,8 @@
             <div class="success-header">
                 @if($booking->approval_status === 'Pending')
                     <i class="ph-fill ph-clock-countdown success-icon-large"></i>
-                    <h2>Booking Received!</h2>
-                    <p>Your booking request has been received and is <strong>waiting for approval</strong>.</p>
+                    <h2>Booking Submitted!</h2>
+                    <p>Your request has been sent to the <strong>Principal</strong> for approval. You will receive an email once it is approved.</p>
                 @elseif($booking->approval_status === 'Rejected')
                     <i class="ph-fill ph-x-circle success-icon-large"></i>
                     <h2>Booking Rejected</h2>
@@ -135,10 +137,6 @@
                         <tr>
                             <th>Booking ID</th>
                             <td id="recBkId">BK-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Transaction ID</th>
-                            <td id="recTxnId">{{ $booking->razorpay_payment_id ?? 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Name</th>

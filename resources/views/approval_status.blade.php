@@ -6,6 +6,7 @@
     <title>Booking Action - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    @include('partials.dynamic-styles')
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -45,7 +46,7 @@
         .btn {
             display: inline-block;
             padding: 0.8rem 2rem;
-            background: #ff7a00;
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;

@@ -123,6 +123,7 @@
             .topbar-right { display: none; }
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
 

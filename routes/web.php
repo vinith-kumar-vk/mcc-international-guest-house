@@ -44,18 +44,8 @@ Route::get('/conference-rooms', function () {
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
 Route::post('/booking', [BookingController::class, 'storeBooking'])->name('booking.store');
 
-// Redirect to this GET route for the payment page
-Route::get('/payment/{id}', function ($id) {
+Route::get('/success/{id}', function ($id) {
     $booking = Booking::findOrFail($id);
-    return view('payment', compact('booking'));
-})->name('payment.page');
-
-Route::post('/booking/simulate-success/{id}', [BookingController::class, 'simulateSuccess'])->name('booking.simulate.success');
-Route::post('/booking/simulate-failure/{id}', [BookingController::class, 'simulateFailure'])->name('booking.simulate.failure');
-
-Route::get('/success', function () {
-    // Show the most recently updated booking (the one just paid)
-    $booking = Booking::orderBy('updated_at', 'desc')->first();
     return view('success', compact('booking'));
 })->name('checkout.success');
 

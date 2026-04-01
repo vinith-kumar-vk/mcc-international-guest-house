@@ -106,6 +106,7 @@
             border: 1px solid #fecaca;
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="login-card">

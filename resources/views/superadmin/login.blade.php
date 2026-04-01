@@ -117,6 +117,7 @@
             .form-title { font-size: 1.2rem; }
         }
     </style>
+    @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="login-card">
