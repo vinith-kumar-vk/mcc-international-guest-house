@@ -12,7 +12,7 @@
     <style>
         .page-header-banner {
             background: #ffffff;
-            padding: 4rem 1rem 7rem 1rem;
+            padding: 2.5rem 1rem 4rem 1rem;
             text-align: center;
             border-bottom: 1px solid #eaedf0;
         }
@@ -21,8 +21,8 @@
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            padding: 2rem 2.25rem;
-            /* Clean ~32px padding */
+            padding: 1.25rem 2.25rem;
+            /* Compact padding */
             width: 100%;
             position: relative;
             z-index: 5;
@@ -161,7 +161,7 @@
         .breadcrumb {
             font-size: 0.9rem;
             color: var(--text-light);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
             font-weight: 500;
         }
 
@@ -261,13 +261,13 @@
             font-size: 1.15rem;
             font-weight: 800;
             color: var(--primary-color);
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.5rem;
             border-bottom: 2px solid rgba(255, 122, 0, 0.1);
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+            margin-top: 0.75rem;
+            margin-bottom: 0.75rem;
             letter-spacing: -0.2px;
         }
 
@@ -282,18 +282,11 @@
         }
 
         .dynamic-field {
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease;
+            display: none;
         }
 
         .dynamic-field.show {
-            opacity: 1;
-            max-height: 200px;
-            transform: translateY(0);
-            overflow: visible;
+            display: flex;
         }
 
         @keyframes fadeInUp {
@@ -324,8 +317,8 @@
             background: rgba(255, 122, 0, 0.04);
             border: 1px solid rgba(255, 122, 0, 0.15);
             border-radius: 8px;
-            padding: 1rem 1.25rem;
-            margin-bottom: 2rem;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -392,7 +385,7 @@
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard']])
 
     <main>
-        <div style="max-width: 820px; margin: 2rem auto;">
+        <div style="max-width: 820px; margin: 1rem auto;">
 
             <!-- Breadcrumbs ALIGNED EXACTLY WITH HEADER & FORM -->
             <div class="breadcrumb">
@@ -402,11 +395,11 @@
             </div>
 
             <!-- Page Header Aligned Correctly -->
-            <div style="margin-bottom: 1.5rem; animation: fadeInDown 0.4s ease-out;">
+            <div style="margin-bottom: 1rem; animation: fadeInDown 0.4s ease-out;">
                 <h2
-                    style="font-size: 2.2rem; color: var(--text-color); font-weight: 800; letter-spacing: -1px; margin-bottom: 0.25rem;">
+                    style="font-size: 2rem; color: var(--text-color); font-weight: 800; letter-spacing: -1px; margin-bottom: 0.15rem;">
                     IGH Booking</h2>
-                <p style="color: var(--text-light); font-size: 1rem; font-weight: 500; margin: 0;">Secure your
+                <p style="color: var(--text-light); font-size: 0.95rem; font-weight: 500; margin: 0;">Secure your
                     accommodation efficiently for <strong style="color: var(--primary-color);">Room
                         {{ $roomId ?? 'Selected' }}</strong></p>
             </div>
@@ -446,7 +439,7 @@
                             Personal Details</div>
 
                         <!-- Nationality -->
-                        <div class="form-group full-width" style="margin-bottom: 1.5rem;">
+                        <div class="form-group full-width" style="margin-bottom: 0.75rem;">
                             <label class="form-label">Nationality <span>*</span></label>
                             <div class="form-radio-group">
                                 <label class="radio-label"><input type="radio" name="nationality" value="Indian"
@@ -511,7 +504,7 @@
 
                             <!-- Hidden Smooth "Other" Field -->
                             <div id="otherDepartmentWrapper"
-                                style="overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0.8rem;">
+                                style="overflow: hidden; max-height: 0; display: none; margin-top: 0.5rem;">
                                 <input type="text" class="form-input" id="otherDepartmentInput" name="department_other"
                                     placeholder="Enter Department Name" style="border-color: var(--primary-color);">
                             </div>
@@ -573,10 +566,10 @@
 
                         <!-- SECTION: STAY DETAILS -->
                         <div class="section-divider"></div>
-                        <div class="form-section-title full-width" style="margin-top: 2rem;"><i
+                        <div class="form-section-title full-width" style="margin-top: 0.75rem;"><i
                                 class="ph-bold ph-calendar-check" style="color: var(--primary-color);"></i> Booking
                             Details</div>
-                        <p class="gst-text" style="margin-bottom: 1.5rem;">+ 5% GST applicable on all room rates</p>
+                        <p class="gst-text" style="margin-bottom: 0.75rem;">+ 5% GST applicable on all room rates</p>
 
                         <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
                         <div class="paired-row">
@@ -594,14 +587,14 @@
                         </div>
 
                         <!-- Referral Attachment -->
-                        <div class="form-group full-width" style="margin-top: 1.5rem;">
+                        <div class="form-group full-width" style="margin-top: 0.5rem;">
                             <label class="form-label">Referral Attachment</label>
                             <input type="file" name="referral_attachment" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                             <div class="form-helper">Upload a referral document if applicable (PDF, Image, etc.)</div>
                         </div>
 
                         <!-- Submit -->
-                        <div class="form-group full-width">
+                        <div class="form-group full-width" style="margin-top: 1rem;">
                             <button type="submit" class="submit-btn confirm-booking-btn">CONFIRM BOOKING <i class="ph-bold ph-arrow-right"></i></button>
                         </div>
                     </div>
@@ -682,12 +675,12 @@
             const isStudent = document.getElementById('userTypeSelect').value === 'Student';
 
             if (deptSelect.value === 'Other' && isStudent) {
+                otherWrapper.style.display = 'block';
                 otherWrapper.style.maxHeight = '100px';
-                otherWrapper.style.opacity = '1';
                 otherInput.setAttribute('required', 'true');
             } else {
+                otherWrapper.style.display = 'none';
                 otherWrapper.style.maxHeight = '0';
-                otherWrapper.style.opacity = '0';
                 otherInput.removeAttribute('required');
             }
         }
