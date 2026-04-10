@@ -17,13 +17,13 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             max-width: 650px;
-            margin: 0 auto;
+            margin: 3rem auto;
         }
 
         .success-header {
             background: var(--primary-color);
             color: #ffffff;
-            padding: 2.5rem 2rem 2rem;
+            padding: 3.5rem 2.5rem 3rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -32,14 +32,18 @@
 
         .success-header h2 {
             font-size: 2rem;
-            margin: 1rem 0 0.5rem;
+            margin: 1.25rem 0 1.75rem;
             font-weight: 800;
+            color: #ffffff !important;
+            line-height: 1.1;
         }
 
         .success-header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.15rem;
+            opacity: 0.95;
             margin: 0;
+            line-height: 1.5;
+            max-width: 480px;
         }
 
         .success-icon-container {
@@ -54,8 +58,10 @@
         }
 
         .success-icon-large {
-            font-size: 3.5rem;
-            color: #ffffff;
+            font-size: 3rem;
+            color: #ffffff !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
         .success-body {
@@ -91,6 +97,23 @@
         }
 
         .btn-home {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            padding: 1.1rem !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+            transition: all 0.2s ease !important;
+            border: 1px solid #e2e8f0 !important;
+            cursor: pointer !important;
+        }
+
+        .btn-download {
             background: var(--primary-color) !important;
             color: white !important;
             padding: 1.1rem !important;
@@ -102,24 +125,22 @@
             justify-content: center !important;
             gap: 0.5rem !important;
             width: 100% !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            transition: all 0.2s ease !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
             border: none !important;
             cursor: pointer !important;
             box-shadow: 0 4px 14px rgba(255, 122, 0, 0.3) !important;
-            opacity: 1 !important;
-            transform: none !important;
         }
 
         .btn-home:hover {
-            background: var(--primary-color) !important;
-            filter: brightness(90%);
+            background: #e2e8f0 !important;
+            color: #1e293b !important;
+        }
+
+        .btn-download:hover {
+            filter: brightness(92%);
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
-            color: #ffffff !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 1.1rem !important;
         }
     </style>
 </head>
@@ -139,8 +160,8 @@
                     @endif
                 </div>
                 @if($booking->approval_status === 'Pending')
-                    <h2>Booking Submitted!</h2>
-                    <p>Your request has been sent to the <strong>Principal</strong> for approval. You will receive an email once it is approved.</p>
+                    <h2 style="color: #ffffff !important;">Booking Submitted!</h2>
+                    <p style="color: rgba(255,255,255,0.95) !important;">Your request has been sent to the <strong>Principal</strong> for approval. You will receive an email once it is approved.</p>
                 @elseif($booking->approval_status === 'Rejected')
                     <h2>Booking Rejected</h2>
                     <p>Unfortunately, your booking request has been rejected.</p>
@@ -179,7 +200,7 @@
                         </tr>
                         <tr>
                             <th>Room Name</th>
-                            <td id="recRoom">{{ $booking->room_name }}</td>
+                            <td id="recRoom">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                         </tr>
                         <tr>
                             <th>Date & Time</th>
@@ -193,11 +214,15 @@
                             <th>Status</th>
                             <td>
                                 @if($booking->approval_status === 'Pending')
-                                    <span style="background: #fff3cd; color: #856404; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">Waiting for Approval</span>
+                                    <span style="background: #fef3c7; color: #92400e; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #fde68a;">Waiting for Approval</span>
+                                @elseif($booking->approval_status === 'Principal Approved')
+                                    <span style="background: #ecfdf5; color: #065f46; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #a7f3d0;">Principal Approved</span>
+                                @elseif($booking->approval_status === 'Approved')
+                                    <span style="background: var(--primary-color); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Fully Approved</span>
                                 @elseif($booking->approval_status === 'Rejected')
-                                    <span style="background: #f8d7da; color: #721c24; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">Rejected</span>
+                                    <span style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #fecaca;">Rejected</span>
                                 @else
-                                    <span style="background: rgba(255, 122, 0, 0.1); color: var(--primary-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 700;">Approved</span>
+                                    <span style="background: #f1f5f9; color: #475569; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">{{ $booking->approval_status }}</span>
                                 @endif
                             </td>
                         </tr>
@@ -206,15 +231,41 @@
             </div>
 
             <div class="success-actions">
-                <button class="btn-home" onclick="window.location.href='{{ route('home') }}'"><i
-                        class="ph-bold ph-house"></i> Back to Home</button>
+                <button class="btn-home" onclick="window.location.href='{{ route('home') }}'">
+                    <i class="ph-bold ph-house"></i> Back to Home
+                </button>
             </div>
         </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', initSuccessPage);
+        function downloadReceiptPDF() {
+            const element = document.querySelector('.success-wrapper');
+            const bookingId = 'BK-{{ str_pad($booking->id, 6, "0", STR_PAD_LEFT) }}';
+            const opt = {
+                margin: 0.2,
+                filename: `Booking_Receipt_${bookingId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Hide house icon/buttons during capture if any
+            const actions = document.querySelector('.success-actions');
+            if (actions) actions.style.display = 'none';
+            
+            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+                if (actions) actions.style.display = 'flex';
+            }).save();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if auto-download is requested from email link
+            if (window.location.search.includes('download=1')) {
+                setTimeout(downloadReceiptPDF, 1500);
+            }
+        });
     </script>
 </body>
 

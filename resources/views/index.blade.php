@@ -23,20 +23,27 @@
         ============================================================= */
         .hero-prev, .hero-next {
             position: absolute; top: 50%; transform: translateY(-50%);
-            width: 50px; height: 50px; background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%; color: #fff; font-size: 1.5rem; cursor: pointer;
+            width: 50px; height: 50px; background: #fff;
+            border: 1px solid #eee;
+            border-radius: 50%; color: var(--primary-color); font-size: 1.5rem; cursor: pointer;
             z-index: 10; display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
         .hero-prev { left: 30px; }
         .hero-next { right: 30px; }
-        .hero-prev:hover, .hero-next:hover { background: #fff; color: var(--primary-color); }
+        .hero-prev:hover, .hero-next:hover { 
+            background: #fff; 
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-50%) scale(1.08); 
+            box-shadow: 0 8px 25px rgba(255,122,0,0.25);
+        }
 
         /* =============================================================
            HERO WELCOME SECTION (Base is in responsive.css)
         ============================================================= */
-        .hero-section { text-align: center; padding: 1rem 1.5rem 2rem; background: #f8fafc; }
+        .hero-section { text-align: center; padding: 1rem 1.5rem 0.5rem; background: #f8fafc; }
         .welcome-title {
             font-size: 3rem;
             font-weight: 800;

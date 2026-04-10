@@ -107,7 +107,7 @@
             </table>
             
             <h2 style="color: #1e293b;">Hello {{ $booking->name }},</h2>
-            <p style="color: #64748b; line-height: 1.6; font-size: 16px;">Great news! Your booking request for <strong>{{ $booking->room_name }}</strong> has been officially approved and confirmed.</p>
+            <p style="color: #64748b; line-height: 1.6; font-size: 16px;">Great news! Your booking request for <strong>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</strong> has been officially approved and confirmed.</p>
 
             <div style="background-color: #fff8eb; border-left: 4px solid #ff7a00; padding: 20px; margin: 30px 0; text-align: left; border-radius: 8px;">
                 <p style="margin: 0; color: #b45309; font-weight: 700; font-size: 15px;">Next Steps:</p>
@@ -121,7 +121,7 @@
                 </tr>
                 <tr>
                     <th>Workspace</th>
-                    <td>{{ $booking->room_name }}</td>
+                    <td>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                 </tr>
                 <tr>
                     <th>Check-in</th>
@@ -132,6 +132,10 @@
                     <td style="color: #ff7a00; font-weight: 700;">₹{{ number_format($booking->total_price, 2) }}</td>
                 </tr>
             </table>
+            
+            <a href="{{ route('checkout.success', $booking->id) }}?download=1" class="btn">
+                Download Confirmation PDF
+            </a>
 
             <p style="margin-top: 30px; font-size: 14px; color: #94a3b8;">
                 We look forward to seeing you at MCC IGH. If you have any questions, feel free to visit us or contact support.

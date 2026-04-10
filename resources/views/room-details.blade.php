@@ -354,8 +354,23 @@
         .share-option i { font-size: 1.5rem; }
 
         /* Lightbox */
-        .lightbox-content { max-width: 90vw; max-height: 90vh; border-radius: 10px; overflow: hidden; position: relative; }
-        .lightbox-img { width: 100%; height: auto; object-fit: contain; }
+        .lightbox-content { 
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            height: auto;
+        }
+        .lightbox-img { 
+            max-width: 95vw; 
+            max-height: 90vh; 
+            width: auto; 
+            height: auto; 
+            border-radius: 8px;
+            object-fit: contain; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
         .lightbox-nav {
             position: absolute; top: 50%; width: 100%; transform: translateY(-50%);
             display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none;
@@ -784,6 +799,7 @@
                     <div class="tab-btn" onclick="switchTab('amenities', this)">Amenities</div>
                     <div class="tab-btn" onclick="switchTab('location', this)">Location</div>
                     <div class="tab-btn" onclick="switchTab('reviews', this)">Reviews</div>
+                    <div class="tab-btn" onclick="switchTab('faq', this)">FAQ</div>
                 </nav>
 
                 <div id="overview" class="tab-pane active">
@@ -832,16 +848,16 @@
                         <div class="amenity-group">
                             <h3 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 700;">Furniture & Setup</h3>
                             <div class="amenity-grid">
-                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
-                                    <div style="width: 60px; height: 60px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 10px;">
-                                        <i class="ph ph-armchair" style="font-size: 32px; color: var(--primary-color);"></i>
+                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 12px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
+                                    <div style="width: 50px; height: 50px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 8px;">
+                                        <i class="ph ph-armchair" style="font-size: 24px; color: var(--primary-color);"></i>
                                     </div>
                                     <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Modern Furniture</span>
                                 </div>
                                 @if($roomId === 'glass-room')
-                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
-                                    <div style="width: 60px; height: 60px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 10px;">
-                                        <i class="ph ph-bounding-box" style="font-size: 32px; color: var(--primary-color);"></i>
+                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 12px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
+                                    <div style="width: 50px; height: 50px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 8px;">
+                                        <i class="ph ph-bounding-box" style="font-size: 24px; color: var(--primary-color);"></i>
                                     </div>
                                     <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Glass Walls</span>
                                 </div>
@@ -853,9 +869,9 @@
                         <div class="amenity-group">
                             <h3 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 700;">Technology</h3>
                             <div class="amenity-grid">
-                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
-                                    <div style="width: 60px; height: 60px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 10px;">
-                                        <i class="ph-bold ph-wifi-high" style="font-size: 32px; color: var(--primary-color);"></i>
+                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 12px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
+                                    <div style="width: 50px; height: 50px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 8px;">
+                                        <i class="ph-bold ph-wifi-high" style="font-size: 24px; color: var(--primary-color);"></i>
                                     </div>
                                     <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">High Speed WiFi</span>
                                 </div>
@@ -880,9 +896,9 @@
                         <div class="amenity-group">
                             <h3 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 700;">Comfort</h3>
                             <div class="amenity-grid">
-                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
-                                    <div style="width: 60px; height: 60px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 10px;">
-                                        <i class="ph ph-snowflake" style="font-size: 32px; color: var(--primary-color);"></i>
+                                <div class="amenity-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 12px; background: white; border: 1px solid var(--border-light); border-radius: 8px; transition: all 0.3s ease;">
+                                    <div style="width: 50px; height: 50px; background: #fff8f3; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 8px;">
+                                        <i class="ph ph-snowflake" style="font-size: 24px; color: var(--primary-color);"></i>
                                     </div>
                                     <span style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Air Conditioning</span>
                                 </div>
@@ -904,16 +920,41 @@
 
                 <div id="reviews" class="tab-pane">
                     <h2 class="section-title"><i class="ph-fill ph-star"></i> Guest Experiences</h2>
-                    <div class="reviews-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="reviews-list" style="display: flex; flex-direction: column; gap: 20px; max-width: 800px;">
                         @foreach([['name' => 'Rahul S.', 'rating' => 5, 'text' => "Excellent facility and remarkably clean environment. The staff was very professional."], ['name' => 'Priya K.', 'rating' => 4, 'text' => "Wonderful space for workshops. High speed internet was very helpful."], ['name' => 'Arjun M.', 'rating' => 5, 'text' => "Best guest house in the campus. Easy booking process and very convenient location."]] as $review)
-                        <div class="review-item" style="background: white; border: 1px solid var(--border-light); padding: 20px; border-radius: 16px;">
+                        <div class="review-item" style="background: white; border: 1px solid var(--border-light); padding: 25px; border-radius: 16px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
                                 <div style="font-weight: 700; color: var(--text-dark);">{{ $review['name'] }}</div>
-                                <div class="rating-stars" style="color: #fbbf24; font-size: 0.8rem;">
+                                <div class="rating-stars" style="color: #fbbf24; font-size: 0.9rem;">
                                     @for($i=0; $i<$review['rating']; $i++) <i class="ph-fill ph-star"></i> @endfor
                                 </div>
                             </div>
-                            <p style="color: var(--text-medium); font-style: italic; font-size: 0.95rem; line-height: 1.6; margin: 0;">"{{ $review['text'] }}"</p>
+                            <p style="color: var(--text-medium); font-style: italic; font-size: 1rem; line-height: 1.6; margin: 0;">"{{ $review['text'] }}"</p>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div id="faq" class="tab-pane">
+                    <h2 class="section-title"><i class="ph-fill ph-question"></i> Frequently Asked Questions</h2>
+                    <div class="faq-accordion" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+                        @php
+                            $faqs = [
+                                ['q' => 'What is the maximum capacity?', 'a' => 'Up to 20 people standing, 12 in boardroom style, and 15 in informal seating.'],
+                                ['q' => 'What amenities are included?', 'a' => 'Modern furniture, high-speed WiFi, charging ports, glass walls, AC, and presentation support.'],
+                                ['q' => 'What is the cancellation policy?', 'a' => 'Free cancellation up to 24 hours before booking.'],
+                                ['q' => 'Are beverages provided?', 'a' => 'Complimentary tea, coffee, and water are included.'],
+                                ['q' => 'Minimum booking duration?', 'a' => 'The minimum duration is 4 hours, with half-day packages available.'],
+                                ['q' => 'Is WiFi/Tech support provided?', 'a' => 'Yes, 100 Mbps WiFi and dedicated technical staff are available.']
+                            ];
+                        @endphp
+                        @foreach($faqs as $faq)
+                        <div class="faq-item-compact" style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; transition: all 0.3s ease;">
+                            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: start; gap: 10px;">
+                                <i class="ph-fill ph-circle-wavy-question" style="color: var(--primary-color); margin-top: 2px;"></i>
+                                {{ $faq['q'] }}
+                            </h4>
+                            <p style="font-size: 14px; color: var(--text-medium); line-height: 1.6; margin: 0; padding-left: 28px;">{{ $faq['a'] }}</p>
                         </div>
                         @endforeach
                     </div>
@@ -970,67 +1011,6 @@
                             @endforeach
                         </div>
                         <a href="javascript:void(0)" onclick="scrollToAmenities()" style="font-size: 12px; color: var(--primary-color); font-weight: 700; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 10px;">More Amenities <i class="ph ph-arrow-right"></i></a>
-                    </div>
-
-                    <div class="sidebar-section-box collapsible-section" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" onclick="this.parentElement.classList.toggle('expanded')" style="margin-bottom: 0; cursor: pointer; height: 40px; display: flex; align-items: center; font-size: 13px;">
-                            <i class="ph-fill ph-lightbulb"></i> Booking Tips <i class="ph ph-caret-down" style="margin-left: auto; font-size: 0.9rem;"></i>
-                        </h4>
-                        <div class="collapsible-content" style="padding: 12px 0 0 0;">
-                            <ul class="guide-list" style="list-style: none; padding: 0; margin: 0; gap: 8px; display: flex; flex-direction: column;">
-                                @foreach($room['tips'] ?? ['Minimum 12 hours notice required', 'Subject to management approval'] as $tip)
-                                    <li style="font-size: 12px;">{{ $tip }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-section-box" style="margin-bottom: 14px;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                            <h4 class="sidebar-section-title" style="margin: 0; font-size: 13px;"><i class="ph-fill ph-star"></i> Ratings</h4>
-                            <div style="text-align: right;">
-                                <span style="font-size: 12px; font-weight: 800; color: var(--text-dark); display: block;">4.8/5.0</span>
-                                <div class="rating-stars" style="color: #fbbf24; font-size: 18px;">
-                                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="font-size: 11px; color: var(--text-medium); font-style: italic; margin-bottom: 8px; line-height: 1.4;">"Perfect stay for any campus visitor."</p>
-                        <a href="javascript:void(0)" onclick="scrollToReviews()" style="font-size: 12px; color: var(--primary-color); font-weight: 700; text-decoration: none;">View all reviews</a>
-                    </div>
-
-                    <div class="sidebar-section-box collapsible-section" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" onclick="this.parentElement.classList.toggle('expanded')" style="margin-bottom: 0; cursor: pointer; height: 40px; display: flex; align-items: center; font-size: 13px;">
-                            <i class="ph-fill ph-question"></i> FAQs <i class="ph ph-caret-down" style="margin-left: auto; font-size: 0.9rem;"></i>
-                        </h4>
-                        <div class="collapsible-content" style="padding: 12px 0 0 0;">
-                            <div class="faq-sidebar">
-                                @php
-                                    $faqs = [
-                                        ['q' => 'What is the maximum capacity?', 'a' => 'Up to 20 people standing, 12 in boardroom style, and 15 in informal seating.'],
-                                        ['q' => 'What amenities are included?', 'a' => 'Modern furniture, high-speed WiFi, charging ports, glass walls, AC, and presentation support.'],
-                                        ['q' => 'What is the cancellation policy?', 'a' => 'Free cancellation up to 24 hours before booking. 50% charges apply within 24 hours.'],
-                                        ['q' => 'Are beverages provided?', 'a' => 'Complimentary tea, coffee, and water are included. Catering is available at extra cost.'],
-                                        ['q' => 'Can I customize the setup?', 'a' => 'Yes, choose from boardroom, theater, U-shape, or classroom layouts.'],
-                                        ['q' => 'Is parking available?', 'a' => 'Yes, free ample parking is available at MCC Innovation Park.'],
-                                        ['q' => 'Minimum booking duration?', 'a' => 'The minimum duration is 4 hours, with half-day and full-day packages available.'],
-                                        ['q' => 'Is WiFi/Tech support provided?', 'a' => 'Yes, 100 Mbps WiFi and dedicated technical staff are available.'],
-                                        ['q' => 'Can I host workshops/seminars?', 'a' => 'Absolutely! It\'s perfect for workshops, team meetings, and small seminars.'],
-                                        ['q' => 'What payment methods are accepted?', 'a' => 'All credit/debit cards, net banking, UPI, and digital wallets.'],
-                                        ['q' => 'Are the walls soundproof?', 'a' => 'Yes, the glass walls provide excellent acoustic insulation for private meetings.'],
-                                        ['q' => 'Is it completely transparent?', 'a' => 'The walls are clear for light, but we offer privacy screens if required.']
-                                    ];
-                                @endphp
-                                @foreach($faqs as $faq)
-                                    <div class="faq-item-sidebar" style="margin-bottom: 10px;">
-                                        <p style="font-weight: 700; font-size: 12px; color: var(--text-dark); margin-bottom: 2px; cursor: pointer;" onclick="this.parentElement.classList.toggle('expanded')">{{ $faq['q'] }}</p>
-                                        <div class="faq-answer">
-                                            <p style="font-size: 11px; color: var(--text-medium); margin: 0;">{{ $faq['a'] }}</p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
 
                     <div class="sidebar-section-box footer-section" style="background: #f8fafc; border: 1px solid var(--border-light); padding: 12px; margin-bottom: 0;">

@@ -153,7 +153,7 @@
         /* Stats Cards */
         .stats-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
             gap: 1.25rem; 
             margin-bottom: 2rem;
             width: 100%;
@@ -181,7 +181,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             gap: 0.5rem;
         }
 
@@ -207,6 +207,7 @@
             font-weight: 700; 
             color: #1e293b;
             line-height: 1.2;
+            margin-top: auto;
         }
 
         .stat-label { 
@@ -216,7 +217,7 @@
             text-transform: uppercase; 
             letter-spacing: 0.05em;
             line-height: 1.2;
-            word-break: break-all;
+            word-wrap: break-word;
             display: block;
         }
 
@@ -313,6 +314,9 @@
             <a href="{{ route('admin.bookings') }}" class="menu-item">
                 <i class="ph ph-calendar-check"></i> Bookings
             </a>
+            <a href="{{ route('admin.reports') }}" class="menu-item">
+                <i class="ph ph-file-text"></i> Reports
+            </a>
             <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
@@ -331,9 +335,6 @@
     <main class="admin-main">
         <div class="top-navbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary-color) !important; background: white !important; color: var(--primary-color) !important; box-shadow: none !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
-                </button>
                 <div class="topbar-title" style="font-weight: 700; font-size: 1.15rem; color: var(--text-main);">Dashboard Overview</div>
             </div>
             <div class="nav-right">
@@ -685,23 +686,13 @@
         }
 
         // Sidebar Toggle
-        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         
-        if (sidebarToggle && sidebar) {
-            sidebarToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
-        }
-
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
                 
-                if (!isClickInsideSidebar && !isClickOnToggle) {
+                if (!isClickInsideSidebar) {
                     sidebar.classList.remove('open');
                 }
             }

@@ -181,36 +181,32 @@
             color: #ffffff !important;
             border: none !important;
             padding: 1.1rem 2rem !important;
-            font-size: 1.05rem !important;
-            font-weight: 800 !important;
-            border-radius: 12px !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            border-radius: 8px !important;
             cursor: pointer !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            transition: all 0.2s ease !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 10px !important;
             width: 100% !important;
-            margin-top: 1.5rem !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.3) !important;
+            margin-top: 2rem !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
             text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            opacity: 1 !important;
-            transform: none !important;
+            letter-spacing: 0.5px !important;
+            font-family: 'Inter', sans-serif !important;
         }
 
         .submit-btn:hover {
             background: var(--primary-color) !important;
-            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
             color: #ffffff !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 1.1rem 2rem !important;
+            transform: translateY(-1px) !important;
         }
 
         .submit-btn:active {
-            background: var(--primary-color) !important;
-            transform: none !important;
+            transform: translateY(0) !important;
         }
 
         .btn {
@@ -400,14 +396,14 @@
                     style="font-size: 2rem; color: var(--text-color); font-weight: 800; letter-spacing: -1px; margin-bottom: 0.15rem;">
                     IGH Booking</h2>
                 <p style="color: var(--text-light); font-size: 0.95rem; font-weight: 500; margin: 0;">Secure your
-                    accommodation efficiently for <strong style="color: var(--primary-color);">Room
-                        {{ $roomId ?? 'Selected' }}</strong></p>
+                    accommodation efficiently for <strong style="color: var(--primary-color);">
+                        {{ str_replace('-', ' ', ucwords($roomId, '- ')) }}</strong></p>
             </div>
 
             <div class="form-container">
                 <div class="summary-banner">
                     <div>
-                        <h3>Selected: Room {{ $roomId ?? 'Pending' }}</h3>
+                        <h3>Selected: {{ str_replace('-', ' ', ucwords($roomId, '- ')) }}</h3>
                         <p>Enjoy premium amenities and professional hospitality</p>
                     </div>
                 </div>

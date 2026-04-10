@@ -71,7 +71,7 @@ header, .main-header, .header-container {
 @keyframes modalSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 /* ── HERO SLIDER (SHARED) ── */
-.main-image-slider { position: relative; width: 100%; height: 70vh; min-height: 450px; max-height: 750px; overflow: hidden; background: #000; margin-bottom: 0; }
+.main-image-slider { position: relative; width: 100%; height: 80vh; min-height: 500px; max-height: 850px; overflow: hidden; background: #000; margin-bottom: 0; }
 .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
 .hero-slide.active-slide { opacity: 1; z-index: 2; }
 .hero-slide .slide-title { font-size: 3.2rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem; text-shadow: 0 4px 12px rgba(0,0,0,0.6); transform: translateY(25px); opacity: 0; transition: all 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.3s; }
@@ -79,7 +79,7 @@ header, .main-header, .header-container {
 .hero-slide.active-slide .slide-title, .hero-slide.active-slide .slide-subtitle { transform: translateY(0); opacity: 1; }
 
 /* ── EXPLORE ROOMS SLIDER (SHARED) ── */
-.explore-rooms-section { padding: 2rem 0; overflow: hidden; }
+.explore-rooms-section { padding: 0.5rem 0 2rem 0; overflow: hidden; }
 .slider-master-container { max-width: 1400px; margin: 0 auto; position: relative; }
 .slider-outer-frame { position: relative; padding: 0 24px; }
 .cards-container { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding: 24px 0; scrollbar-width: none; }
@@ -131,7 +131,7 @@ header, .main-header, .header-container {
         gap: 0.5rem !important;
     }
     
-    .main-image-slider { height: 60vw !important; min-height: 300px !important; max-height: 450px !important; }
+    .main-image-slider { height: 68vw !important; min-height: 350px !important; max-height: 550px !important; }
     .hero-slide .slide-title { font-size: 1.4rem !important; margin-bottom: 0.4rem !important; }
     .hero-slide .slide-subtitle { font-size: 0.8rem !important; }
     .hero-prev, .hero-next, .room-nav-btn { display: none !important; }
@@ -152,7 +152,7 @@ header, .main-header, .header-container {
     .header-logo { height: 44px !important; }
     .header-center { display: none !important; }
     .rooms-grid, .dashboard-rooms-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .main-image-slider { height: 65vh !important; min-height: 400px !important; max-height: 650px !important; }
+    .main-image-slider { height: 75vh !important; min-height: 500px !important; max-height: 750px !important; }
     .hero-slide .slide-title { font-size: 2.2rem !important; }
     .hero-slide .slide-subtitle { font-size: 1rem !important; }
     .welcome-title { font-size: 2.2rem !important; }

@@ -80,6 +80,8 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
     Route::get('/bookings/export', [AdminController::class, 'exportCsv'])->name('admin.bookings.export');
     Route::get('/bookings/{id}', [AdminController::class, 'show'])->name('admin.bookings.show');
+    Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+    Route::get('/reports/download', [AdminController::class, 'downloadReport'])->name('admin.reports.download');
     Route::post('/bookings/{id}/approve', [AdminController::class, 'adminApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
     Route::post('/bookings/{id}/pay', [AdminController::class, 'markAsPaid'])->name('admin.bookings.pay');

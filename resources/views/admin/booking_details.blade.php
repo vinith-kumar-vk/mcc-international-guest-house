@@ -96,6 +96,52 @@
             color: var(--primary-color);
         }
 
+        @keyframes pulse-orange {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { transform: scale(1.01); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        .pulse-status {
+            animation: pulse-orange 2s infinite ease-in-out;
+        }
+
+        /* Confirmation Modal */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .confirm-modal-content {
+            background: white;
+            padding: 2.25rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            border: 1px solid #f1f5f9;
+        }
+        .confirm-modal-content h3 { margin: 0 0 0.75rem; color: #1e293b; font-size: 1.25rem; font-weight: 700; }
+        .confirm-modal-content p { margin: 0 0 2rem; color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+        .confirm-modal-footer { display: flex; gap: 0.75rem; }
+        .confirm-btn-cancel {
+            flex: 1; padding: 0.85rem; border-radius: 12px; border: 1px solid #e2e8f0;
+            background: #f8fafc; color: #64748b; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .confirm-btn-confirm {
+            flex: 1; padding: 0.85rem; border-radius: 12px; border: none;
+            background: #22c55e; color: white; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .confirm-btn-confirm.is-reject { background: #ef4444; }
+        .confirm-btn-cancel:hover { background: #f1f5f9; color: #475569; }
+        .confirm-btn-confirm:hover { filter: brightness(0.95); transform: translateY(-1px); }
+
         /* Main Content */
         .admin-main {
             margin-left: var(--sidebar-width);
@@ -291,7 +337,7 @@
         }
 
         .btn-approve {
-            padding: 1rem 2rem !important;
+            padding: 1.1rem 2rem !important;
             background: #ff7a00 !important;
             color: #ffffff !important;
             border: none !important;
@@ -325,10 +371,10 @@
         }
 
         .btn-reject {
-            padding: 1rem 2rem !important;
-            background: #fff1f2 !important;
-            color: #be123c !important;
-            border: 2px solid #fecdd3 !important;
+            padding: 1.1rem 2rem !important;
+            background: #e11d48 !important;
+            color: #ffffff !important;
+            border: none !important;
             border-radius: 12px !important;
             font-size: 0.95rem !important;
             font-weight: 600 !important;
@@ -344,10 +390,32 @@
         }
 
         .btn-reject:hover {
-            background: #ffe4e6 !important;
-            border-color: #fda4af !important;
-            color: #9f1239 !important;
-            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15) !important;
+            background: #be123c !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 20px rgba(190, 18, 60, 0.45) !important;
+        }
+
+        .btn-download-pdf {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.25rem;
+            background: #ffffff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: auto;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-download-pdf:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
         }
 
         .btn-view {
@@ -481,8 +549,11 @@
             <a href="{{ route('admin.dashboard') }}" class="menu-item">
                 <i class="ph ph-squares-four"></i> Dashboard
             </a>
-            <a href="{{ route('admin.bookings') }}" class="menu-item active">
+            <a href="{{ route('admin.bookings') }}" class="menu-item">
                 <i class="ph ph-calendar-check"></i> Bookings
+            </a>
+            <a href="{{ route('admin.reports') }}" class="menu-item">
+                <i class="ph ph-file-text"></i> Reports
             </a>
             <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Website
@@ -495,8 +566,12 @@
             <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             <div>
                 <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem;">Back to list</div>
-                <h1>Booking Details #{{ $booking->id }}</h1>
+                <h1 id="pdf-header">Booking Details #{{ $booking->id }}</h1>
             </div>
+            <button onclick="downloadBookingPDF()" class="btn-download-pdf">
+                <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
+                Download PDF
+            </button>
         </div>
 
         @if(session('success'))
@@ -572,10 +647,6 @@
                         <div class="info-item">
                             <span class="info-label">Primary Guest</span>
                             <span class="info-value">{{ $booking->primary_guest_name ?: 'Self' }} ({{ $booking->no_of_persons }} {{ Str::plural('Person', $booking->no_of_persons) }})</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">ID / GST</span>
-                            <span class="info-value">PP: {{ $booking->passport_number ?: 'N/A' }} | GST: {{ $booking->gst_id ?: 'N/A' }}</span>
                         </div>
                         @if($booking->referral_attachment)
                         <div class="info-item" style="grid-column: 1 / -1; margin-top: 1rem;">
@@ -700,14 +771,14 @@
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         @if($booking->approval_status === 'Pending')
-                            <div style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2); text-align: center; margin-bottom: 1rem;">
+                            <div class="pulse-status" style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center; margin-bottom: 1rem;">
                             <p style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif;">
                                     <i class="ph-fill ph-hourglass"></i> Waiting for Principal Approval
                                 </p>
                             </div>
                         @endif
 
-                        <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST">
+                        <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('approve', this);">
                             @csrf
                             <button type="submit" class="btn-approve" 
                                     style="width: 100%;"
@@ -717,7 +788,7 @@
                             </button>
                         </form>
                         
-                        <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
+                        <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('reject', this);">
                             @csrf
                             <button type="submit" class="btn-reject" style="width: 100%;">
                                 <i class="ph-bold ph-x"></i> Reject Proposal
@@ -752,28 +823,81 @@
             </div>
         </div>
     </main>
-    <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.querySelector('.sidebar');
 
-        if (sidebarToggle && sidebar) {
-            sidebarToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirm-modal-overlay">
+        <div class="confirm-modal-content">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage">Are you sure you want to proceed?</p>
+            <div class="confirm-modal-footer">
+                <button id="cancelModalBtn" class="confirm-btn-cancel">Cancel</button>
+                <button id="confirmModalBtn" class="confirm-btn-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let pendingForm = null;
+
+        function showConfirmModal(type, form) {
+            pendingForm = form;
+            const modal = document.getElementById('confirmModal');
+            const title = document.getElementById('confirmTitle');
+            const msg = document.getElementById('confirmMessage');
+            const confirmBtn = document.getElementById('confirmModalBtn');
+            
+            if (type === 'approve') {
+                title.innerText = 'Approve Booking';
+                msg.innerText = 'Are you sure you want to approve this booking?';
+                confirmBtn.innerText = 'Yes, Approve';
+                confirmBtn.className = 'confirm-btn-confirm';
+            } else {
+                title.innerText = 'Reject Booking';
+                msg.innerText = 'Are you sure you want to reject this booking?';
+                confirmBtn.innerText = 'Yes, Reject';
+                confirmBtn.className = 'confirm-btn-confirm is-reject';
+            }
+            modal.style.display = 'flex';
         }
+
+        document.getElementById('cancelModalBtn').addEventListener('click', () => {
+            document.getElementById('confirmModal').style.display = 'none';
+        });
+
+        document.getElementById('confirmModalBtn').addEventListener('click', () => {
+            if (pendingForm) pendingForm.submit();
+        });
+
+        const sidebar = document.querySelector('.sidebar');
 
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
                 
-                if (!isClickInsideSidebar && !isClickOnToggle) {
+                if (!isClickInsideSidebar) {
                     sidebar.classList.remove('open');
                 }
             }
         });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadBookingPDF() {
+            const element = document.querySelector('.details-grid');
+            const bookingId = '{{ $booking->id }}';
+            const opt = {
+                margin: 0.5,
+                filename: `Booking_Details_${bookingId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Add a temporary title for the PDF
+            const header = document.createElement('div');
+            header.innerHTML = `<h1 style="color: #1e293b; font-family: sans-serif; margin-bottom: 20px;">Booking Details #${bookingId}</h1>`;
+            
+            html2pdf().set(opt).from(element).save();
+        }
     </script>
 </body>
 </html>
