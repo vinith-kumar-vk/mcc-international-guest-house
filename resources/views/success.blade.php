@@ -23,8 +23,11 @@
         .success-header {
             background: var(--primary-color);
             color: #ffffff;
-            padding: 3rem 2rem;
+            padding: 2.5rem 2rem 2rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .success-header h2 {
@@ -39,10 +42,20 @@
             margin: 0;
         }
 
+        .success-icon-container {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
         .success-icon-large {
-            font-size: 4.5rem;
-            display: block;
-            margin: 0 auto;
+            font-size: 3.5rem;
+            color: #ffffff;
         }
 
         .success-body {
@@ -116,16 +129,22 @@
     <main>
         <div class="success-wrapper">
             <div class="success-header">
+                <div class="success-icon-container">
+                    @if($booking->approval_status === 'Pending')
+                        <i class="ph-fill ph-clock success-icon-large"></i>
+                    @elseif($booking->approval_status === 'Rejected')
+                        <i class="ph-fill ph-x-circle success-icon-large"></i>
+                    @else
+                        <i class="ph-fill ph-check-circle success-icon-large"></i>
+                    @endif
+                </div>
                 @if($booking->approval_status === 'Pending')
-                    <i class="ph-fill ph-clock-countdown success-icon-large"></i>
                     <h2>Booking Submitted!</h2>
                     <p>Your request has been sent to the <strong>Principal</strong> for approval. You will receive an email once it is approved.</p>
                 @elseif($booking->approval_status === 'Rejected')
-                    <i class="ph-fill ph-x-circle success-icon-large"></i>
                     <h2>Booking Rejected</h2>
                     <p>Unfortunately, your booking request has been rejected.</p>
                 @else
-                    <i class="ph-fill ph-check-circle success-icon-large"></i>
                     <h2>Booking Confirmed!</h2>
                     <p>Your space booking has been confirmed.</p>
                 @endif

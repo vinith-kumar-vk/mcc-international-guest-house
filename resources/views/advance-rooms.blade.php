@@ -10,6 +10,23 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
+        /* Compact Card Fixes */
+        .card { height: auto !important; min-height: 0 !important; }
+        .card-content { padding: 1.25rem !important; gap: 0.25rem !important; }
+        .card-content h2 { min-height: 0 !important; margin-bottom: 0.25rem !important; line-height: 1.2 !important; }
+        .card-content .description { min-height: 0 !important; margin-bottom: 0.5rem !important; }
+        .price-highlight { margin-bottom: 0 !important; }
+        .gst-text { margin-bottom: 0.5rem !important; }
+        .facility-features, .luxury-features { margin: 0.5rem 0 !important; padding: 0.75rem !important; }
+        .next-available { margin-top: 0.5rem !important; padding: 0.5rem !important; }
+        .card-actions { margin-top: 0.75rem !important; }
+
+        /* Visibility Improvements */
+        .card h2 { color: #0f172a !important; font-weight: 800 !important; }
+        .card .description { color: #334155 !important; font-weight: 500 !important; }
+        .card .gst-text { color: #64748b !important; font-weight: 600 !important; }
+        .btn-outline { border-width: 2px !important; font-weight: 700 !important; }
+
         /* Room grid base is in responsive.css, but we keep our specific gap/margin */
 
         .modal-overlay {
@@ -85,7 +102,6 @@
         }
 
         .modal-close:hover {
-            background: #ff4757;
             color: white;
             transform: rotate(90deg);
         }
@@ -252,54 +268,19 @@
             margin-top: 0;
         }
 
-        .help-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .help-form { display: flex; flex-direction: column; gap: 15px; }
+        .help-form-row { display: flex; flex-direction: column; gap: 15px; }
+        .help-input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+        .help-input-group.full-width { width: 100%; }
+        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
 
-        .help-form-row {
-            display: flex;
-            gap: 20px;
+        .help-input-group input, .help-input-group select, .help-input-group textarea {
+            padding: 14px 16px !important; border: 1px solid #ddd !important; border-radius: 8px !important;
+            font-family: inherit; font-size: 1rem !important; transition: all 0.3s; background: #fafafa !important;
+            width: 100% !important; display: block !important; box-sizing: border-box !important;
         }
-
-        .help-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .help-input-group.full-width {
-            width: 100%;
-        }
-
-        .help-input-group label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #444;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .help-input-group input,
-        .help-input-group textarea {
-            padding: 14px 16px !important;
-            border: 1px solid #ddd !important;
-            border-radius: 8px !important;
-            font-family: inherit;
-            font-size: 1rem !important;
-            transition: all 0.3s;
-            background: #fafafa !important;
-            width: 100%;
-        }
-
-        .help-input-group input:focus,
-        .help-input-group textarea:focus {
-            border-color: var(--primary-color) !important;
-            outline: none !important;
-            background: #fff !important;
-            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
+        .help-input-group input:focus, .help-input-group select:focus, .help-input-group textarea:focus {
+            border-color: var(--primary-color) !important; outline: none !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
         }
 
         .custom-dropdown {
@@ -370,14 +351,10 @@
             color: var(--primary-color);
         }
 
-        .help-form-footer {
-            display: flex;
-            justify-content: center;
-            margin-top: 5px;
-        }
+        .help-form-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
 
         .help-send-btn {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             color: #ffffff !important;
             border: none !important;
             padding: 0.9rem 1.5rem !important;
@@ -388,25 +365,24 @@
             text-transform: uppercase !important;
             cursor: pointer !important;
             width: 100% !important;
+            text-align: center !important;
             display: block !important;
             transform: none !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
+            box-shadow: 0 4px 14px rgba(var(--primary-rgb, 255, 122, 0), 0.35) !important;
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
         }
 
         .help-send-btn:hover {
-            background: #e66d00 !important;
-            box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45) !important;
+            filter: brightness(90%) !important;
+            box-shadow: 0 4px 18px rgba(var(--primary-rgb, 255, 122, 0), 0.45) !important;
             transform: none !important;
-            width: 100% !important;
-            padding: 0.9rem 1.5rem !important;
         }
 
         .help-send-btn:focus,
         .help-send-btn:active {
-            background: #ff7a00 !important;
+            background: var(--primary-color) !important;
             transform: none !important;
-            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
+            box-shadow: 0 4px 14px rgba(var(--primary-rgb, 255, 122, 0), 0.35) !important;
         }
 
         .help-modal-card button:active {
@@ -418,9 +394,9 @@
         /* View Details button hover/active fix */
         .card-actions .btn-outline:hover,
         .card-actions .btn-outline:active {
-            background: #ff6a00 !important;
+            background: var(--primary-color) !important;
             color: #fff !important;
-            border-color: #ff6a00 !important;
+            border-color: var(--primary-color) !important;
         }
 
         /* Header Centering */
@@ -468,22 +444,21 @@
                 <h1
                     style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.6rem; color: #222; letter-spacing: -1px;">
                     Advance Rooms</h1>
-                <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">Premium
-                    guest rooms tailored for extended comfort and specific reservations.</p>
+                <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
             </div>
 
             @php
                 $advanceRooms = [
                     ['no' => 101, 'type' => 'College Guest Room'],
-                    ['no' => 102, 'type' => 'Premium Room'],
-                    ['no' => 103, 'type' => 'Premium Room'],
-                    ['no' => 104, 'type' => 'Premium Room'],
-                    ['no' => 201, 'type' => 'Premium Room'],
-                    ['no' => 203, 'type' => 'Premium Room'],
-                    ['no' => 204, 'type' => 'Premium Room'],
-                    ['no' => 205, 'type' => 'Premium Room'],
-                    ['no' => 206, 'type' => 'Premium Room'],
-                    ['no' => 207, 'type' => 'Premium Room'],
+                    ['no' => 102, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 103, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 104, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 201, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 203, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 204, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 205, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 206, 'type' => 'Premium Guest Room with Upgraded Interiors'],
+                    ['no' => 207, 'type' => 'Premium Guest Room with Upgraded Interiors'],
                 ];
             @endphp
 
@@ -492,9 +467,9 @@
                 @foreach ($advanceRooms as $room)
                     <div class="card" data-name="{{ $room['type'] }} {{ $room['no'] }}">
                         <div class="card-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                            <img src="{{ asset('assets/room1.JPG') }}"
                                 alt="{{ $room['type'] }}">
-                            @if(in_array($room['type'] . ' ' . $room['no'], $bookedRooms) || in_array($room['no'], $bookedRooms))
+                            @if(isset($bookedRooms[$room['type'] . ' ' . $room['no']]) || isset($bookedRooms[$room['no']]))
                                 <span class="badge" style="background:#dc3545; color: white;">Booked</span>
                             @else
                                 <span class="badge status-available">Available</span>
@@ -535,18 +510,23 @@
                                     comfortable and extended stays</p>
                             </div>
 
-                            <div class="card-actions">
-                                <button type="button" class="btn btn-outline" onclick="window.showQuickRoomDetails(this)"
-                                    data-room="{{ $room['no'] }}" data-name="{{ $room['type'] }} {{ $room['no'] }}"
-                                    data-price="₹2500" data-time="/ day"
-                                    data-img="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                    data-facilities="AC:ph-wind,WiFi:ph-wifi-high,Mini Fridge:ph-snowflake,Smart TV:ph-television,Premium Toiletries:ph-bottle,Workspace:ph-desktop,Cupboard:ph-layout"
-                                    data-desc="A premium room with enhanced comfort, modern interiors, and additional facilities, ideal for longer and more relaxing stays."
-                                    data-booked="{{ in_array($room['type'] . ' ' . $room['no'], $bookedRooms) || in_array($room['no'], $bookedRooms) ? 'true' : 'false' }}">View
-                                    Details</button>
-                                @if(in_array($room['type'] . ' ' . $room['no'], $bookedRooms) || in_array($room['no'], $bookedRooms))
+                            @php 
+                                $bookedInfo = $bookedRooms[$room['type'] . ' ' . $room['no']] ?? $bookedRooms[$room['no']] ?? null;
+                            @endphp
+                            @if($bookedInfo)
+                                <div class="next-available" style="margin-top: 0.5rem; padding: 0.6rem; background: #fff1f2; border-radius: 10px; border: 1px solid #fee2e2; text-align: center;">
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #991b1b; margin: 0;">
+                                        <i class="ph-bold ph-clock-countdown"></i> Next Available:<br>
+                                        {{ date('d M, Y', strtotime($bookedInfo['date'])) }} at {{ date('h:i A', strtotime($bookedInfo['time'])) }}
+                                    </p>
+                                </div>
+                            @endif
+
+                            <div class="card-actions" style="margin-top: 1rem;">
+                                <a href="{{ route('room.details', ['id' => 'advance-room-' . $room['no']]) }}" class="btn btn-outline" style="flex: 1;">View Details</a>
+                                @if($bookedInfo)
                                     <a href="javascript:void(0)" class="btn"
-                                        style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.8; pointer-events: none;">Booked</a>
+                                        style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.5; pointer-events: none;">Booked</a>
                                 @else
                                     <a href="{{ route('booking.form.full', ['room' => $room['no']]) }}" class="btn">Book Now</a>
                                 @endif
@@ -617,45 +597,25 @@
                             <input type="email" placeholder="Your email">
                         </div>
                     </div>
-
+                    
                     <div class="help-input-group full-width">
                         <label>Subject</label>
-                        <div class="custom-dropdown" id="helpSubjectDropdown">
-                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
-                                <span id="selectedSubject">Choose subject…</span>
-                                <i class="ph ph-caret-down"></i>
-                            </div>
-                            <div class="dropdown-options" id="helpDropdownOptions">
-                                <div class="dropdown-option"
-                                    onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a
-                                    property owner who needs help?</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking
-                                </div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking
-                                </div>
-                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I
-                                    did not stay at the hotel</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
-                                <div class="dropdown-option"
-                                    onclick="selectHelpOption('Check prices and availability')">Check prices and
-                                    availability</div>
-                                <div class="dropdown-option"
-                                    onclick="selectHelpOption('Group booking (for business clients)')">Group booking
-                                    (for business clients)</div>
-                                <div class="dropdown-option"
-                                    onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for
-                                    travel agencies)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">
-                                    Request my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">
-                                    Remove my personal data</div>
-                                <div class="dropdown-option"
-                                    onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related
-                                    matters</div>
-                            </div>
-                        </div>
+                        <select class="form-input" style="background: #fafafa !important;">
+                            <option value="" disabled selected>Choose subject…</option>
+                            <option>Are you a property owner who needs help?</option>
+                            <option>Change booking</option>
+                            <option>Cancel booking</option>
+                            <option>I did not stay at the hotel</option>
+                            <option>Hotel info</option>
+                            <option>Partnership</option>
+                            <option>Other</option>
+                            <option>Check prices and availability</option>
+                            <option>Group booking (for business clients)</option>
+                            <option>Group booking (for travel agencies)</option>
+                            <option>Request my personal data</option>
+                            <option>Remove my personal data</option>
+                            <option>Legal and law-related matters</option>
+                        </select>
                     </div>
 
                     <div class="help-input-group full-width">
@@ -683,7 +643,7 @@
             const isBooked = data.booked === 'true';
             const bookBtn = document.getElementById('modalBookNowBtn');
             if (isBooked) {
-                bookBtn.style.background = '#9ca3af';
+                bookBtn.style.opacity = '0.5';
                 bookBtn.style.cursor = 'not-allowed';
                 bookBtn.style.pointerEvents = 'none';
                 bookBtn.innerHTML = 'Currently Booked <i class="ph-bold ph-lock-key"></i>';
@@ -722,17 +682,6 @@
 
         function closeHelpModal() {
             document.getElementById('helpModal').classList.remove('active');
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        function toggleHelpDropdown(event) {
-            event.stopPropagation();
-            document.getElementById('helpDropdownOptions').classList.toggle('active');
-        }
-
-        function selectHelpOption(val) {
-            document.getElementById('selectedSubject').innerText = val;
-            document.getElementById('helpDropdownOptions').classList.remove('active');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -742,12 +691,6 @@
             window.onclick = function (event) {
                 if (event.target == detailsModal) closeModal('detailsModal');
                 if (event.target == helpModal) closeHelpModal();
-
-                const dropdownOptions = document.getElementById('helpDropdownOptions');
-                const dropdownSelected = document.querySelector('.dropdown-selected');
-                if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
-                    dropdownOptions.classList.remove('active');
-                }
             }
         });
     </script>

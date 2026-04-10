@@ -90,18 +90,20 @@ class SuperAdminController extends Controller
     public function updateSettings(Request $request)
     {
         $request->validate([
-            'system_email'  => 'required|email',
-            'mail_password' => 'required',
-            'primary_color' => 'nullable|string'
+            'system_email'        => 'required|email',
+            'mail_password'       => 'required',
+            'primary_color'       => 'nullable|string',
+            'secondary_color'     => 'nullable|string',
+            'use_secondary_color' => 'nullable'
         ]);
 
         Setting::updateOrCreate(['key' => 'principal_email'], ['value' => $request->system_email]);
         Setting::updateOrCreate(['key' => 'mail_password'],   ['value' => $request->mail_password]);
         Setting::updateOrCreate(['key' => 'sender_email'],    ['value' => $request->system_email]);
         
-        if ($request->has('primary_color')) {
-            Setting::updateOrCreate(['key' => 'primary_color'], ['value' => $request->primary_color]);
-        }
+        Setting::updateOrCreate(['key' => 'primary_color'],   ['value' => $request->primary_color ?? '#ff7a00']);
+        Setting::updateOrCreate(['key' => 'secondary_color'], ['value' => $request->secondary_color ?? '#001a33']);
+        Setting::updateOrCreate(['key' => 'use_secondary_color'], ['value' => $request->has('use_secondary_color') ? '1' : '0']);
 
         return redirect()->back()->with('success', 'System settings updated successfully.');
     }

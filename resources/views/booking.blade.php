@@ -70,13 +70,16 @@
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color); font-size:1.75rem;"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth
-                        <a href="#" class="dropdown-item logout">Logout</a>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="dropdown-item logout" style="width:100%; text-align:left; background:none; border:none; padding:10px 15px; cursor:pointer; font-family:inherit;">Logout</button>
+                        </form>
                     @else
-                        <a href="#" class="dropdown-item">Login</a>
+                        <a href="{{ route('login') }}" class="dropdown-item">Login</a>
                     @endauth
                 </div>
             </div>

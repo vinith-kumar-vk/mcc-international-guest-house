@@ -16,9 +16,12 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/standard-rooms', function () {
-    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+    $bookedRooms = \App\Models\Booking::where('approval_status', '!=', 'Rejected')
         ->whereDate('booking_date', '>=', now()->toDateString())
-        ->pluck('room_name')->toArray();
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [$item->room_name => ['date' => $item->booking_date, 'time' => $item->end_time]];
+        })->toArray();
     return view('standard-rooms', compact('bookedRooms'));
 })->name('standard.rooms');
 
@@ -28,18 +31,29 @@ Route::get('/booking-form', function () {
 })->name('booking.form.full');
 
 Route::get('/advance-rooms', function () {
-    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+    $bookedRooms = \App\Models\Booking::where('approval_status', '!=', 'Rejected')
         ->whereDate('booking_date', '>=', now()->toDateString())
-        ->pluck('room_name')->toArray();
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [$item->room_name => ['date' => $item->booking_date, 'time' => $item->end_time]];
+        })->toArray();
     return view('advance-rooms', compact('bookedRooms'));
 })->name('advance.rooms');
 
 Route::get('/conference-rooms', function () {
-    $bookedRooms = \App\Models\Booking::whereIn('approval_status', ['Approved', 'Principal Approved'])
+    $bookedRooms = \App\Models\Booking::where('approval_status', '!=', 'Rejected')
         ->whereDate('booking_date', '>=', now()->toDateString())
-        ->pluck('room_name')->toArray();
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [$item->room_name => ['date' => $item->booking_date, 'time' => $item->end_time]];
+        })->toArray();
     return view('conference-rooms', compact('bookedRooms'));
 })->name('conference.rooms');
+
+Route::get('/room-details/{id}', function ($id) {
+    // We can pass more context like category to help identify the room
+    return view('room-details', ['roomId' => $id, 'category' => request('category')]);
+})->name('room.details');
 
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
 Route::post('/booking', [BookingController::class, 'storeBooking'])->name('booking.store');
@@ -83,14 +97,9 @@ Route::post('/superadmin/logout', [LoginController::class, 'superAdminLogout'])-
 
 // Unified Logout Route for Shared Header
 Route::post('/logout', function () {
-    $user = Auth::user();
-    $role = $user ? $user->role : 'guest';
     Auth::logout();
     session()->invalidate();
     session()->regenerateToken();
-    
-    if ($role === 'superadmin') return redirect()->route('superadmin.login');
-    if ($role === 'admin') return redirect()->route('admin.login');
     return redirect()->route('login');
 })->name('logout');
 

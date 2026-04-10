@@ -1,12 +1,65 @@
 @php
     $primaryColor = \App\Models\Setting::where('key', 'primary_color')->first()->value ?? '#ff7a00';
+    $secondaryColor = \App\Models\Setting::where('key', 'secondary_color')->first()->value ?? '#001a33';
+
+    function hexToRgb($hex) {
+        $hex = str_replace("#", "", $hex);
+        if(strlen($hex) == 3) {
+            $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+            $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+            $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+        } else {
+            $r = hexdec(substr($hex,0,2));
+            $g = hexdec(substr($hex,2,2));
+            $b = hexdec(substr($hex,4,2));
+        }
+        return "$r, $g, $b";
+    }
+    $primaryRgb = hexToRgb($primaryColor);
+    $secondaryRgb = hexToRgb($secondaryColor);
+    $useSecondary = \App\Models\Setting::where('key', 'use_secondary_color')->first()->value ?? '0';
 @endphp
 <style>
     :root {
         --primary-color: {{ $primaryColor }};
+        --primary-rgb: {{ $primaryRgb }};
         --primary: {{ $primaryColor }};
+        --secondary-color: {{ $secondaryColor }};
+        --secondary: {{ $secondaryColor }};
     }
     
+    /* Secondary Style Overrides for Visual Balance */
+    @if($useSecondary == '1')
+    header:not(.auth-header) {
+        border-bottom: 2px solid var(--secondary-color) !important;
+    }
+
+    .main-footer {
+        border-top: 4px solid var(--secondary-color) !important;
+        background: var(--secondary-color) !important;
+        color: #fff !important;
+    }
+
+    .main-footer .footer-column h4,
+    .main-footer .footer-column h4::after,
+    .main-footer .footer-column ul li,
+    .main-footer .footer-column ul li a,
+    .main-footer .footer-contact-link,
+    .main-footer .footer-column p {
+        color: #f1f5f9 !important;
+    }
+
+    .main-footer .footer-bottom {
+        background: rgba(0,0,0,0.15) !important;
+        border-top: 1px solid rgba(255,255,255,0.05) !important;
+        color: #cbd5e1 !important;
+    }
+
+    .sidebar, .admin-sidebar {
+        border-right: 1px solid var(--secondary-color) !important;
+    }
+    @endif
+
     /* Global overrides for common elements */
     .btn:not(.btn-outline), 
     .btn-primary, 
@@ -46,7 +99,7 @@
     /* Input focus */
     .form-input:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
         border-color: var(--primary-color) !important;
-        box-shadow: 0 0 0 3px rgba({{ hexToRgb($primaryColor) }}, 0.15) !important;
+        box-shadow: 0 0 0 3px rgba({{ $primaryRgb }}, 0.15) !important;
     }
 
     /* Radio/Checkbox */
@@ -61,9 +114,43 @@
         color: var(--primary-color) !important;
     }
 
+    /* Modal & Popups */
+    .modal-close:hover {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+    }
+
+    .facility-item i {
+        color: var(--primary-color) !important;
+    }
+
+    .dropdown-option:hover {
+        background-color: rgba({{ $primaryRgb }}, 0.08) !important;
+        color: var(--primary-color) !important;
+    }
+
+    /* Form Fields */
+    .form-input:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 4px rgba({{ $primaryRgb }}, 0.1) !important;
+    }
+
     /* Hover states */
-    .btn-outline:hover, .btn:hover, .submit-btn:hover {
+    .btn-outline:hover {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+        color: #fff !important;
         filter: brightness(90%) !important;
+    }
+
+    .btn:not(.btn-outline):hover, 
+    .btn-primary:hover, 
+    .submit-btn:hover, 
+    .help-send-btn:hover, 
+    .confirm-booking-btn:hover {
+        background-color: var(--primary-color) !important;
+        filter: brightness(90%) !important;
+        color: #fff !important;
     }
 
     .btn-outline {
@@ -74,7 +161,7 @@
     /* Sidebar and Navigation */
     .sidebar-menu a.active { 
         color: var(--primary-color) !important; 
-        background: rgba({{ hexToRgb($primaryColor) }}, 0.08) !important; 
+        background: rgba({{ $primaryRgb }}, 0.08) !important; 
         border-left: 4px solid var(--primary-color) !important;
     }
 
@@ -85,28 +172,11 @@
     .hero-dot.active {
         background-color: var(--primary-color) !important;
     }
-    
-    @php
-        function hexToRgb($hex) {
-            $hex = str_replace("#", "", $hex);
-            if(strlen($hex) == 3) {
-                $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-                $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-                $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-            } else {
-                $r = hexdec(substr($hex,0,2));
-                $g = hexdec(substr($hex,2,2));
-                $b = hexdec(substr($hex,4,2));
-            }
-            return "$r, $g, $b";
-        }
-        $rgbColor = hexToRgb($primaryColor);
-    @endphp
 </style>
 
 <script>
     window.primaryColor = "{{ $primaryColor }}";
-    window.primaryColorRGB = "{{ $rgbColor }}";
+    window.primaryColorRGB = "{{ $primaryRgb }}";
 
     // "Nuclear" fix: Scan the DOM for hardcoded orange and replace it
     function applyDynamicTheme() {
@@ -120,7 +190,9 @@
             "rgba(255, 122, 0, 0.85)",
             "rgba(255, 122, 0, 0.3)",
             "rgba(255, 122, 0, 0.15)",
-            "rgba(255, 122, 0, 0.1)"
+            "rgba(255, 122, 0, 0.1)",
+            "rgb(255, 154, 0)",
+            "rgb(255, 165, 0)"
         ];
         
         const allElements = document.getElementsByTagName('*');
@@ -137,7 +209,7 @@
                 const alpha = style.backgroundColor.split(',').pop().replace(')', '').trim();
                 el.style.setProperty('background-color', `rgba(${window.primaryColorRGB}, ${alpha})`, 'important');
             }
-
+ 
             // Border
             if (orangeShades.includes(style.borderColor)) {
                 el.style.setProperty('border-color', window.primaryColor, 'important');

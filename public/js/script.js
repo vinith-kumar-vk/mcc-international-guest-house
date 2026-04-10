@@ -446,19 +446,19 @@ function fallbackTextDownload() {
 
 // --- HEADER DROPDOWN LOGIC ---
 function toggleDropdown(event) {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     const menu = document.getElementById('profileMenu');
     if (menu) {
-        menu.classList.toggle('show');
+        menu.classList.toggle('active');
     }
 }
 
 document.addEventListener('click', function(event) {
     const menu = document.getElementById('profileMenu');
     const btn = document.querySelector('.profile-btn');
-    if (menu && menu.classList.contains('show')) {
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-            menu.classList.remove('show');
+    if (menu && menu.classList.contains('active')) {
+        if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.remove('active');
         }
     }
 });

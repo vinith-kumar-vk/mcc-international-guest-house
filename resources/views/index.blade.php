@@ -36,7 +36,7 @@
         /* =============================================================
            HERO WELCOME SECTION (Base is in responsive.css)
         ============================================================= */
-        .hero-section { text-align: center; padding: 2.5rem 1.5rem 2rem; background: #f8fafc; }
+        .hero-section { text-align: center; padding: 1rem 1.5rem 2rem; background: #f8fafc; }
         .welcome-title {
             font-size: 3rem;
             font-weight: 800;
@@ -99,6 +99,41 @@
             transition: all 0.3s ease;
             text-align: left;
         }
+
+        /* Visibility Improvements for Room Categories */
+        .slider-card {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+            border: 1px solid #edf2f7 !important;
+        }
+        .slider-card h2 {
+            color: #0f172a !important; /* Darker navy for titles */
+            font-weight: 800 !important;
+            letter-spacing: -0.5px;
+        }
+        .slider-card .description {
+            color: #334155 !important; /* High contrast slate for descriptions */
+            font-weight: 500 !important;
+            line-height: 1.6 !important;
+            margin-bottom: 1.5rem !important;
+        }
+        .slider-card .gst-text {
+            color: #64748b !important; /* Darker gray for GST */
+            font-weight: 600 !important;
+            margin-bottom: 1.25rem !important;
+        }
+        .slider-card .btn-outline {
+            border-width: 2px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            background: #fff !important;
+        }
+        .slider-card .btn-outline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,122,0,0.2) !important;
+        }
+        .slider-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
+            border-color: var(--primary-color) !important;
+        }
         .feature-item i { font-size: 1.8rem; color: var(--primary-color); flex-shrink: 0; }
         .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
         .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }
@@ -113,7 +148,7 @@
     <section class="main-image-slider">
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
-            <img src="{{ asset('assets/mcc.png') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Welcome to MCC IGH</h2>
                 <p class="slide-subtitle">Comfortable and secure guest house booking</p>
@@ -135,12 +170,30 @@
                 <p class="slide-subtitle">Plan your stay with ease and convenience</p>
             </div>
         </div>
+        <!-- Slide 4 -->
+        <div class="hero-slide">
+            <img src="{{ asset('assets/standard/banner2.jpg') }}" alt="MCC IGH Modern" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+                <h2 class="slide-title">Modern Amenities</h2>
+                <p class="slide-subtitle">Experience comfort with state-of-the-art facilities</p>
+            </div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="hero-slide">
+            <img src="{{ asset('assets/standard/banner1.JPG') }}" alt="MCC IGH Serene" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+                <h2 class="slide-title">Serene Environment</h2>
+                <p class="slide-subtitle">Enjoy a peaceful and quiet stay at the campus</p>
+            </div>
+        </div>
         <!-- Nav Arrows -->
         <div class="hero-slider-arrow left"><button class="hero-prev"><i class="ph-bold ph-caret-left"></i></button></div>
         <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
         <!-- Dots -->
         <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
             <div class="hero-dot active" style="width:30px;height:3px;background:var(--primary-color);cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
             <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
             <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
         </div>
@@ -242,11 +295,11 @@
                     <div id="cardsCarousel" class="cards-container" style="align-items: stretch;">
                         @php
                             $roomCards = [
-                                ['badge' => 'Standard', 'badgeClass' => 'standard-badge', 'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Standard Rooms', 'desc' => 'Comfortable accommodations designed for short and efficient stays.', 'route' => 'standard.rooms', 'btnText' => 'EXPLORE STANDARD'],
-                                ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Advance Rooms', 'desc' => 'Premium guest rooms tailored for extended comfort and privacy.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Conference Hall', 'desc' => 'Dedicated interactive halls for large meetings and events.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Glass Room', 'desc' => 'Premium transparent facility for collaborative sessions.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
-                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'title' => 'Suite Room', 'desc' => 'Luxury stay with premium comfort and privacy.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE SUITE'],
+                                ['badge' => 'Standard', 'badgeClass' => 'standard-badge', 'image' => asset('assets/standard/standardroom.JPG'), 'title' => 'Standard Rooms', 'desc' => 'Thoughtfully designed for efficiency and comfort, our Standard Rooms provide a restful haven for short-term visitors with essential modern amenities.', 'route' => 'standard.rooms', 'btnText' => 'EXPLORE STANDARD'],
+                                ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => asset('assets/room1.JPG'), 'title' => 'Advance Rooms', 'desc' => 'Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
+                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/conference.JPG'), 'title' => 'Conference Hall', 'desc' => 'A versatile venue designed for large-scale gatherings and corporate events with high-definition projection and professional acoustics.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/glass.JPG'), 'title' => 'Glass Room', 'desc' => 'Inspire creativity in our modern Glass Room, designed for collaborative brainstorming and focused team sessions with ample natural light.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE SUITE'],
                             ];
                         @endphp
 
@@ -363,12 +416,12 @@
                 <!-- Standard Rooms -->
                 <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
-                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Standard Rooms" style="width: 100%; height: 100%; object-fit: cover;">
-                        <span class="badge" style="background: #e5e7eb; color: #333; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
+                        <img src="{{ asset('assets/standard/standardroom.JPG') }}" alt="Standard Rooms" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="badge standard-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
                     </div>
                     <div class="card-content">
                         <h2>Standard Rooms</h2>
-                        <p class="description">Comfortable accommodations designed for short and efficient stays with essential amenities.</p>
+                        <p class="description">Thoughtfully designed for efficiency and comfort, our Standard Rooms provide a restful haven for short-term visitors with essential modern amenities.</p>
                         <p class="gst-text">+ 5% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
@@ -379,12 +432,12 @@
                 <!-- Advance Rooms -->
                 <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
-                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Advance Rooms" style="width: 100%; height: 100%; object-fit: cover;">
-                        <span class="badge" style="background: var(--primary-color); color: white; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
+                        <img src="{{ asset('assets/room1.JPG') }}" alt="Advance Rooms" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="badge premium-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
                     </div>
                     <div class="card-content">
                         <h2>Advance Rooms</h2>
-                        <p class="description">Premium guest rooms tailored for extended comfort, delegates, and specific reservations.</p>
+                        <p class="description">Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
                         <p class="gst-text">+ 5% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
@@ -395,12 +448,12 @@
                 <!-- Conference / Glass Rooms -->
                 <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
-                        <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90" alt="Conference Rooms" style="width: 100%; height: 100%; object-fit: cover;">
-                        <span class="badge" style="background: #3b82f6; color: white; position: absolute; top: 1rem; left: 1rem; z-index: 5;">Conference</span>
+                        <img src="{{ asset('assets/standard/conference.JPG') }}" alt="Conference Rooms" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="badge conference-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Conference</span>
                     </div>
                     <div class="card-content">
                         <h2>Conference / Glass Rooms</h2>
-                        <p class="description">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
+                        <p class="description">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
                         <p class="gst-text">+ 5% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('conference.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
@@ -416,7 +469,7 @@
                 <h2 class="facility-title">About Our Facilities</h2>
                 <div class="facility-divider"></div>
                 <div class="desc-content">
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Enjoy comfortable stays tailored perfectly to meet the demands of modern professionals. Our guest house comes equipped with all premium amenities aimed at making your experience relaxing and highly productive.</p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Experience a refined stay tailored to the needs of modern professionals and distinguished guests. At MCC IGH, we combine traditional hospitality with premium modern amenities—from high-speed connectivity to climate-controlled comfort—ensuring every moment of your visit is both relaxing and highly productive.</p>
                 </div>
 
                 <div class="feature-grid">

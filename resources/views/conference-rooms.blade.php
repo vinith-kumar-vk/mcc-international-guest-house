@@ -36,7 +36,7 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem; cursor: pointer; color: #333; transition: all 0.3s; z-index: 100;
         }
-        .modal-close:hover { background: #ff4757; color: white; transform: rotate(90deg); }
+        .modal-close:hover { color: white; transform: rotate(90deg); }
         .modal-img-container { position: relative; width: 100%; height: 150px; overflow: hidden; flex-shrink: 0; }
         .room-img-modal { width: 100%; height: 100%; object-fit: cover; }
         .modal-body { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; overflow: hidden; }
@@ -76,17 +76,17 @@
         }
         .help-modal-close:hover { color: #333 !important; background: none !important; box-shadow: none !important; transform: none !important; }
         .help-modal-title { text-align: center; font-size: 1.8rem; font-weight: 700; color: #111; margin-bottom: 25px; margin-top: 0; }
-        .help-form { display: flex; flex-direction: column; gap: 20px; }
-        .help-form-row { display: flex; gap: 20px; }
-        .help-input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .help-form { display: flex; flex-direction: column; gap: 15px; }
+        .help-form-row { display: flex; flex-direction: column; gap: 15px; }
+        .help-input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
         .help-input-group.full-width { width: 100%; }
-        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
-        .help-input-group input, .help-input-group textarea {
+        .help-input-group label { font-size: 0.85rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .help-input-group input, .help-input-group select, .help-input-group textarea {
             padding: 14px 16px !important; border: 1px solid #ddd !important; border-radius: 8px !important;
             font-family: inherit; font-size: 1rem !important; transition: all 0.3s; background: #fafafa !important;
-            width: 100%;
+            width: 100% !important; display: block !important; box-sizing: border-box !important;
         }
-        .help-input-group input:focus, .help-input-group textarea:focus {
+        .help-input-group input:focus, .help-input-group select:focus, .help-input-group textarea:focus {
             border-color: var(--primary-color) !important; outline: none !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
         }
 
@@ -112,7 +112,7 @@
         }
         .dropdown-option:last-child { border-bottom: none; }
         .dropdown-option:hover { background: #fff8f3; color: var(--primary-color); }
-        .help-form-footer { display: flex; justify-content: center; margin-top: 5px; }
+        .help-form-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
         .help-send-btn {
             background: var(--primary-color) !important;
             color: #ffffff !important;
@@ -154,10 +154,21 @@
             border-color: var(--primary-color) !important;
         }
         .card-actions .btn-outline:active {
-            background-color: #e06000 !important;
+            background-color: var(--primary-color) !important;
             color: #ffffff !important;
-            border-color: #e06000 !important;
+            border-color: var(--primary-color) !important;
+            filter: brightness(80%) !important;
         }
+        /* Compact Card Fixes */
+        .card { height: auto !important; min-height: 0 !important; }
+        .card-content { padding: 1.25rem !important; gap: 0.25rem !important; }
+        .card-content h2 { min-height: 0 !important; margin-bottom: 0.25rem !important; line-height: 1.2 !important; }
+        .card-content .description { min-height: 0 !important; margin-bottom: 0.5rem !important; }
+        .price-highlight { margin-bottom: 0 !important; }
+        .gst-text { margin-bottom: 0.5rem !important; }
+        .facility-features, .luxury-features { margin: 0.5rem 0 !important; padding: 0.75rem !important; }
+        .next-available { margin-top: 0.5rem !important; padding: 0.5rem !important; }
+        .card-actions { margin-top: 0.75rem !important; }
         /* Header Centering */
         .header-container { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
         .header-title {
@@ -188,14 +199,54 @@
 
             <div class="title-section" style="margin: 0rem 0 3.5rem 0; text-align: left;">
                 <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.6rem; color: #222; letter-spacing: -1px;">Conference / Glass Rooms</h1>
-                <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">Dedicated interactive halls for large meetings, corporate events, and collaborative sessions.</p>
+                <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
             </div>
 
             @php
                 $specialRooms = [
-                    ['name' => 'Conference Hall', 'capacity' => 60, 'img' => 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', 'desc' => 'Premium Hall Facility'],
-                    ['name' => 'Glass Room', 'capacity' => 15, 'img' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', 'desc' => 'Collaborative Facility'],
-                    ['name' => 'Suite Room', 'capacity' => 2, 'img' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=90', 'desc' => 'Luxury stay with premium comfort and privacy. <br><strong>Room No: 202</strong>'],
+                    [
+                        'name' => 'Conference Hall', 
+                        'capacity' => 60, 
+                        'img' => asset('assets/standard/conference.JPG'), 
+                        'desc' => 'Professional hall featuring HD projection, high-grade acoustics, and seating for 60 members.',
+                        'amenities' => [
+                            ['name' => 'High-Speed WiFi', 'icon' => 'ph-wifi-high'],
+                            ['name' => 'Projector / Screen', 'icon' => 'ph-projector-screen'],
+                            ['name' => 'AC Space', 'icon' => 'ph-snowflake'],
+                            ['name' => '60 Members', 'icon' => 'ph-users'],
+                            ['name' => 'Presentation Setup', 'icon' => 'ph-chalkboard'],
+                        ],
+                        'theme' => ['bg' => '#f0f4ff', 'border' => '#4e73df', 'icon' => '#4e73df', 'title' => 'Facility Features']
+                    ],
+                    [
+                        'name' => 'Glass Room', 
+                        'capacity' => 15, 
+                        'img' => asset('assets/standard/glass.JPG'), 
+                        'desc' => 'Modern transparent facility designed for collaborative brainstorming and focused team sessions with ample natural light.',
+                        'amenities' => [
+                            ['name' => 'Modern Furniture', 'icon' => 'ph-armchair'],
+                            ['name' => 'High Speed WiFi', 'icon' => 'ph-wifi-high'],
+                            ['name' => 'Charging Ports', 'icon' => 'ph-plug-connected'],
+                            ['name' => 'Glass Walls', 'icon' => 'ph-squares-four'],
+                            ['name' => 'AC', 'icon' => 'ph-snowflake'],
+                            ['name' => 'Presentation Support', 'icon' => 'ph-presentation-chart'],
+                        ],
+                        'theme' => ['bg' => '#fff8f3', 'border' => 'var(--primary-color)', 'icon' => 'var(--primary-color)', 'title' => 'Premium Features']
+                    ],
+                    [
+                        'name' => 'Suite Room', 
+                        'capacity' => 2, 
+                        'img' => asset('assets/suite.JPG'), 
+                        'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation. <br><strong>Room No: 202</strong>',
+                        'amenities' => [
+                            ['name' => 'King Size Bed', 'icon' => 'ph-bed'],
+                            ['name' => 'Smart TV', 'icon' => 'ph-television'],
+                            ['name' => 'Mini Fridge', 'icon' => 'ph-snowflake'],
+                            ['name' => 'Premium Toiletries', 'icon' => 'ph-spray-bottle'],
+                            ['name' => 'Spacious Interior', 'icon' => 'ph-arrows-out'],
+                        ],
+                        'theme' => ['bg' => '#fff9e6', 'border' => '#d4af37', 'icon' => '#d4af37', 'title' => 'Luxury Features']
+                    ],
                 ];
             @endphp
 
@@ -206,7 +257,7 @@
                 <div class="card" data-name="{{ $room['name'] }}">
                     <div class="card-image-wrapper">
                         <img src="{{ $room['img'] }}" alt="{{ $room['name'] }}">
-                        @if(in_array($room['name'], $bookedRooms) || in_array($roomId, $bookedRooms))
+                        @if(isset($bookedRooms[$room['name']]) || isset($bookedRooms[$roomId]))
                             <span class="badge" style="background:#dc3545; color: white;">Booked</span>
                         @else
                             <span class="badge status-available">Available</span>
@@ -225,45 +276,37 @@
                         <p class="gst-text">+ 5% GST applicable</p>
                         
                         <!-- Room Features -->
-                        @if($room['name'] === 'Suite Room')
-                        <div class="luxury-features" style="margin: 1rem 0; padding: 0.8rem; background: #fff9e6; border-radius: 12px; border: 1px dashed #d4af37;">
-                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">Luxury Features</h3>
+                        <div class="room-features-box" style="margin: 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }};">
+                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">{{ $room['theme']['title'] }}</h3>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-bed" style="color: #d4af37;"></i> King Size Bed</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-television" style="color: #d4af37;"></i> Smart TV</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-snowflake" style="color: #d4af37;"></i> Mini Fridge</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-bottle" style="color: #d4af37;"></i> Premium Toiletries</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-layout" style="color: #d4af37;"></i> Spacious Interior</div>
+                                @foreach($room['amenities'] as $amenity)
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <i class="ph {{ $amenity['icon'] }}" style="color: {{ $room['theme']['icon'] }};"></i> 
+                                    {{ $amenity['name'] }}
+                                </div>
+                                @endforeach
                             </div>
-                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">Luxury stay with maximum comfort</p>
+                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">
+                                {{ $room['name'] === 'Suite Room' ? 'Luxury stay with maximum comfort' : ($room['name'] === 'Glass Room' ? 'Designed for transparency and innovation' : 'Perfect for meetings and collaboration') }}
+                            </p>
                         </div>
-                        @else
-                        <div class="facility-features" style="margin: 1rem 0; padding: 0.8rem; background: #f0f4ff; border-radius: 12px; border: 1px dashed #4e73df;">
-                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">Facility Features</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wifi-high" style="color: #4e73df;"></i> High-Speed WiFi</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-monitor" style="color: #4e73df;"></i> Projector / Screen</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wind" style="color: #4e73df;"></i> AC Space</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-users" style="color: #4e73df;"></i> {{ $room['capacity'] }} Members</div>
-                                <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-chalkboard" style="color: #4e73df;"></i> Presentation Setup</div>
+
+                        @php 
+                            $bookedInfo = $bookedRooms[$room['name']] ?? $bookedRooms[$roomId] ?? null;
+                        @endphp
+                        @if($bookedInfo)
+                            <div class="next-available" style="margin-top: 0.5rem; padding: 0.6rem; background: #fff1f2; border-radius: 10px; border: 1px solid #fee2e2; text-align: center;">
+                                <p style="font-size: 0.75rem; font-weight: 700; color: #991b1b; margin: 0;">
+                                    <i class="ph-bold ph-clock-countdown"></i> Next Available:<br>
+                                    {{ date('d M, Y', strtotime($bookedInfo['date'])) }} at {{ date('h:i A', strtotime($bookedInfo['time'])) }}
+                                </p>
                             </div>
-                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">Perfect for meetings and collaboration</p>
-                        </div>
                         @endif
 
-                        <div class="card-actions">
-                            <button type="button" class="btn btn-outline" 
-                                onclick="window.showQuickRoomDetails(this)"
-                                data-room="{{ $roomId }}" 
-                                data-name="{{ $room['name'] }}" 
-                                data-price="₹2000" 
-                                data-time="for 4 hours"
-                                 data-img="{{ $room['img'] }}"
-                                 data-facilities="Projector:ph-monitor,PA System:ph-speaker-high,Whiteboard:ph-chalkboard,High Speed WiFi:ph-wifi-high,Drinking Water:ph-drop,AC:ph-wind"
-                                 data-desc="Spacious and professionally designed environment suitable for meetings, collaboration, or luxury stay with privacy."
-                                 data-booked="{{ in_array($room['name'], $bookedRooms) || in_array($roomId, $bookedRooms) ? 'true' : 'false' }}">View Details</button>
-                            @if(in_array($room['name'], $bookedRooms) || in_array($roomId, $bookedRooms))
-                                <a href="javascript:void(0)" class="btn" style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.8; pointer-events: none;">Booked</a>
+                        <div class="card-actions" style="margin-top: 1rem;">
+                            <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1;">View Details</a>
+                            @if($bookedInfo)
+                                <a href="javascript:void(0)" class="btn" style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.5; pointer-events: none;">Booked</a>
                             @else
                                 <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn">Book Now</a>
                             @endif
@@ -334,27 +377,22 @@
                     
                     <div class="help-input-group full-width">
                         <label>Subject</label>
-                        <div class="custom-dropdown" id="helpSubjectDropdown">
-                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
-                                <span id="selectedSubject">Choose subject…</span>
-                                <i class="ph ph-caret-down"></i>
-                            </div>
-                            <div class="dropdown-options" id="helpDropdownOptions">
-                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
-                            </div>
-                        </div>
+                        <select class="form-input" style="background: #fafafa !important;">
+                            <option value="" disabled selected>Choose subject…</option>
+                            <option>Are you a property owner who needs help?</option>
+                            <option>Change booking</option>
+                            <option>Cancel booking</option>
+                            <option>I did not stay at the hotel</option>
+                            <option>Hotel info</option>
+                            <option>Partnership</option>
+                            <option>Other</option>
+                            <option>Check prices and availability</option>
+                            <option>Group booking (for business clients)</option>
+                            <option>Group booking (for travel agencies)</option>
+                            <option>Request my personal data</option>
+                            <option>Remove my personal data</option>
+                            <option>Legal and law-related matters</option>
+                        </select>
                     </div>
 
                     <div class="help-input-group full-width">
@@ -392,7 +430,7 @@
             const isBooked = data.booked === 'true';
             const bookBtn = document.getElementById('modalBookNowBtn');
             if (isBooked) {
-                bookBtn.style.background = '#9ca3af';
+                bookBtn.style.opacity = '0.5';
                 bookBtn.style.cursor = 'not-allowed';
                 bookBtn.style.pointerEvents = 'none';
                 bookBtn.innerHTML = 'Currently Booked <i class="ph-bold ph-lock-key"></i>';
@@ -431,17 +469,6 @@
 
         function closeHelpModal() {
             document.getElementById('helpModal').classList.remove('active');
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        function toggleHelpDropdown(event) {
-            event.stopPropagation();
-            document.getElementById('helpDropdownOptions').classList.toggle('active');
-        }
-
-        function selectHelpOption(val) {
-            document.getElementById('selectedSubject').innerText = val;
-            document.getElementById('helpDropdownOptions').classList.remove('active');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -451,12 +478,6 @@
             window.onclick = function(event) {
                 if (event.target == detailsModal) closeModal('detailsModal');
                 if (event.target == helpModal) closeHelpModal();
-
-                const dropdownOptions = document.getElementById('helpDropdownOptions');
-                const dropdownSelected = document.querySelector('.dropdown-selected');
-                if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
-                    dropdownOptions.classList.remove('active');
-                }
             }
         });
     </script>

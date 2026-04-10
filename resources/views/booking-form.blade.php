@@ -408,7 +408,7 @@
                 <div class="summary-banner">
                     <div>
                         <h3>Selected: Room {{ $roomId ?? 'Pending' }}</h3>
-                        <p>Standard amenities included</p>
+                        <p>Enjoy premium amenities and professional hospitality</p>
                     </div>
                 </div>
 

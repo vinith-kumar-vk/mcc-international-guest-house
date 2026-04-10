@@ -13,6 +13,7 @@
             --sidebar-width: 280px;
             --admin-bg: #f8fafc;
             --primary-color: {{ $settings['primary_color'] ?? '#ff7a00' }};
+            --secondary-color: {{ $settings['secondary_color'] ?? '#001a33' }};
             --border: #e2e8f0;
             --success: #22c55e;
             --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -237,21 +238,47 @@
                     <i class="ph-fill ph-check-circle"></i> <strong>Configuration Active:</strong> This account will be used to <strong>send all notifications</strong> and it will also <strong>receive the initial approval links</strong>. This ensures a centralized control from a single secure account.
                 </div>
 
-                <div style="padding: 1.5rem; background: #fffcf0; border: 1px solid #fef3c7; border-radius: 12px; margin-bottom: 2rem;">
-                    <h3 style="font-size: 1rem; color: #92400e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="ph ph-palette"></i> Appearance & Branding
+                    <h3 style="font-size: 1.1rem; color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem;">
+                        <i class="ph-bold ph-palette" style="color: var(--primary-color);"></i> Appearance & Branding
                     </h3>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Global Primary Color</label>
+
+                    <!-- Primary Color (Always On) -->
+                    <div class="form-group" style="margin-bottom: 2rem; background: #fff; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 12px;">
+                        <label style="color: #1e293b; font-weight: 700; margin-bottom: 0.75rem; display: block;">Global Primary Color</label>
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            <input type="color" name="primary_color" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" style="width: 50px; height: 50px; padding: 2px; cursor: pointer; border: 2px solid #e2e8f0; border-radius: 8px;">
-                            <input type="text" id="colorCode" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" readonly style="flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; font-family: monospace; color: #64748b;">
+                            <input type="color" name="primary_color" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" style="width: 50px; height: 50px; padding: 2px; cursor: pointer; border: 2px solid #e2e8f0; border-radius: 10px;">
+                            <input type="text" id="colorCode" value="{{ $settings['primary_color'] ?? '#ff7a00' }}" readonly style="flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; font-family: monospace; color: #64748b; font-size: 0.95rem; font-weight: 600;">
                         </div>
-                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 8px;">
-                            <i class="ph ph-info"></i> This color will be applied across all user interfaces as the primary theme color.
+                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">
+                            <i class="ph ph-info"></i> This is the main theme color used for buttons, links, and icons throughout the site.
                         </div>
                     </div>
-                </div>
+
+                    <!-- Secondary Color (Optional Toggle) -->
+                    <div style="padding: 1.5rem; background: #f8fafc; border: 2px dashed #e2e8f0; border-radius: 16px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.95rem; color: #1e293b; font-weight: 700;">
+                                <input type="checkbox" name="use_secondary_color" id="useSecondaryToggle" {{ ($settings['use_secondary_color'] ?? '0') == '1' ? 'checked' : '' }} style="width: 18px !important; height: 18px !important; accent-color: var(--primary-color);">
+                                Enable Secondary Complementary Theme
+                            </label>
+                            <span class="badge" id="themeStatusBadge" style="{{ ($settings['use_secondary_color'] ?? '0') == '1' ? 'background:#dcfce7;color:#166534;' : 'background:#f1f5f9;color:#64748b;' }}">
+                                {{ ($settings['use_secondary_color'] ?? '0') == '1' ? 'Active' : 'Disabled' }}
+                            </span>
+                        </div>
+
+                        <div id="secondaryColorSection" style="{{ ($settings['use_secondary_color'] ?? '0') == '1' ? '' : 'opacity: 0.5; pointer-events: none;' }}">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Accent Secondary Color</label>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="color" name="secondary_color" value="{{ $settings['secondary_color'] ?? '#001a33' }}" style="width: 42px; height: 42px; padding: 2px; cursor: pointer; border: 2px solid #e2e8f0; border-radius: 8px;">
+                                    <input type="text" id="secondaryColorCode" value="{{ $settings['secondary_color'] ?? '#001a33' }}" readonly style="flex: 1; background: #fff; border: 1px solid #e2e8f0; font-family: monospace; color: #64748b; font-size: 0.85rem;">
+                                </div>
+                                <div style="font-size: 0.75rem; color: #64748b; margin-top: 12px; font-style: italic;">
+                                    <i class="ph ph-magic-wand"></i> The secondary color creates structural depth by applying it to the main footer and header borders.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 <button type="submit" class="btn-save">Save Configuration</button>
             </form>
@@ -288,12 +315,41 @@
         });
 
         // Color Sync
-        const colorInput = document.querySelector('input[type="color"]');
+        const colorInput = document.querySelector('input[name="primary_color"]');
         const colorCode = document.getElementById('colorCode');
+        const secondaryInput = document.querySelector('input[name="secondary_color"]');
+        const secondaryCode = document.getElementById('secondaryColorCode');
         
         if (colorInput && colorCode) {
             colorInput.addEventListener('input', (e) => {
                 colorCode.value = e.target.value.toUpperCase();
+            });
+        }
+        if (secondaryInput && secondaryCode) {
+            secondaryInput.addEventListener('input', (e) => {
+                secondaryCode.value = e.target.value.toUpperCase();
+            });
+        }
+
+        const useSecondaryToggle = document.getElementById('useSecondaryToggle');
+        const secondarySection = document.getElementById('secondaryColorSection');
+        const statusBadge = document.getElementById('themeStatusBadge');
+        
+        if (useSecondaryToggle && secondarySection && statusBadge) {
+            useSecondaryToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    secondarySection.style.opacity = '1';
+                    secondarySection.style.pointerEvents = 'auto';
+                    statusBadge.innerText = 'Active';
+                    statusBadge.style.background = '#dcfce7';
+                    statusBadge.style.color = '#166534';
+                } else {
+                    secondarySection.style.opacity = '0.5';
+                    secondarySection.style.pointerEvents = 'none';
+                    statusBadge.innerText = 'Disabled';
+                    statusBadge.style.background = '#f1f5f9';
+                    statusBadge.style.color = '#64748b';
+                }
             });
         }
     </script>
