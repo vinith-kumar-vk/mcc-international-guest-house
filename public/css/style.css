@@ -1,14 +1,14 @@
 :root {
     --primary-color: #ff7a00;
     --primary-hover: #e66d00;
-    --text-color: #1e293b;
-    --text-light: #64748b;
+    --text-color: #0f172a;
+    --text-light: #475569;
     --bg-color: #f8fafc;
     --white: #ffffff;
     --border: #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
     --transition: all 0.3s ease;
 }
 
@@ -122,10 +122,13 @@ header {
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 2px 4px rgba(255, 122, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
+    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-outline {
@@ -137,6 +140,8 @@ header {
 .btn-outline:hover {
     background-color: var(--primary-color);
     color: var(--white);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.25);
 }
 
 .btn-sm {
@@ -187,6 +192,7 @@ main {
     height: 100%;
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-sm);
 }
 
 .card:hover {
@@ -276,16 +282,21 @@ main {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
     align-items: center;
     justify-content: center;
     z-index: 2000;
     padding: 1rem;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-overlay.active {
-    display: flex;
+    visibility: visible;
+    opacity: 1;
 }
 
 .modal-card {
@@ -296,6 +307,12 @@ main {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    transform: scale(0.98);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1);
 }
 
 .modal-close {
@@ -337,11 +354,13 @@ main {
     border-radius: 8px;
     outline: none;
     transition: var(--transition);
+    background-color: #fcfcfd;
 }
 
-.form-input:focus, .form-select:focus {
+.form-input:focus, .form-select:focus, .form-textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+    background-color: var(--white);
 }
 
 /* Helper Classes */
@@ -612,21 +631,20 @@ main {
 /* Help Modal / Contact Us Styling */
 .help-modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-    display: none; align-items: center; justify-content: center; z-index: 6000;
+    display: flex; align-items: center; justify-content: center; z-index: 6000;
     opacity: 0; visibility: hidden; transition: all 0.3s ease;
 }
-.help-modal-overlay.active { display: flex; opacity: 1; visibility: visible; }
+.help-modal-overlay.active { opacity: 1; visibility: visible; }
 
 .help-modal-card {
     background: white; border-radius: 24px; width: 100%; max-width: 550px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.15); position: relative;
-    padding: 2.5rem; animation: helpModalSlideUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    margin: 20px; border: 1px solid #f1f5f9;
+    padding: 2.5rem; margin: 20px; border: 1px solid #f1f5f9;
+    transform: scale(0.98); transition: transform 0.3s ease;
 }
 
-@keyframes helpModalSlideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+.help-modal-overlay.active .help-modal-card {
+    transform: scale(1);
 }
 
 .help-modal-close {

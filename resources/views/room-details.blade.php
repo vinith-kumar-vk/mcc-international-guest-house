@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -327,19 +327,22 @@
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; transition: opacity 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
             background: white; border-radius: 20px; padding: 30px;
             width: 90%; max-width: 400px; position: relative;
-            transform: translateY(20px); transition: transform 0.3s ease;
+            transform: scale(0.98); transition: transform 0.3s ease;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-close {
             position: absolute; top: 20px; right: 20px;
-            font-size: 1.5rem; cursor: pointer; color: var(--text-light);
+            font-size: 1.25rem; cursor: pointer; color: var(--text-light);
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.05); transition: all 0.3s ease;
         }
 
         /* Share Modal */
@@ -361,7 +364,9 @@
             justify-content: center;
             width: auto;
             height: auto;
+            transform: scale(0.98); transition: transform 0.3s ease;
         }
+        .modal-overlay.active .lightbox-content { transform: scale(1); }
         .lightbox-img { 
             max-width: 95vw; 
             max-height: 90vh; 
@@ -836,7 +841,7 @@
                             <p style="color: var(--text-medium); font-style: italic; font-size: 0.85rem; line-height: 1.5; margin: 0;">"{{ $review['text'] }}"</p>
                         </div>
                         @endforeach
-                        <a href="javascript:void(0)" onclick="switchTab('reviews', document.querySelector('.tab-btn:last-child'))" style="color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View all reviews →</a>
+                        <a href="javascript:void(0)" onclick="switchTab('reviews', document.querySelectorAll('.tab-btn')[3])" style="color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View all reviews →</a>
                     </div>
                 </div>
 
@@ -1066,7 +1071,7 @@
     <!-- Interactive Modals -->
     <div id="shareModal" class="modal-overlay" onclick="closeModal(event, 'shareModal')">
         <div class="modal-content">
-            <span class="modal-close" onclick="document.getElementById('shareModal').classList.remove('active')">✕</span>
+            <span class="modal-close" onclick="document.getElementById('shareModal').classList.remove('active')"><i class="ph ph-x"></i></span>
             <h3 style="margin-bottom: 10px; color: var(--text-dark);">Share this Room</h3>
             <p style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 20px;">Help others discover this amazing space!</p>
             <div class="share-grid">
@@ -1082,7 +1087,7 @@
     <!-- Lightbox Modal -->
     <div id="lightboxModal" class="modal-overlay" onclick="closeModal(event, 'lightboxModal')">
         <div class="lightbox-content">
-            <span class="modal-close" style="color: white; top: 20px; right: 20px;" onclick="document.getElementById('lightboxModal').classList.remove('active')">✕</span>
+            <span class="modal-close" style="color: white; background: rgba(0,0,0,0.5);" onclick="document.getElementById('lightboxModal').classList.remove('active')"><i class="ph ph-x"></i></span>
             <img id="lightboxImg" src="" class="lightbox-img">
             <div class="lightbox-nav">
                 <div class="lightbox-btn" onclick="prevImage(event)"><i class="ph ph-caret-left"></i></div>
@@ -1166,6 +1171,8 @@
             const targetPane = document.getElementById(tabId);
             if(targetPane) {
                 targetPane.classList.add('active');
+            }
+            if(btn) {
                 btn.classList.add('active');
             }
         }
@@ -1270,7 +1277,7 @@
         }
 
         function scrollToReviews() {
-            const btn = document.querySelector('.tab-btn:last-child');
+            const btn = document.querySelectorAll('.tab-btn')[3];
             switchTab('reviews', btn);
             document.getElementById('reviews').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -1288,6 +1295,84 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', initLike);
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        function toggleHelpDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('helpDropdownOptions').classList.toggle('active');
+        }
+
+        function selectHelpOption(val) {
+            document.getElementById('selectedSubject').innerText = val;
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            const helpModal = document.getElementById('helpModal');
+            if (event.target == helpModal) {
+                closeHelpModal();
+            }
+
+            const dropdownOptions = document.getElementById('helpDropdownOptions');
+            const dropdownSelected = document.querySelector('.dropdown-selected');
     </script>
+    <div class="help-modal-overlay" id="helpModal">
+        <div class="help-modal-card">
+            <button class="help-modal-close" onclick="closeHelpModal()">
+                <i class="ph ph-x"></i>
+            </button>
+            <div class="help-modal-content">
+                <h2 class="help-modal-title">Contact Us</h2>
+                <form class="help-form" onsubmit="event.preventDefault(); return false;">
+                    <div class="help-form-row">
+                        <div class="help-input-group">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your name">
+                        </div>
+                        <div class="help-input-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Your email">
+                        </div>
+                    </div>
+                    
+                    <div class="help-input-group full-width">
+                        <label>Subject</label>
+                        <div class="custom-dropdown" id="helpSubjectDropdown">
+                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
+                                <span id="selectedSubject">Choose subject…</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                            <div class="dropdown-options" id="helpDropdownOptions">
+                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-input-group full-width">
+                        <label>Message</label>
+                        <textarea placeholder="How can we help you?" rows="5"></textarea>
+                    </div>
+
+                    <div class="help-form-footer">
 </body>
 </html>

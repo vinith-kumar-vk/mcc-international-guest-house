@@ -105,7 +105,7 @@
     });
 
     function openHelpModal() {
-        const modal = document.getElementById('helpModalOverlay');
+        const modal = document.getElementById('helpModal') || document.getElementById('helpModalOverlay');
         if(modal) modal.classList.add('active');
     }
 </script>

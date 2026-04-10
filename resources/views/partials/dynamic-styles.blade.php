@@ -68,11 +68,10 @@
     .help-send-btn,
     .confirm-booking-btn,
     .active-nav,
-    .badge-primary,
-    .badge:not(.badge-outline),
-    .status-available {
+    .badge-primary {
         background-color: var(--primary-color) !important;
         border-color: var(--primary-color) !important;
+        color: #ffffff !important;
     }
     
     .text-primary, 
@@ -88,7 +87,7 @@
         color: var(--primary-color) !important;
     }
 
-    i.ph-fill, i.ph-bold, i.ph-user-circle, .room-highlights i, .facility-item i, .ph-list {
+    .room-highlights i, .facility-item i, .ph-list {
         color: var(--primary-color) !important;
     }
 
@@ -107,17 +106,17 @@
         accent-color: var(--primary-color) !important;
     }
 
-    /* Catch-all for hardcoded inline styles (experimental but effective) */
-    [style*="#ff7a00"], [style*="rgb(255, 122, 0)"] {
-        background-color: var(--primary-color) !important;
-        border-color: var(--primary-color) !important;
-        color: var(--primary-color) !important;
-    }
+
 
     /* Modal & Popups */
+    .modal-close {
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    }
+
     .modal-close:hover {
         background-color: var(--primary-color) !important;
         color: #fff !important;
+        transform: rotate(90deg) scale(1.1) !important;
     }
 
     .facility-item i {
@@ -136,21 +135,33 @@
     }
 
     /* Hover states */
-    .btn-outline:hover {
-        background-color: var(--primary-color) !important;
+    .btn-outline:hover,
+    .btn-outline:active,
+    .btn-outline:focus {
+        background-color: transparent !important;
         border-color: var(--primary-color) !important;
-        color: #fff !important;
+        color: var(--primary-color) !important;
         filter: brightness(90%) !important;
     }
 
     .btn:not(.btn-outline):hover, 
+    .btn:not(.btn-outline):active,
+    .btn:not(.btn-outline):focus,
     .btn-primary:hover, 
+    .btn-primary:active,
+    .btn-primary:focus,
     .submit-btn:hover, 
+    .submit-btn:active,
+    .submit-btn:focus,
     .help-send-btn:hover, 
-    .confirm-booking-btn:hover {
+    .help-send-btn:active,
+    .help-send-btn:focus,
+    .confirm-booking-btn:hover,
+    .confirm-booking-btn:active,
+    .confirm-booking-btn:focus {
         background-color: var(--primary-color) !important;
         filter: brightness(90%) !important;
-        color: #fff !important;
+        color: #ffffff !important;
     }
 
     .btn-outline {
@@ -194,10 +205,13 @@
             "rgb(255, 154, 0)",
             "rgb(255, 165, 0)"
         ];
-        
         const allElements = document.getElementsByTagName('*');
         for (let i = 0; i < allElements.length; i++) {
             const el = allElements[i];
+            
+            // Skip interactive elements whose states (hover, active, focus) must remain controlled purely by CSS
+            if (el.matches('.tab-btn, .btn, [class*="btn-"], button, .submit-btn')) continue;
+
             const style = window.getComputedStyle(el);
             
             // Background
