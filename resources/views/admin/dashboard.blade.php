@@ -12,9 +12,11 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --admin-bg: #f8fafc;
+            --bg-color: #f8fafc;
             --primary-color: #ff7a00;
             --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --success: #22c55e;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -24,10 +26,11 @@
 
         * {
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--admin-bg);
+            background-color: var(--bg-color);
             display: flex;
             min-height: 100vh;
             margin: 0;
@@ -58,11 +61,16 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            display: flex; align-items: center; gap: 0.5rem; margin: 0;
+        .sidebar-logo {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+
+        .sidebar-logo span { color: var(--primary-color); }
 
         .sidebar-menu {
             padding: 1rem 0.75rem; flex: 1;
@@ -296,7 +304,7 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="ph-bold ph-rocket-launch"></i> SpaceAdmin</h2>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
         </div>
         <div class="sidebar-menu">
             <a href="{{ route('admin.dashboard') }}" class="menu-item active">
@@ -305,7 +313,7 @@
             <a href="{{ route('admin.bookings') }}" class="menu-item">
                 <i class="ph ph-calendar-check"></i> Bookings
             </a>
-            <a href="{{ route('home') }}" class="menu-item">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
             <div style="margin-top: auto; padding: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
@@ -326,9 +334,17 @@
                 <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary-color) !important; background: white !important; color: var(--primary-color) !important; box-shadow: none !important;">
                     <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
-                <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">Dashboard Overview</div>
+                <div class="topbar-title" style="font-weight: 700; font-size: 1.15rem; color: var(--text-main);">Dashboard Overview</div>
             </div>
             <div class="nav-right">
+                <div title="Current Theme Color" style="
+                    width: 14px; height: 14px;
+                    border-radius: 50%;
+                    background: var(--primary-color);
+                    border: 2px solid rgba(255,255,255,0.4);
+                    box-shadow: 0 0 0 2px var(--primary-color);
+                    flex-shrink: 0;
+                "></div>
                 <div class="notification-bell" id="notifToggle">
                     <i class="ph ph-bell"></i>
                     @if($notificationBookings->count() > 0)
@@ -592,81 +608,9 @@
                     </table>
                 </div>
             </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
-
-            <!-- Section 1: Detailed Upcoming Bookings -->
-            <div class="dashboard-section" style="margin-bottom: 1.5rem;">
-                <div class="section-header">
-                    <h3><i class="ph-bold ph-calendar-check" style="color: var(--info);"></i> Detailed Upcoming Bookings</h3>
-                </div>
-                <div style="overflow-x: auto; padding: 0 1px;">
-                    <table class="mini-table">
-                        <thead>
-                            <tr>
-                                <th>Customer</th>
-                                <th>Workspace</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($upcomingBookings as $booking)
-                            <tr>
-                                <td style="font-weight: 600;">{{ $booking->name }}</td>
-                                <td>{{ $booking->room_name }}</td>
-                                <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}</td>
-                                <td><span class="status-pill pill-paid">Confirmed</span></td>
-                            </tr>
-                            @empty
-                            <tr><td colspan="5" style="text-align:center; padding: 1.5rem;">No upcoming bookings</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Section 2: Booking Status Overview -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                <div class="stat-card" style="padding: 1rem;">
-                    <div class="stat-label" style="font-size: 0.7rem;">Paid Bookings</div>
-                    <div class="stat-value" style="font-size: 1.25rem; color: var(--success);">{{ $completedBookings }}</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem;">
-                    <div class="stat-label" style="font-size: 0.7rem;">Pending Bookings</div>
-                    <div class="stat-value" style="font-size: 1.25rem; color: var(--warning);">{{ $pendingPayments }}</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem;">
-                    <div class="stat-label" style="font-size: 0.7rem;">Cancelled Bookings</div>
-                    <div class="stat-value" style="font-size: 1.25rem; color: var(--danger);">{{ $cancelledBookings }}</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem;">
-                    <div class="stat-label" style="font-size: 0.7rem;">Total Completed</div>
-                    <div class="stat-value" style="font-size: 1.25rem; color: var(--info);">{{ $completedBookings }}</div>
-                </div>
-            </div>
-
-            <!-- Section 3: Quick Admin Actions -->
-            <div class="dashboard-section" style="margin-bottom: 2rem;">
-                <div class="section-header">
-                    <h3><i class="ph-bold ph-wrench" style="color: #64748b;"></i> Quick Admin Management</h3>
-                </div>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="#" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; background: var(--primary-color); color: white; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">
-                        <i class="ph ph-plus-circle"></i> Add Workspace
-                    </a>
-                    <a href="{{ route('admin.bookings') }}" class="btn" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; border: 1px solid var(--border); color: #1e293b; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; background: white;">
-                        <i class="ph ph-calendar-check"></i> Manage Bookings
-                    </a>
-                    <a href="#" class="btn" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; border: 1px solid var(--border); color: #1e293b; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; background: white;">
-                        <i class="ph ph-file-text"></i> Generate Report
-                    </a>
-                </div>
-            </div>
         </div>
     </main>
+
 
     <script>
         // Notification Toggle

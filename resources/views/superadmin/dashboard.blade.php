@@ -12,22 +12,22 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --bg: #f8fafc;
-            --primary: #ff7a00;
+            --bg-color: #f8fafc;
+            --primary-color: #ff7a00;
             --border: #e2e8f0;
-            --text: #1e293b;
-            --muted: #64748b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --success: #22c55e;
             --warning: #f59e0b;
             --danger: #ef4444;
             --info: #3b82f6;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background: var(--bg-color);
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -53,14 +53,14 @@
 
         .sidebar-logo {
             font-weight: 800;
-            color: var(--text);
+            color: var(--text-main);
             font-size: 1.15rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .sidebar-logo span { color: var(--primary); }
+        .sidebar-logo span { color: var(--primary-color); }
 
         .sidebar-menu {
             flex: 1;
@@ -74,7 +74,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 1rem;
-            color: var(--muted);
+            color: var(--text-muted);
             text-decoration: none;
             border-radius: 8px;
             font-weight: 500;
@@ -85,7 +85,7 @@
 
         .menu-item:hover, .menu-item.active {
             background: rgba(255, 122, 0, 0.08);
-            color: var(--primary);
+            color: var(--primary-color);
         }
 
         .sidebar-footer {
@@ -139,7 +139,7 @@
         .topbar-title {
             font-weight: 700;
             font-size: 1.1rem;
-            color: var(--text);
+            color: var(--text-main);
         }
 
         .topbar-right {
@@ -148,15 +148,6 @@
             gap: 1rem;
         }
 
-        .badge-pill {
-            background: rgba(255, 122, 0, 0.1);
-            color: var(--primary);
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.2rem 0.6rem;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 122, 0, 0.2);
-        }
 
         .page-body { padding: 2rem; max-width: 1400px; }
 
@@ -327,7 +318,7 @@
             <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
-            <a href="{{ route('home') }}" class="menu-item">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Site
             </a>
         </nav>
@@ -352,8 +343,15 @@
                 <div class="topbar-title">System Overview</div>
             </div>
             <div class="topbar-right">
-                <span class="badge-pill"><i class="ph-fill ph-shield-check"></i> SuperAdmin</span>
-                <div style="font-size: 0.8rem; color: var(--muted);">{{ now()->format('d M Y, H:i') }}</div>
+                <div title="Current Theme Color" style="
+                    width: 14px; height: 14px;
+                    border-radius: 50%;
+                    background: var(--primary-color, var(--primary-color));
+                    border: 2px solid rgba(255,255,255,0.4);
+                    box-shadow: 0 0 0 2px var(--primary-color, var(--primary-color));
+                    flex-shrink: 0;
+                "></div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">{{ now()->format('d M Y, H:i') }}</div>
             </div>
         </div>
 
@@ -613,17 +611,19 @@
                 datasets: [{
                     label: 'Revenue (₹)',
                     data: {!! json_encode($monthlyRevenue->pluck('revenue')) !!},
-                    backgroundColor: `rgba(${window.primaryColorRGB}, 0.85)`,
+                    backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
                     borderRadius: 6,
                     borderSkipped: false,
                 }, {
                     label: 'Bookings',
                     data: {!! json_encode($monthlyRevenue->pluck('count')) !!},
                     type: 'line',
-                    borderColor: '#3b82f6',
+                    borderColor: '#f97316',
                     backgroundColor: 'transparent',
                     borderWidth: 2,
-                    pointBackgroundColor: '#3b82f6',
+                    pointBackgroundColor: '#f97316',
                     pointRadius: 4,
                     yAxisID: 'y2',
                     tension: 0.4,

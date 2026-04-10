@@ -10,17 +10,21 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
-            --sidebar-width: 280px;
-            --admin-bg: #f8fafc;
+            --sidebar-width: 260px;
+            --bg-color: #f8fafc;
             --primary-color: {{ $settings['primary_color'] ?? '#ff7a00' }};
             --secondary-color: {{ $settings['secondary_color'] ?? '#001a33' }};
             --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --success: #22c55e;
             --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
         body {
-            background-color: var(--admin-bg);
+            background-color: var(--bg-color);
             margin: 0;
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -42,6 +46,17 @@
             padding: 1.5rem;
             border-bottom: 1px solid var(--border);
         }
+
+        .sidebar-logo {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-logo span { color: var(--primary-color); }
 
         .sidebar-menu {
             flex: 1;
@@ -174,9 +189,7 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <div style="font-weight: 800; color: #1e293b; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="ph-bold ph-rocket-launch"></i> SpaceAdmin
-            </div>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
         </div>
         <div class="sidebar-menu">
             <a href="{{ route('superadmin.dashboard') }}" class="{{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
@@ -189,7 +202,7 @@
                 <i class="ph ph-gear"></i> System Settings
             </a>
             <div style="padding: 1rem 0; color: #94a3b8; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; margin-top: 1rem;">Resources</div>
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Site
             </a>
         </div>
@@ -204,13 +217,26 @@
     </div>
 
     <main class="main-content">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-            <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
-                <i class="ph ph-list" style="font-size: 1.5rem;"></i>
-            </button>
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <i class="ph ph-gear-six" style="font-size: 2rem; color: var(--primary-color);"></i>
-                <h1 style="font-size: 1.5rem; margin: 0; color: #1e293b;">System Configuration</h1>
+        <div class="topbar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; background: white; padding: 1rem 2rem; border-bottom: 1px solid var(--border); margin: 0 -2.5rem 2.5rem -2.5rem; position: sticky; top: 0; z-index: 90;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
+                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+                </button>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="ph ph-gear-six" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                    <h1 style="font-size: 1.25rem; margin: 0; color: #1e293b; font-weight: 700;">System Configuration</h1>
+                </div>
+            </div>
+            <div class="topbar-right" style="display: flex; align-items: center; gap: 1rem;">
+                <div title="Current Theme Color" style="
+                    width: 14px; height: 14px;
+                    border-radius: 50%;
+                    background: var(--primary-color);
+                    border: 2px solid rgba(255,255,255,0.4);
+                    box-shadow: 0 0 0 2px var(--primary-color);
+                    flex-shrink: 0;
+                "></div>
+                <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">{{ now()->format('d M Y, H:i') }}</div>
             </div>
         </div>
 
@@ -221,21 +247,55 @@
         <div class="settings-card">
             <form action="{{ route('superadmin.settings.update') }}" method="POST">
                 @csrf
+                <h3 style="font-size: 1.1rem; color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem;">
+                    <i class="ph-bold ph-envelope" style="color: var(--primary-color);"></i> Mail Service Configuration
+                </h3>
+
                 <div class="form-group">
-                    <label>System Email Address</label>
+                    <label>System Email Address (Sender)</label>
                     <input type="email" name="system_email" value="{{ $settings['sender_email'] ?? '' }}" required placeholder="e.g. user@gmail.com">
                 </div>
 
                 <div class="form-group">
-                    <label>Gmail App Password (16 characters)</label>
+                    <label>Mail Password / App Password</label>
                     <input type="password" name="mail_password" value="{{ $settings['mail_password'] ?? '' }}" required placeholder="•••• •••• •••• ••••">
                     <div style="font-size: 0.75rem; color: #64748b; margin-top: 5px;">
                         <i class="ph ph-shield-check"></i> This password is encrypted for security.
                     </div>
                 </div>
 
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Mail Host</label>
+                        <input type="text" name="mail_host" value="{{ $settings['mail_host'] ?? 'smtp.gmail.com' }}" required placeholder="e.g. smtp.gmail.com">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Mail Port</label>
+                        <input type="number" name="mail_port" value="{{ $settings['mail_port'] ?? '587' }}" required placeholder="e.g. 587">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Mail Encryption</label>
+                        <select name="mail_encryption" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; color: #1e293b;">
+                            <option value="tls" {{ ($settings['mail_encryption'] ?? 'tls') == 'tls' ? 'selected' : '' }}>TLS</option>
+                            <option value="ssl" {{ ($settings['mail_encryption'] ?? 'tls') == 'ssl' ? 'selected' : '' }}>SSL</option>
+                            <option value="none" {{ ($settings['mail_encryption'] ?? 'tls') == 'none' ? 'selected' : '' }}>None</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Mail Driver / Mailer</label>
+                        <select name="mail_mailer" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; color: #1e293b;">
+                            <option value="smtp" {{ ($settings['mail_mailer'] ?? 'smtp') == 'smtp' ? 'selected' : '' }}>SMTP (Default)</option>
+                            <option value="sendmail" {{ ($settings['mail_mailer'] ?? 'smtp') == 'sendmail' ? 'selected' : '' }}>Sendmail</option>
+                            <option value="log" {{ ($settings['mail_mailer'] ?? 'smtp') == 'log' ? 'selected' : '' }}>Log (Testing)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; font-size: 0.85rem; color: #166534;">
-                    <i class="ph-fill ph-check-circle"></i> <strong>Configuration Active:</strong> This account will be used to <strong>send all notifications</strong> and it will also <strong>receive the initial approval links</strong>. This ensures a centralized control from a single secure account.
+                    <i class="ph-fill ph-check-circle"></i> <strong>Configuration Active:</strong> These credentials will be used for <strong>all outgoing system emails</strong> including approvals and notifications.
                 </div>
 
                     <h3 style="font-size: 1.1rem; color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem;">

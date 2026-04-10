@@ -92,6 +92,10 @@ class SuperAdminController extends Controller
         $request->validate([
             'system_email'        => 'required|email',
             'mail_password'       => 'required',
+            'mail_host'           => 'required|string',
+            'mail_port'           => 'required|integer',
+            'mail_encryption'     => 'required|string',
+            'mail_mailer'         => 'required|string',
             'primary_color'       => 'nullable|string',
             'secondary_color'     => 'nullable|string',
             'use_secondary_color' => 'nullable'
@@ -100,6 +104,11 @@ class SuperAdminController extends Controller
         Setting::updateOrCreate(['key' => 'principal_email'], ['value' => $request->system_email]);
         Setting::updateOrCreate(['key' => 'mail_password'],   ['value' => $request->mail_password]);
         Setting::updateOrCreate(['key' => 'sender_email'],    ['value' => $request->system_email]);
+        
+        Setting::updateOrCreate(['key' => 'mail_host'],       ['value' => $request->mail_host]);
+        Setting::updateOrCreate(['key' => 'mail_port'],       ['value' => $request->mail_port]);
+        Setting::updateOrCreate(['key' => 'mail_encryption'], ['value' => $request->mail_encryption]);
+        Setting::updateOrCreate(['key' => 'mail_mailer'],     ['value' => $request->mail_mailer]);
         
         Setting::updateOrCreate(['key' => 'primary_color'],   ['value' => $request->primary_color ?? '#ff7a00']);
         Setting::updateOrCreate(['key' => 'secondary_color'], ['value' => $request->secondary_color ?? '#001a33']);

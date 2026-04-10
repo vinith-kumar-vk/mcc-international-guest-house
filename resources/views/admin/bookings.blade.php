@@ -11,15 +11,15 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --admin-bg: #f4f7fa;
+            --bg-color: #f8fafc;
             --primary-color: #ff7a00;
             --border: #e2e8f0;
-            --text-color: #1e293b;
-            --text-light: #64748b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
         }
 
         body {
-            background-color: var(--admin-bg);
+            background-color: var(--bg-color);
             display: flex;
             min-height: 100vh;
             margin: 0;
@@ -30,6 +30,7 @@
 
         * {
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         /* Sidebar Styles */
@@ -55,17 +56,20 @@
         }
 
         .sidebar-header {
-            padding: 2rem 1.5rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            color: var(--primary-color);
+        .sidebar-logo {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.15rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
+
+        .sidebar-logo span { color: var(--primary-color); }
 
         .sidebar-menu {
             padding: 1.5rem 0.75rem;
@@ -79,7 +83,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.85rem 1rem;
-            color: var(--text-light);
+            color: var(--text-muted);
             text-decoration: none;
             border-radius: 8px;
             font-weight: 500;
@@ -105,27 +109,38 @@
         .admin-main {
             margin-left: var(--sidebar-width);
             flex: 1;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
             width: calc(100% - var(--sidebar-width));
+            min-width: 0;
             transition: all 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .admin-main {
-                margin-left: 0;
-                width: 100%;
-                padding: 1rem;
-            }
+        .top-navbar {
+            height: 68px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
+        .admin-body {
+            padding: 2rem 2.5rem;
+            flex: 1;
         }
+
+        @media (max-width: 768px) {
+            .admin-main { margin-left: 0; width: 100%; }
+            .admin-body { padding: 1.25rem; }
+        }
+
+
 
         .admin-header h1 {
             font-size: 1.75rem;
@@ -193,9 +208,22 @@
         }
 
         .data-table th, .data-table td {
-            padding: 1.25rem 1.5rem;
+            padding: 1.1rem 1.5rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        /* Give the last (ACTION) column extra right padding */
+        .data-table th:last-child,
+        .data-table td:last-child {
+            padding-right: 2rem;
+        }
+
+        /* Action cell: ensure minimum height with vertical centering */
+        .data-table td:last-child {
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
         }
 
         .data-table th {
@@ -252,47 +280,54 @@
         .pill-rejected { background: #fee2e2; color: #991b1b; }
 
         .btn-approve {
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem;
+            width: 36px;
+            height: 36px;
             background: #28a745;
-            color: white;
+            color: white !important;
             border: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            border-radius: 8px;
+            font-size: 1rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            justify-content: center;
+            transition: all 0.2s;
         }
+        .btn-approve i { color: white !important; }
 
         .btn-reject {
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem;
+            width: 36px;
+            height: 36px;
             background: #dc3545;
-            color: white;
+            color: white !important;
             border: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            border-radius: 8px;
+            font-size: 1rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            justify-content: center;
+            transition: all 0.2s;
         }
+        .btn-reject i { color: white !important; }
 
         .btn-approve:hover { background: #218838; }
         .btn-reject:hover { background: #c82333; }
 
         .btn-view {
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem;
+            width: 36px;
+            height: 36px;
             background: #f1f5f9;
             color: #334155;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            justify-content: center;
             transition: all 0.2s;
         }
 
@@ -302,17 +337,18 @@
         }
 
         .btn-delete {
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem;
+            width: 36px;
+            height: 36px;
             background: #fff1f2;
             color: #be123c;
             border: 1px solid #fecdd3;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            justify-content: center;
             transition: all 0.2s;
         }
 
@@ -366,7 +402,7 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="ph-bold ph-rocket-launch"></i> SpaceAdmin</h2>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
         </div>
         <div class="sidebar-menu">
             <a href="{{ route('admin.dashboard') }}" class="menu-item">
@@ -375,7 +411,7 @@
             <a href="{{ route('admin.bookings') }}" class="menu-item active">
                 <i class="ph ph-calendar-check"></i> Bookings
             </a>
-            <a href="{{ route('home') }}" class="menu-item">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
         </div>
@@ -390,37 +426,30 @@
     </div>
 
     <main class="admin-main">
-        <div class="admin-header">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center;">
-                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
-                </button>
-                <h1>Booking Management</h1>
+        <!-- Sticky Top Navbar -->
+        <div class="top-navbar">
+            <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">
+                <i class="ph-bold ph-calendar-check" style="color: var(--primary-color); margin-right: 0.4rem;"></i>
+                Booking Management
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <a href="{{ route('admin.bookings.export', request()->only(['search','date','status','workspace'])) }}"
                    style="display: inline-flex; align-items: center; gap: 0.5rem;
                           background: #16a34a; color: #ffffff;
-                          padding: 0.65rem 1.4rem;
+                          padding: 0.6rem 1.25rem;
                           border-radius: 10px;
-                          font-weight: 700; font-size: 0.85rem;
+                          font-weight: 600; font-size: 0.85rem;
                           text-decoration: none;
-                          letter-spacing: 0.3px;
                           box-shadow: 0 2px 8px rgba(22,163,74,0.25);
-                          transition: background 0.2s ease, box-shadow 0.2s ease;">
-                    <i class="ph-bold ph-file-arrow-down" style="font-size: 1rem;"></i>
+                          transition: background 0.2s ease;">
+                    <i class="ph-bold ph-file-arrow-down" style="font-size: 1rem; color:#fff !important;"></i>
                     Export CSV
                 </a>
             </div>
         </div>
 
-        <style>
-            @media (max-width: 768px) {
-                #sidebarToggle {
-                    display: flex !important;
-                }
-            }
-        </style>
+        <!-- Page Body -->
+        <div class="admin-body">
 
         @if(session('success'))
             <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
@@ -478,7 +507,7 @@
                     <tbody>
                         @forelse($bookings as $booking)
                         <tr>
-                            <td>#{{ $booking->id }}</td>
+                            <td style="font-weight: 600; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #334155; white-space: nowrap; letter-spacing: 0.3px;">BK-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}</td>
                             <td>
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                                     <div>
@@ -512,20 +541,19 @@
                                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                                         <form action="{{ route('admin.bookings.approve', $booking->id) }}" method="POST" style="display: inline;">
                                             @csrf
-                                            <button type="submit" class="btn-approve">
-                                                <i class="ph-bold ph-check"></i> 
-                                                {{ $booking->approval_status === 'Principal Approved' ? 'Final Approve' : 'Approve' }}
+                                            <button type="submit" class="btn-approve" title="{{ $booking->approval_status === 'Principal Approved' ? 'Final Approve' : 'Approve' }}">
+                                                <i class="ph-bold ph-check" style="color: #ffffff !important;"></i>
                                             </button>
                                         </form>
                                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST" style="display: inline;">
                                             @csrf
-                                            <button type="submit" class="btn-reject">
-                                                <i class="ph-bold ph-x"></i> Reject
+                                            <button type="submit" class="btn-reject" title="Reject">
+                                                <i class="ph-bold ph-x" style="color: #ffffff !important;"></i>
                                             </button>
                                         </form>
                                     @endif
-                                    <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view">
-                                        <i class="ph ph-eye"></i> View
+                                    <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view" title="View Details">
+                                        <i class="ph ph-eye"></i>
                                     </a>
                                     <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');" style="display: inline;">
                                         @csrf
@@ -559,20 +587,10 @@
                 </div>
             </div>
             @endif
-        </div>
+        </div><!-- /.content-card -->
+        </div><!-- /.admin-body -->
     </main>
     <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.querySelector('.sidebar');
-
-        if (sidebarToggle && sidebar) {
-            sidebarToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
-        }
-
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);

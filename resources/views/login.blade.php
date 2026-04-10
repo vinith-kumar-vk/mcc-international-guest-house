@@ -1,295 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MCC IGH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        .auth-page {
-            margin: 0 !important;
-            padding: 0 !important;
-            min-height: 100vh !important;
-            display: flex !important;
-            flex-direction: column !important;
-            background: #f1f5f9 !important;
+        :root {
+            --primary-color: #ff7a00;
+            --bg-color: #f8fafc;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
         }
 
-        header {
-            background: #ffffff !important;
-            z-index: 10;
-            border-bottom: 1px solid #e2e8f0;
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
         }
 
         .auth-main {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            flex-grow: 1 !important;
-            box-sizing: border-box !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 2rem;
         }
 
         .auth-card {
+            background: #ffffff;
             width: 100%;
             max-width: 420px;
-            margin: 0 auto;
-            background: #ffffff;
             padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            box-sizing: border-box;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border);
         }
 
-        .auth-form {
-            width: 100%;
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 16px;
-            width: 100%;
+            margin-bottom: 1.25rem;
         }
 
         .form-group label {
+            display: block;
             font-size: 0.875rem;
             font-weight: 600;
-            color: #475569;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
         }
 
-        /* ===========================
-           INPUT RESET & STYLES
-        =========================== */
-        input,
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100% !important;
-            height: 48px !important;
-            padding: 0 16px 0 44px !important;
-            border: 1.5px solid #d1d5db !important;
-            border-radius: 10px !important;
-            background: #ffffff !important;
-            font-size: 15px !important;
-            font-family: inherit !important;
-            outline: none !important;
-            box-sizing: border-box !important;
-            display: block !important;
-            line-height: 48px !important;
-            color: #1e293b !important;
-            font-weight: 500 !important;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-            -webkit-appearance: none !important;
-            appearance: none !important;
-        }
-
-        input:focus,
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: #ff7a00 !important;
-            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
-            color: #1e293b !important;
-            outline: none !important;
-        }
-
-        input::placeholder {
-            color: #9ca3af !important;
-            font-weight: 400 !important;
-        }
-
-        /* ===== FLEX INPUT WRAPPER (immune to global padding overrides) ===== */
-        .input-field-wrap {
-            display: flex !important;
-            align-items: center !important;
-            border: 1.5px solid #d1d5db;
-            border-radius: 10px;
-            background: #ffffff;
-            overflow: hidden;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            height: 48px;
-        }
-
-        .input-field-wrap:focus-within {
-            border-color: #ff7a00;
-            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
-        }
-
-        .input-field-wrap .field-icon {
-            flex-shrink: 0;
-            width: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 1rem;
-            pointer-events: none;
-        }
-
-        .input-field-wrap input {
-            flex: 1 !important;
-            border: none !important;
-            outline: none !important;
-            background: transparent !important;
-            height: 100% !important;
-            padding: 0 12px 0 0 !important;
-            font-size: 15px !important;
-            color: #1e293b !important;
-            font-weight: 500 !important;
-            width: 100% !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-        }
-
-        .input-field-wrap input::placeholder {
-            color: #9ca3af !important;
-            font-weight: 400 !important;
-        }
-
-        /* Autofill override */
-        input:-webkit-autofill,
-        input:-webkit-autofill:focus {
-            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-            -webkit-text-fill-color: #1e293b !important;
-        }
-
-        input[type="checkbox"] {
-            width: 16px !important;
-            height: 16px !important;
-            accent-color: #ff7a00 !important;
-            display: inline-block !important;
-            vertical-align: middle !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            -webkit-appearance: auto !important;
-            appearance: auto !important;
-            line-height: normal !important;
-        }
-
-        /* ===========================
-           INPUT GROUP (icon wrapper)
-        =========================== */
-        .input-group {
+        .input-wrapper {
             position: relative;
-            width: 100%;
-        }
-
-        .input-group .icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2;
-            color: #94a3b8;
-            font-size: 1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            line-height: 1;
         }
 
+        .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            color: var(--text-main);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+        }
 
         .auth-utils {
-            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 1.5rem;
             font-size: 0.875rem;
         }
 
-        .auth-btn {
-            width: 100% !important;
-            background: #ff7a00 !important;
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            border-radius: 12px !important;
-            font-size: 1rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            border: none !important;
-            cursor: pointer !important;
-            transition: background 0.2s ease !important;
-            padding: 0.9rem 1.5rem !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.5px !important;
-            height: auto !important;
-            transform: none !important;
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
         }
 
-        .auth-btn:hover {
-            background: #e66d00 !important;
-            transform: none !important;
+        .forgot-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-auth {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
         }
 
         .auth-footer {
-            width: 100%;
+            margin-top: 1.5rem;
             text-align: center;
-            margin-top: 16px;
             font-size: 0.875rem;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
-    </style>
-</head>
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-<body class="auth-page">
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fee2e2;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 1.5rem;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+        }
+    </style>
+    @include('partials.dynamic-styles')
+</head>
+<body>
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Back to Home']])
 
     <main class="auth-main">
         <div class="auth-card">
             <div class="auth-header">
-                <h2>Welcome Back</h2>
+                <div class="sidebar-logo" style="justify-content: center; font-size: 2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
+                    <i class="ph-bold ph-rocket-launch"></i> Space<span style="color: var(--primary-color);">Admin</span>
+                </div>
                 <p>Login to manage your bookings</p>
             </div>
-            <form action="{{ route('login.post') }}" method="POST" class="auth-form">
+
+            @if ($errors->any())
+                <div class="alert alert-error">
+                    @foreach ($errors->all() as $error)
+                        <p style="margin: 0;">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form action="{{ route('login.post') }}" method="POST">
                 @csrf
-                @if ($errors->any())
-                    <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem;">
-                        @foreach ($errors->all() as $error)
-                            <p style="margin: 0;">{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
-                @if (session('success'))
-                    <div style="background: #dcfce7; color: #166534; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem;">
-                        {{ session('success') }}
-                    </div>
-                @endif
                 <div class="form-group">
                     <label>Email Address</label>
-                    <div class="input-field-wrap">
-                        <span class="field-icon"><i class="ph ph-envelope"></i></span>
-                        <input type="email" name="email" placeholder="name@company.com" required autocomplete="email">
+                    <div class="input-wrapper">
+                        <i class="ph ph-envelope"></i>
+                        <input type="email" name="email" placeholder="name@example.com" required>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>Password</label>
-                    <div class="input-field-wrap">
-                        <span class="field-icon"><i class="ph ph-lock"></i></span>
-                        <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                    <div class="input-wrapper">
+                        <i class="ph ph-lock"></i>
+                        <input type="password" name="password" placeholder="••••••••" required>
                     </div>
                 </div>
+
                 <div class="auth-utils">
                     <label class="remember-me">
-                        <input type="checkbox"> Remember me
+                        <input type="checkbox" style="accent-color: var(--primary-color);"> Remember me
                     </label>
                     <a href="#" class="forgot-link">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn auth-btn">Login</button>
+
+                <button type="submit" class="btn-auth">
+                    Login to Account <i class="ph ph-arrow-right"></i>
+                </button>
             </form>
+
             <div class="auth-footer">
                 <p>Don't have an account? <a href="{{ route('register') }}">Create an Account</a></p>
             </div>
         </div>
     </main>
 </body>
-
 </html>

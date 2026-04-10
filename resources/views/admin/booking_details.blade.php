@@ -11,16 +11,15 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --admin-bg: #f8fafc;
+            --bg-color: #f8fafc;
             --primary-color: #ff7a00;
-            --primary-hover: #e66k00;
             --border: #eaedf0;
-            --text-color: #1e293b;
-            --text-light: #64748b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
         }
 
         body {
-            background-color: var(--admin-bg);
+            background-color: var(--bg-color);
             display: flex;
             min-height: 100vh;
             margin: 0;
@@ -31,6 +30,7 @@
 
         * {
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         /* Sidebar Styles */
@@ -56,17 +56,22 @@
         }
 
         .sidebar-header {
-            padding: 2rem 1.5rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            color: var(--primary-color);
+        .sidebar-logo {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.15rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
+
+        .sidebar-logo span { color: var(--primary-color); }
+
+        /* Main Content */
 
         .sidebar-menu {
             padding: 1.5rem 0.75rem;
@@ -78,7 +83,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.85rem 1rem;
-            color: var(--text-light);
+            color: var(--text-muted);
             text-decoration: none;
             border-radius: 8px;
             font-weight: 500;
@@ -225,22 +230,22 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 0.9rem;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
+            font-family: 'Inter', sans-serif;
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 0.9rem;
             border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.2px;
         }
 
         .badge-paid { background: rgba(34, 197, 94, 0.1); color: #166534; border: 1px solid rgba(34, 197, 94, 0.2); }
@@ -257,13 +262,14 @@
         ============================ */
 
         .btn-mark-paid {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #16a34a !important;
             color: #ffffff !important;
             border: none !important;
             border-radius: 12px !important;
-            font-size: 1rem !important;
-            font-weight: 800 !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
             cursor: pointer !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -272,10 +278,7 @@
             width: 100% !important;
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
             box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3) !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            opacity: 1 !important;
-            transform: none !important;
+            letter-spacing: 0.2px !important;
         }
 
         .btn-mark-paid:hover {
@@ -288,13 +291,14 @@
         }
 
         .btn-approve {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #ff7a00 !important;
             color: #ffffff !important;
             border: none !important;
             border-radius: 12px !important;
-            font-size: 1rem !important;
-            font-weight: 800 !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
             cursor: pointer !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -302,20 +306,14 @@
             gap: 10px !important;
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
             box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
+            letter-spacing: 0.2px !important;
             width: 100% !important;
-            opacity: 1 !important;
-            transform: none !important;
         }
 
         .btn-approve:hover:not(:disabled) {
             background: #e66d00 !important;
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.5) !important;
             color: #ffffff !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 1.1rem 2rem !important;
         }
 
         .btn-approve:disabled {
@@ -323,28 +321,26 @@
             box-shadow: none !important;
             cursor: not-allowed !important;
             opacity: 0.55 !important;
-            transform: none !important;
             color: #fff !important;
         }
 
         .btn-reject {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #fff1f2 !important;
             color: #be123c !important;
             border: 2px solid #fecdd3 !important;
             border-radius: 12px !important;
-            font-size: 1rem !important;
-            font-weight: 800 !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
             cursor: pointer !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 10px !important;
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
+            letter-spacing: 0.2px !important;
             width: 100% !important;
-            transform: none !important;
         }
 
         .btn-reject:hover {
@@ -352,9 +348,6 @@
             border-color: #fda4af !important;
             color: #9f1239 !important;
             box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15) !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 1.1rem 2rem !important;
         }
 
         .btn-view {
@@ -379,13 +372,14 @@
         }
 
         .btn-delete {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #fff1f2 !important;
             color: #be123c !important;
             border: 2px solid #fecdd3 !important;
             border-radius: 12px !important;
-            font-size: 1rem !important;
-            font-weight: 800 !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
             cursor: pointer !important;
             display: flex !important;
             align-items: center !important;
@@ -393,9 +387,7 @@
             gap: 10px !important;
             width: 100% !important;
             transition: background 0.2s ease, box-shadow 0.2s ease !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            transform: none !important;
+            letter-spacing: 0.2px !important;
         }
 
         .btn-delete:hover {
@@ -403,9 +395,6 @@
             border-color: #fda4af !important;
             color: #9f1239 !important;
             box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15) !important;
-            transform: none !important;
-            width: 100% !important;
-            padding: 1.1rem 2rem !important;
         }
 
 
@@ -486,7 +475,7 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="ph-bold ph-rocket-launch"></i> SpaceAdmin</h2>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
         </div>
         <div class="sidebar-menu">
             <a href="{{ route('admin.dashboard') }}" class="menu-item">
@@ -495,7 +484,7 @@
             <a href="{{ route('admin.bookings') }}" class="menu-item active">
                 <i class="ph ph-calendar-check"></i> Bookings
             </a>
-            <a href="{{ route('home') }}" class="menu-item">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Website
             </a>
         </div>
@@ -503,9 +492,6 @@
 
     <main class="admin-main">
         <div class="admin-header">
-            <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center; margin-right: 0.5rem;">
-                <i class="ph ph-list" style="font-size: 1.5rem;"></i>
-            </button>
             <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             <div>
                 <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem;">Back to list</div>
@@ -534,14 +520,6 @@
             </div>
         @endif
 
-        <style>
-            @media (max-width: 768px) {
-                #sidebarToggle {
-                    display: flex !important;
-                }
-            }
-        </style>
-
         <div class="details-grid">
             <div class="grid-left">
                 <div class="details-card">
@@ -550,7 +528,7 @@
                         <div style="display: flex; gap: 0.75rem;">
                             <div class="status-badge badge-{{ str_replace(' ', '-', strtolower($booking->approval_status)) }}">
                                 <i class="ph-fill ph-{{ $booking->approval_status == 'Approved' || $booking->approval_status == 'Principal Approved' ? 'check-circle' : ($booking->approval_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
-                                Approval: {{ $booking->approval_status }}
+                                {{ ucfirst($booking->approval_status) }}
                             </div>
                             <div class="status-badge badge-{{ strtolower($booking->payment_status) }}">
                                 <i class="ph-fill ph-{{ $booking->payment_status == 'Paid' ? 'check-circle' : ($booking->payment_status == 'Pending' ? 'clock' : 'x-circle') }}"></i>
@@ -654,7 +632,33 @@
                     
                     <div class="info-item" style="margin-bottom: 1.5rem;">
                         <span class="info-label">Transaction ID</span>
-                        <span class="info-value" style="font-family: monospace; font-size: 0.9rem;">{{ $booking->razorpay_payment_id ?: 'Pending' }}</span>
+                        @if($booking->razorpay_payment_id)
+                            <span style="
+                                display: inline-flex; align-items: center; gap: 0.5rem;
+                                background: #f0fdf4; color: #166534;
+                                border: 1px solid #bbf7d0;
+                                padding: 0.45rem 0.9rem; border-radius: 8px;
+                                font-family: 'JetBrains Mono', 'Courier New', monospace;
+                                font-size: 0.82rem; font-weight: 600; letter-spacing: 0.5px;
+                                word-break: break-all; margin-top: 0.25rem;
+                            ">
+                                <i class="ph-fill ph-check-circle" style="color: #16a34a; font-size: 1rem; flex-shrink: 0;"></i>
+                                {{ $booking->razorpay_payment_id }}
+                            </span>
+                        @else
+                            <span style="
+                                display: inline-flex; align-items: center; gap: 0.5rem;
+                                background: #fffbeb; color: #92400e;
+                                border: 1px solid #fde68a;
+                                padding: 0.45rem 0.9rem; border-radius: 8px;
+                                font-size: 0.82rem; font-weight: 700;
+                                text-transform: uppercase; letter-spacing: 0.6px;
+                                margin-top: 0.25rem;
+                            ">
+                                <i class="ph-fill ph-clock" style="color: #d97706; font-size: 1rem; flex-shrink: 0;"></i>
+                                Not Yet Assigned
+                            </span>
+                        @endif
                     </div>
 
                     <div class="payment-summary">
@@ -697,8 +701,8 @@
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         @if($booking->approval_status === 'Pending')
                             <div style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2); text-align: center; margin-bottom: 1rem;">
-                                <p style="margin: 0; font-size: 0.95rem; color: #b45309; font-weight: 800; letter-spacing: 0.5px;">
-                                    <i class="ph-fill ph-hourglass"></i> WAITING FOR PRINCIPAL APPROVAL
+                            <p style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif;">
+                                    <i class="ph-fill ph-hourglass"></i> Waiting for Principal Approval
                                 </p>
                             </div>
                         @endif
@@ -708,29 +712,29 @@
                             <button type="submit" class="btn-approve" 
                                     style="width: 100%;"
                                     {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
-                                <i class="ph-bold ph-check"></i> 
-                                FINAL APPROVE
+                                <i class="ph-bold ph-check" style="color:#fff !important;"></i>
+                                Final Approve
                             </button>
                         </form>
                         
                         <form action="{{ route('admin.bookings.reject', $booking->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-reject" style="width: 100%;">
-                                <i class="ph-bold ph-x"></i> REJECT PROPOSAL
+                                <i class="ph-bold ph-x"></i> Reject Proposal
                             </button>
                         </form>
                     @endif
 
                     @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
                         <div style="background: rgba(59, 130, 246, 0.08); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); text-align: center; margin-bottom: 0.5rem;">
-                            <p style="margin: 0; font-size: 0.95rem; color: #1d4ed8; font-weight: 800; letter-spacing: 0.5px;">
-                                <i class="ph-fill ph-info"></i> APPROVED! WAITING FOR COUNTER PAYMENT
+                            <p style="margin: 0; font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif;">
+                                <i class="ph-fill ph-info"></i> Approved — waiting for payment at counter
                             </p>
                         </div>
                         <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-mark-paid">
-                                <i class="ph-bold ph-hand-coins"></i> MARK AS PAID (AT COUNTER)
+                                <i class="ph-bold ph-hand-coins" style="color:#fff !important;"></i> Mark as Paid (at Counter)
                             </button>
                         </form>
                     @endif
@@ -741,7 +745,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-delete">
-                            <i class="ph-bold ph-trash"></i> DELETE BOOKING
+                            <i class="ph-bold ph-trash"></i> Delete Booking
                         </button>
                     </form>
                 </div>

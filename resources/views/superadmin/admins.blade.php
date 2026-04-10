@@ -11,17 +11,17 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --bg: #f8fafc;
-            --primary: #ff7a00;
+            --bg-color: #f8fafc;
+            --primary-color: #ff7a00;
             --border: #e2e8f0;
-            --text: #1e293b;
-            --muted: #64748b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --success: #22c55e;
             --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); display: flex; min-height: 100vh; }
 
         .sidebar {
             width: var(--sidebar-width); background: white; height: 100vh;
@@ -29,15 +29,15 @@
             display: flex; flex-direction: column; z-index: 100;
         }
         .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); }
-        .sidebar-logo { font-weight: 800; color: var(--text); font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
-        .sidebar-logo span { color: var(--primary); }
+        .sidebar-logo { font-weight: 800; color: var(--text-main); font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+        .sidebar-logo span { color: var(--primary-color); }
         .sidebar-menu { flex: 1; padding: 1rem 0.75rem; }
         .menu-item {
             display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
-            color: var(--muted); text-decoration: none; border-radius: 8px;
+            color: var(--text-muted); text-decoration: none; border-radius: 8px;
             font-weight: 500; font-size: 0.9rem; transition: all 0.2s; margin-bottom: 0.25rem;
         }
-        .menu-item:hover, .menu-item.active { background: rgba(255, 122, 0, 0.08); color: var(--primary); }
+        .menu-item:hover, .menu-item.active { background: rgba(255, 122, 0, 0.08); color: var(--primary-color); }
         .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border); }
         .logout-btn {
             width: 100%; display: flex; align-items: center; gap: 0.75rem; background: none; border: none;
@@ -48,7 +48,7 @@
             margin-left: var(--sidebar-width); 
             flex: 1; 
             min-height: 100vh;
-            background: var(--bg);
+            background: var(--bg-color);
             display: flex;
             flex-direction: column;
         }
@@ -60,32 +60,26 @@
         }
         .page-body { padding: 2.5rem; max-width: 1400px; width: 100%; box-sizing: border-box; }
         .topbar-right { display: flex; align-items: center; gap: 1rem; }
-        .badge-pill { 
-            background: rgba(255, 122, 0, 0.1); color: var(--primary); 
-            font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem; 
-            border-radius: 999px; border: 1px solid rgba(255,122,0,0.2); 
-            display: flex; align-items: center; gap: 0.4rem;
-        }
 
         .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-        .card-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
 
         .btn {
             padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem;
             cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary { background: var(--primary-color); color: white; }
         .btn-primary:hover { background: #e66d00; transform: translateY(-1px); }
-        .btn-outline { background: white; border: 1px solid var(--border); color: var(--muted); }
-        .btn-outline:hover { background: #f8fafc; color: var(--text); }
+        .btn-outline { background: white; border: 1px solid var(--border); color: var(--text-muted); }
+        .btn-outline:hover { background: #f8fafc; color: var(--text-main); }
         .btn-danger { background: #fef2f2; color: var(--danger); }
         .btn-danger:hover { background: #fee2e2; }
 
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th {
             font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
-            color: var(--muted); font-weight: 700; padding: 0.75rem 1rem;
+            color: var(--text-muted); font-weight: 700; padding: 0.75rem 1rem;
             background: #f8fafc; text-align: left; border-bottom: 1px solid var(--border);
         }
         .data-table td { padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -97,10 +91,10 @@
         }
         .modal.active { display: flex; }
         .modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 450px; position: relative; }
-        .modal-close { position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: var(--muted); }
+        .modal-close { position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); }
         
         .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
         .form-control {
             width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px;
             font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
@@ -141,7 +135,7 @@
             <a href="{{ route('superadmin.settings') }}" class="menu-item">
                 <i class="ph ph-gear"></i> System Settings
             </a>
-            <a href="{{ route('home') }}" class="menu-item">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Site
             </a>
         </nav>
@@ -159,10 +153,17 @@
                 <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
                     <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
-                <div style="font-weight: 700; font-size: 1.15rem; color: var(--text);">Manage Admin Accounts</div>
+                <div style="font-weight: 700; font-size: 1.15rem; color: var(--text-main);">Manage Admin Accounts</div>
             </div>
             <div class="topbar-right">
-                <span class="badge-pill"><i class="ph-fill ph-shield-check"></i> SuperAdmin</span>
+                <div title="Current Theme Color" style="
+                    width: 14px; height: 14px;
+                    border-radius: 50%;
+                    background: var(--primary-color, var(--primary));
+                    border: 2px solid rgba(255,255,255,0.4);
+                    box-shadow: 0 0 0 2px var(--primary-color, var(--primary));
+                    flex-shrink: 0;
+                "></div>
                 <div style="font-size: 0.82rem; color: var(--muted); font-weight: 500;">{{ now()->format('d M Y, H:i') }}</div>
             </div>
         </div>
