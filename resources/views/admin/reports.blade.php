@@ -273,19 +273,25 @@
                 <form action="{{ route('admin.reports') }}" method="GET" class="filter-form">
                     <div class="form-group">
                         <label class="form-label">Start Date</label>
-                        <input type="date" name="start_date" class="form-input" value="{{ request('start_date') }}">
+                        <input type="date" name="start_date" class="form-input" value="{{ request('start_date') }}" style="height: 48px;">
                     </div>
                     <div class="form-group">
                         <label class="form-label">End Date</label>
-                        <input type="date" name="end_date" class="form-input" value="{{ request('end_date') }}">
+                        <input type="date" name="end_date" class="form-input" value="{{ request('end_date') }}" style="height: 48px;">
                     </div>
-                    <button type="submit" class="btn-download" style="background: var(--text-main);">
-                        <i class="ph ph-funnel"></i> Apply Filter
-                    </button>
+                    <div class="form-group">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn-download" style="background: var(--text-main); height: 48px;">
+                            <i class="ph ph-funnel"></i> Apply Filter
+                        </button>
+                    </div>
                     @if(count($bookings) > 0)
-                        <a href="{{ route('admin.reports.download', request()->all()) }}" class="btn-download">
-                            <i class="ph ph-download-simple"></i> Download .TXT Report
+                    <div class="form-group">
+                        <label class="form-label">&nbsp;</label>
+                        <a href="{{ route('admin.reports.download', request()->all()) }}" class="btn-download" style="height: 48px;">
+                            <i class="ph ph-file-pdf"></i> Download PDF Report
                         </a>
+                    </div>
                     @endif
                 </form>
             </div>

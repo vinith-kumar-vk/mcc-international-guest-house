@@ -314,26 +314,13 @@ class AdminController extends Controller
 
         $bookings = $query->orderBy('booking_date', 'desc')->get();
         
-        $content = "MCC IGH - BOOKING REPORT\n";
-        $content .= "Generated on: " . now()->format('d M Y, H:i') . "\n";
-        $content .= "Period: " . ($request->start_date ?? 'All Time') . " to " . ($request->end_date ?? 'Present') . "\n";
-        $content .= "================================================================================\n\n";
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#ff7a00';
+
+        // Using the global 'Pdf' alias which is auto-discovered
+        $pdf = \Pdf::loadView('admin.report_pdf', compact('bookings', 'startDate', 'endDate', 'primaryColor'));
         
-        foreach ($bookings as $b) {
-            $content .= "BOOKING ID: BK-" . str_pad($b->id, 6, '0', STR_PAD_LEFT) . "\n";
-            $content .= "GUEST: " . $b->name . " <" . $b->email . ">\n";
-            $content .= "ROOM: " . str_replace('-', ' ', ucwords($b->room_name, '- ')) . "\n";
-            $content .= "DATE: " . \Carbon\Carbon::parse($b->booking_date)->format('d M Y') . "\n";
-            $content .= "TIME: " . \Carbon\Carbon::parse($b->start_time)->format('h:i A') . " - " . \Carbon\Carbon::parse($b->end_time)->format('h:i A') . "\n";
-            $content .= "STATUS: " . strtoupper($b->approval_status) . " (" . strtoupper($b->payment_status) . ")\n";
-            $content .= "PRICE: ₹" . number_format($b->total_price, 2) . "\n";
-            $content .= "--------------------------------------------------------------------------------\n";
-        }
-
-        $filename = 'booking_report_' . now()->format('Ymd_His') . '.txt';
-
-        return response($content)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+        return $pdf->download('MCC_IGH_Report_' . now()->format('Ymd_His') . '.pdf');
     }
 }

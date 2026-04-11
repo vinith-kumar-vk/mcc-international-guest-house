@@ -144,6 +144,16 @@
         .feature-item i { font-size: 1.8rem; color: var(--primary-color); flex-shrink: 0; }
         .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
         .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }
+        
+        /* Optimization for Slider Lag */
+        .hero-slide {
+            will-change: opacity;
+            transform: translateZ(0);
+        }
+        .slider-card {
+            transform: translateZ(0); 
+            backface-visibility: hidden;
+        }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -155,7 +165,7 @@
     <section class="main-image-slider">
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
-            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" loading="eager">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Welcome to MCC IGH</h2>
                 <p class="slide-subtitle">Comfortable and secure guest house booking</p>
@@ -198,11 +208,11 @@
         <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
         <!-- Dots -->
         <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
-            <div class="hero-dot active" style="width:30px;height:3px;background:var(--primary-color);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot active" style="width:30px;height:4px;border-radius:2px;background:var(--primary-color);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
         </div>
     </section>
 
@@ -216,8 +226,8 @@
             const next = document.querySelector('.hero-next');
             let current = 0;
             let timer;
-            let startX = 0;
             let isDragging = false;
+            let isHovered = false;
 
             function renderSlide(index) {
                 slides.forEach(s => s.classList.remove('active-slide'));
@@ -231,26 +241,49 @@
             function nextSlide() { renderSlide((current + 1) % slides.length); }
             function prevSlide() { renderSlide((current - 1 + slides.length) % slides.length); }
 
-            function getTimer() { return setInterval(nextSlide, 4000); } // 4s slightly slower auto-slide
-            function resetTimer() { clearInterval(timer); timer = getTimer(); }
+            function startTimer() {
+                stopTimer();
+                if (!isHovered && !isDragging) {
+                    timer = setInterval(nextSlide, 4000);
+                }
+            }
+
+            function stopTimer() {
+                if (timer) clearInterval(timer);
+            }
 
             // Click Nav
-            next.addEventListener('click', () => { nextSlide(); resetTimer(); });
-            prev.addEventListener('click', () => { prevSlide(); resetTimer(); });
+            next.addEventListener('click', () => { 
+                nextSlide(); 
+                startTimer(); 
+            });
+            prev.addEventListener('click', () => { 
+                prevSlide(); 
+                startTimer(); 
+            });
 
             dots.forEach((dot, i) => {
-                dot.addEventListener('click', () => { renderSlide(i); resetTimer(); });
+                dot.addEventListener('click', () => { 
+                    renderSlide(i); 
+                    startTimer(); 
+                });
             });
 
             // Pause on hover
-            slider.addEventListener('mouseenter', () => clearInterval(timer));
-            slider.addEventListener('mouseleave', () => { if(!isDragging) resetTimer(); });
+            slider.addEventListener('mouseenter', () => {
+                isHovered = true;
+                stopTimer();
+            });
+            slider.addEventListener('mouseleave', () => {
+                isHovered = false;
+                if (!isDragging) startTimer();
+            });
 
             // Drag / Swipe Logic
             function dragStart(e) {
                 isDragging = true;
                 startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-                clearInterval(timer);
+                stopTimer();
                 slider.style.cursor = 'grabbing';
             }
             function dragEnd(e) {
@@ -265,7 +298,7 @@
                     if (diff > 0) nextSlide();
                     else prevSlide();
                 }
-                resetTimer();
+                startTimer();
             }
 
             slider.addEventListener('mousedown', dragStart);
@@ -275,7 +308,7 @@
             slider.addEventListener('touchend', dragEnd);
 
             // Execute boot
-            timer = getTimer();
+            startTimer();
         });
     </script>
 
@@ -341,12 +374,14 @@
                 const leftArrow = document.getElementById('roomPrevBtn');
                 const rightArrow = document.getElementById('roomNextBtn');
                 
-                let speed = 0.65; // Consistent speed
+                let speed = 1.0; // 1px per frame (perfectly smooth on 60fps)
                 let isHovered = false;
-                let scrollPos = 0;
+                let isManualPaused = false;
+                let scrollPos = container.scrollLeft;
+                let manualPauseTimer = null;
 
                 function autoScroll() {
-                    if (!isHovered) {
+                    if (!isHovered && !isManualPaused) {
                         scrollPos += speed;
                         if (scrollPos >= container.scrollWidth / 2) {
                             scrollPos = 0;
@@ -358,33 +393,44 @@
 
                 autoScroll();
 
-                let manualPauseTimer = null;
-
-                function manualPause() {
-                    isHovered = true;
+                function triggerManualPause() {
+                    isManualPaused = true;
                     if (manualPauseTimer) clearTimeout(manualPauseTimer);
                     manualPauseTimer = setTimeout(() => {
-                        isHovered = false;
+                        isManualPaused = false;
+                        // Synchronize scrollPos with actual scrollLeft when resuming
                         scrollPos = container.scrollLeft;
-                    }, 2500); // 2.5s manual override
+                    }, 4000); // 4s manual override after interaction
                 }
 
                 leftArrow.onclick = (e) => {
                     e.preventDefault();
-                    manualPause();
+                    triggerManualPause();
                     container.scrollBy({ left: -320, behavior: 'smooth' });
                 };
 
                 rightArrow.onclick = (e) => {
                     e.preventDefault();
-                    manualPause();
+                    triggerManualPause();
                     container.scrollBy({ left: 320, behavior: 'smooth' });
                 };
 
-                container.addEventListener('mouseenter', () => isHovered = true);
+                // Track hover state
+                container.addEventListener('mouseenter', () => {
+                    isHovered = true;
+                });
+                
                 container.addEventListener('mouseleave', () => {
                     isHovered = false;
+                    // Sync position on leave to ensure smooth pickup
                     scrollPos = container.scrollLeft;
+                });
+
+                // Periodic sync to handle manual browser scrolling or touch
+                container.addEventListener('scroll', () => {
+                    if (isHovered || isManualPaused) {
+                        scrollPos = container.scrollLeft;
+                    }
                 });
             });
         </script>
