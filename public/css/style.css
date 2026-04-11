@@ -25,6 +25,7 @@ body {
     color: var(--text-color);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 main {
@@ -114,34 +115,69 @@ header {
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: var(--transition);
-    border: 1px solid transparent;
+    transition: all 0.25s ease;
+    border: 2px solid #ff7a18;
+    color: #ff7a18;
+    background: transparent;
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #ff7a18, #ff9a3c);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(255,122,24,0.3);
+}
+
+.btn:active {
+    background: #ff7a18;
+    color: #ffffff;
+    box-shadow: 0 3px 10px rgba(255,122,24,0.2);
+    transform: none; /* Removed the previous scale effect to strictly follow new rules */
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white);
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 2px 4px rgba(255, 122, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: #ff7a18;
+    color: #ffffff;
 }
 
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+.btn-primary:active {
+    background: #e66d00;
 }
 
 .btn-outline {
-    background-color: transparent;
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+    background: transparent;
+    border-color: #ff7a18;
+    color: #ff7a18;
 }
 
 .btn-outline:hover {
-    background-color: var(--primary-color);
-    color: var(--white);
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.25);
+    background: linear-gradient(135deg, #ff7a18, #ff9a3c);
+    color: #ffffff;
+}
+
+.btn-loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-loading::after {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    margin-left: 0.75rem;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .btn-sm {
@@ -185,31 +221,36 @@ main {
 /* Cards */
 .card {
     background-color: var(--white);
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--border);
     overflow: hidden;
-    transition: var(--transition);
+    transition: all 0.25s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.06);
 }
 
 .card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .card-image-wrapper {
     position: relative;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    border-radius: 16px 16px 0 0;
 }
 
 .card-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-image-wrapper img {
+    transform: scale(1.03);
 }
 
 .card-content {
@@ -221,7 +262,7 @@ main {
 
 .card-content h2 {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     min-height: 3rem; /* Ensure titles take up consistent space */
     display: -webkit-box;
@@ -232,7 +273,7 @@ main {
 }
 
 .card-content .description {
-    color: var(--text-light);
+    color: #6b7280;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
     line-height: 1.5;
@@ -321,6 +362,36 @@ main {
     right: 1rem;
     z-index: 10;
 }
+
+/* Interactive Elements Vibe */
+.btn, 
+.btn-approve, 
+.btn-reject, 
+.btn-view, 
+.btn-delete, 
+.view-details-btn,
+.sidebar-menu .menu-item,
+.pagination-btn {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    cursor: pointer;
+}
+
+.btn:active, 
+.btn-approve:active, 
+.btn-reject:active, 
+.btn-view:active, 
+.btn-delete:active,
+.view-details-btn:active,
+.menu-item:active,
+.pagination-btn:active {
+    transform: scale(0.95);
+}
+
+.btn-approve:hover { transform: translateY(-1px); background: #218838; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3); }
+.btn-reject:hover { transform: translateY(-1px); background: #c82333; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3); }
+.btn-delete:hover { transform: translateY(-1px); border-color: #fca5a5; box-shadow: 0 4px 12px rgba(190, 18, 60, 0.1); }
+.btn-view:hover { transform: translateY(-1px); border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
 
 /* Forms */
 .form-container {

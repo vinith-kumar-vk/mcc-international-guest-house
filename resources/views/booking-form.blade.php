@@ -177,54 +177,54 @@
         }
 
         .submit-btn {
-            background: var(--primary-color) !important;
-            color: #ffffff !important;
-            border: none !important;
+            background: transparent !important;
+            color: #ff7a18 !important;
+            border: 2px solid #ff7a18 !important;
             padding: 1.1rem 2rem !important;
             font-size: 1rem !important;
             font-weight: 700 !important;
             border-radius: 8px !important;
             cursor: pointer !important;
-            transition: all 0.2s ease !important;
+            transition: all 0.25s ease !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 10px !important;
             width: 100% !important;
             margin-top: 2rem !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
             font-family: 'Inter', sans-serif !important;
         }
 
         .submit-btn:hover {
-            background: var(--primary-color) !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            background: linear-gradient(135deg, #ff7a18, #ff9a3c) !important;
             color: #ffffff !important;
-            transform: translateY(-1px) !important;
+            box-shadow: 0 6px 18px rgba(255,122,24,0.3) !important;
+            border-color: transparent !important;
         }
 
         .submit-btn:active {
-            transform: translateY(0) !important;
+            background: #ff7a18 !important;
+            box-shadow: 0 3px 10px rgba(255,122,24,0.2) !important;
+            transform: none !important;
         }
 
         .btn {
-            background: var(--primary-color) !important;
-            color: #ffffff !important;
-            border: none !important;
+            background: transparent !important;
+            color: #ff7a18 !important;
+            border: 2px solid #ff7a18 !important;
             padding: 0.9rem 1.6rem !important;
             font-size: 0.95rem !important;
             font-weight: 800 !important;
             border-radius: 12px !important;
             cursor: pointer !important;
-            transition: background 0.2s ease, box-shadow 0.2s ease !important;
+            transition: all 0.25s ease !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 8px !important;
             text-decoration: none !important;
-            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25) !important;
             text-transform: uppercase !important;
             letter-spacing: 0.8px !important;
             opacity: 1 !important;
@@ -232,22 +232,32 @@
         }
 
         .btn:hover {
-            background: var(--primary-color) !important;
-            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35) !important;
+            background: linear-gradient(135deg, #ff7a18, #ff9a3c) !important;
             color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(255,122,24,0.3) !important;
+            border-color: transparent !important;
+        }
+
+        .btn:active {
+            background: #ff7a18 !important;
+            box-shadow: 0 3px 10px rgba(255,122,24,0.2) !important;
             transform: none !important;
-            padding: 0.9rem 1.6rem !important;
         }
 
         .btn-outline {
             background: transparent !important;
-            color: var(--primary-color) !important;
-            border: 2px solid var(--primary-color) !important;
-            box-shadow: none !important;
+            color: #ff7a18 !important;
+            border: 2px solid #ff7a18 !important;
             transform: none !important;
+            transition: all 0.25s ease !important;
         }
 
         .btn-outline:hover {
+            background: linear-gradient(135deg, #ff7a18, #ff9a3c) !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(255,122,24,0.3) !important;
+            border-color: transparent !important;
+        }
             background: var(--primary-color) !important;
             color: #ffffff !important;
             transform: none !important;

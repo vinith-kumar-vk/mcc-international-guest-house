@@ -69,9 +69,10 @@
     .confirm-booking-btn,
     .active-nav,
     .badge-primary {
-        background-color: var(--primary-color) !important;
-        border-color: var(--primary-color) !important;
-        color: #ffffff !important;
+        background: transparent !important;
+        border: 2px solid #ff7a18 !important;
+        color: #ff7a18 !important;
+        transition: all 0.25s ease !important;
     }
     
     .text-primary, 
@@ -137,36 +138,32 @@
     /* Hover states */
     .btn-outline:hover,
     .btn-outline:active,
-    .btn-outline:focus {
-        background-color: transparent !important;
-        border-color: var(--primary-color) !important;
-        color: var(--primary-color) !important;
-        filter: brightness(90%) !important;
+    .btn:not(.btn-outline):hover, 
+    .btn-primary:hover, 
+    .submit-btn:hover, 
+    .help-send-btn:hover, 
+    .confirm-booking-btn:hover {
+        background: linear-gradient(135deg, #ff7a18, #ff9a3c) !important;
+        color: #ffffff !important;
+        box-shadow: 0 6px 18px rgba(255,122,24,0.3) !important;
+        border-color: transparent !important;
     }
 
-    .btn:not(.btn-outline):hover, 
-    .btn:not(.btn-outline):active,
-    .btn:not(.btn-outline):focus,
-    .btn-primary:hover, 
+    .btn:active,
     .btn-primary:active,
-    .btn-primary:focus,
-    .submit-btn:hover, 
     .submit-btn:active,
-    .submit-btn:focus,
-    .help-send-btn:hover, 
     .help-send-btn:active,
-    .help-send-btn:focus,
-    .confirm-booking-btn:hover,
-    .confirm-booking-btn:active,
-    .confirm-booking-btn:focus {
-        background-color: var(--primary-color) !important;
-        filter: brightness(90%) !important;
+    .confirm-booking-btn:active {
+        background: #ff7a18 !important;
         color: #ffffff !important;
+        box-shadow: 0 3px 10px rgba(255,122,24,0.2) !important;
+        transform: none !important;
     }
 
     .btn-outline {
-        border-color: var(--primary-color) !important;
-        color: var(--primary-color) !important;
+        background: transparent !important;
+        border: 2px solid #ff7a18 !important;
+        color: #ff7a18 !important;
     }
 
     /* Sidebar and Navigation */

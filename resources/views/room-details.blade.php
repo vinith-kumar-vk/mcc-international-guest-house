@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -784,10 +784,11 @@
                 <div class="gallery-actions">
                     <div style="display: flex; gap: 24px;">
                         <span class="action-btn" onclick="openLightbox()"><i class="ph ph-corners-out"></i> Full Screen</span>
+                        <span class="action-btn" onclick="openLightbox()"><i class="ph ph-images"></i> View Gallery</span>
                     </div>
                     <div style="display: flex; gap: 16px;">
-                        <span id="likeBtn" class="action-btn" onclick="toggleLike()"><i class="ph ph-heart"></i></span>
-                        <span class="action-btn" onclick="openShareModal()"><i class="ph ph-share-network"></i></span>
+                        <span id="likeBtn" class="action-btn" onclick="toggleLike()"><i class="ph ph-heart"></i> Like</span>
+                        <span class="action-btn" onclick="openShareModal()"><i class="ph ph-share-network"></i> Share</span>
                     </div>
                 </div>
 
@@ -1323,6 +1324,12 @@
 
             const dropdownOptions = document.getElementById('helpDropdownOptions');
             const dropdownSelected = document.querySelector('.dropdown-selected');
+            if (dropdownOptions && dropdownOptions.classList.contains('active')) {
+                if (!dropdownSelected.contains(event.target) && !dropdownOptions.contains(event.target)) {
+                    dropdownOptions.classList.remove('active');
+                }
+            }
+        };
     </script>
     <div class="help-modal-overlay" id="helpModal">
         <div class="help-modal-card">
@@ -1373,6 +1380,15 @@
                         <textarea placeholder="How can we help you?" rows="5"></textarea>
                     </div>
 
-                    <div class="help-form-footer">
+                    <div class="help-form-footer" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                        <button type="submit" class="help-send-btn btn" onclick="closeHelpModal(); showToast('Message sent successfully!'); return false;">
+                            Send Message <i class="ph ph-paper-plane-tilt"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

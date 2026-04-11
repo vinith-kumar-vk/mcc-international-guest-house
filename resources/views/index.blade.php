@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCC IGH</title>
     <!-- Modern Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Phosphor Icons for Modern Aesthetics -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -157,40 +157,45 @@
         <div class="hero-slide active-slide">
             <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
-                <h2 class="slide-title">Welcome to MCC IGH</h2>
-                <p class="slide-subtitle">Comfortable and secure guest house booking</p>
+                <h2 class="slide-title banner-clickable" style="pointer-events:auto;cursor:pointer;">Welcome to MCC IGH</h2>
+                <p class="slide-subtitle banner-clickable" style="pointer-events:auto;cursor:pointer;">Comfortable and secure guest house booking</p>
+                <button class="banner-cta-btn" style="pointer-events:auto;cursor:pointer;margin-top:1.5rem;padding:0.85rem 2.5rem;background:linear-gradient(135deg,#ff7a18,#ff9a3c);color:#fff;border:none;border-radius:50px;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 6px 20px rgba(255,122,24,0.4);transition:all 0.3s ease;">BOOK YOUR STAY</button>
             </div>
         </div>
         <!-- Slide 2 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc1.png') }}" alt="MCC IGH Premium" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
-                <h2 class="slide-title">Premium Stay Experience</h2>
-                <p class="slide-subtitle">Book rooms easily with modern facilities</p>
+                <h2 class="slide-title banner-clickable" style="pointer-events:auto;cursor:pointer;">Premium Stay Experience</h2>
+                <p class="slide-subtitle banner-clickable" style="pointer-events:auto;cursor:pointer;">Book rooms easily with modern facilities</p>
+                <button class="banner-cta-btn" style="pointer-events:auto;cursor:pointer;margin-top:1.5rem;padding:0.85rem 2.5rem;background:linear-gradient(135deg,#ff7a18,#ff9a3c);color:#fff;border:none;border-radius:50px;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 6px 20px rgba(255,122,24,0.4);transition:all 0.3s ease;">BOOK YOUR STAY</button>
             </div>
         </div>
         <!-- Slide 3 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc2.png') }}" alt="MCC IGH Booking" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
-                <h2 class="slide-title">Simple &amp; Fast Booking</h2>
-                <p class="slide-subtitle">Plan your stay with ease and convenience</p>
+                <h2 class="slide-title banner-clickable" style="pointer-events:auto;cursor:pointer;">Simple &amp; Fast Booking</h2>
+                <p class="slide-subtitle banner-clickable" style="pointer-events:auto;cursor:pointer;">Plan your stay with ease and convenience</p>
+                <button class="banner-cta-btn" style="pointer-events:auto;cursor:pointer;margin-top:1.5rem;padding:0.85rem 2.5rem;background:linear-gradient(135deg,#ff7a18,#ff9a3c);color:#fff;border:none;border-radius:50px;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 6px 20px rgba(255,122,24,0.4);transition:all 0.3s ease;">BOOK YOUR STAY</button>
             </div>
         </div>
         <!-- Slide 4 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner2.jpg') }}" alt="MCC IGH Modern" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
-                <h2 class="slide-title">Modern Amenities</h2>
-                <p class="slide-subtitle">Experience comfort with state-of-the-art facilities</p>
+                <h2 class="slide-title banner-clickable" style="pointer-events:auto;cursor:pointer;">Modern Amenities</h2>
+                <p class="slide-subtitle banner-clickable" style="pointer-events:auto;cursor:pointer;">Experience comfort with state-of-the-art facilities</p>
+                <button class="banner-cta-btn" style="pointer-events:auto;cursor:pointer;margin-top:1.5rem;padding:0.85rem 2.5rem;background:linear-gradient(135deg,#ff7a18,#ff9a3c);color:#fff;border:none;border-radius:50px;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 6px 20px rgba(255,122,24,0.4);transition:all 0.3s ease;">BOOK YOUR STAY</button>
             </div>
         </div>
         <!-- Slide 5 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner1.JPG') }}" alt="MCC IGH Serene" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
-                <h2 class="slide-title">Serene Environment</h2>
-                <p class="slide-subtitle">Enjoy a peaceful and quiet stay at the campus</p>
+                <h2 class="slide-title banner-clickable" style="pointer-events:auto;cursor:pointer;">Serene Environment</h2>
+                <p class="slide-subtitle banner-clickable" style="pointer-events:auto;cursor:pointer;">Enjoy a peaceful and quiet stay at the campus</p>
+                <button class="banner-cta-btn" style="pointer-events:auto;cursor:pointer;margin-top:1.5rem;padding:0.85rem 2.5rem;background:linear-gradient(135deg,#ff7a18,#ff9a3c);color:#fff;border:none;border-radius:50px;font-size:0.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 6px 20px rgba(255,122,24,0.4);transition:all 0.3s ease;">BOOK YOUR STAY</button>
             </div>
         </div>
         <!-- Nav Arrows -->
@@ -279,6 +284,24 @@
         });
     </script>
 
+    <!-- Banner Click-to-Scroll (does NOT modify slider logic) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.banner-clickable, .banner-cta-btn').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const target = document.getElementById('room-categories');
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+            // CTA hover effect
+            document.querySelectorAll('.banner-cta-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', () => { btn.style.transform = 'translateY(-3px)'; btn.style.boxShadow = '0 10px 30px rgba(255,122,24,0.5)'; });
+                btn.addEventListener('mouseleave', () => { btn.style.transform = ''; btn.style.boxShadow = ''; });
+            });
+        });
+    </script>
+
     <main>
 
         <!-- HERO SECTION -->
@@ -290,7 +313,7 @@
         </section>
 
         <!-- EXPLORE OUR ROOMS RE-INTEGRATED SLIDER -->
-        <section class="explore-rooms-section">
+        <section class="explore-rooms-section" id="room-categories">
             <div class="slider-master-container">
                 <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
                     <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Room Categories</h2>

@@ -444,6 +444,164 @@ function fallbackTextDownload() {
     URL.revokeObjectURL(url);
 }
 
+// --- GLOBAL BUTTON FEEDBACK ---
+document.addEventListener('submit', function(e) {
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn && !submitBtn.classList.contains('no-loader')) {
+        submitBtn.classList.add('btn-loading');
+        const originalText = submitBtn.innerText;
+        if (!submitBtn.dataset.originalText) {
+            submitBtn.dataset.originalText = originalText;
+        }
+        submitBtn.innerHTML = 'Processing';
+    }
+});
+
+// Add ripple effect or subtle response on all buttons
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn, .btn-approve, .btn-reject, .btn-view, .btn-delete, .view-details-btn');
+    if (btn) {
+        // Provide immediate visual feedback for "touch/click"
+        const ripple = document.createElement('span');
+        ripple.className = 'btn-ripple';
+        
+        // Position ripple
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+        
+        btn.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+
+        // If it's a link and not a hash link, show a global loader response
+        const href = btn.getAttribute('href');
+        if (href && href !== '#' && !href.startsWith('javascript:')) {
+            showGlobalLoader();
+        }
+    }
+});
+
+function showGlobalLoader() {
+    if (document.getElementById('global-page-loader')) return;
+    
+    const loader = document.createElement('div');
+    loader.id = 'global-page-loader';
+    loader.innerHTML = `
+        <div class="loader-bar"></div>
+        <div class="loader-spinner-overlay">
+            <div class="large-spinner"></div>
+        </div>
+    `;
+    document.body.appendChild(loader);
+}
+
+// Update viewDetails to provide a more interactive response
+function viewDetails(roomName) {
+    const toast = document.getElementById('toast');
+    if (!toast) {
+        const newToast = document.createElement('div');
+        newToast.id = 'toast';
+        newToast.className = 'toast';
+        document.body.appendChild(newToast);
+    }
+    
+    document.getElementById('toast').innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="btn-spin-small"></div>
+            <span>Fetching information for <strong>${roomName}</strong>...</span>
+        </div>
+    `;
+    document.getElementById('toast').classList.add('show');
+    
+    setTimeout(() => {
+        document.getElementById('toast').classList.remove('show');
+    }, 2000);
+}
+
+// Re-initialize dropdown and other shared elements
+document.addEventListener('DOMContentLoaded', () => {
+    // Add global feedback styles if missing
+    if (!document.getElementById('global-feedback-styles')) {
+        const style = document.createElement('style');
+        style.id = 'global-feedback-styles';
+        style.textContent = `
+            .btn-ripple {
+                position: absolute;
+                background: rgba(255, 255, 255, 0.4);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s ease-out;
+                pointer-events: none;
+            }
+            @keyframes ripple {
+                to { transform: scale(4); opacity: 0; }
+            }
+            .btn-spin-small {
+                width: 14px;
+                height: 14px;
+                border: 2px solid var(--primary-color);
+                border-right-color: transparent;
+                border-radius: 50%;
+                animation: btn-spin 0.6s linear infinite;
+            }
+            .toast {
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: #1e293b;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 99px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 9999;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .toast.show {
+                transform: translateX(-50%) translateY(0);
+            }
+            #global-page-loader {
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                z-index: 10000;
+                pointer-events: none;
+            }
+            .loader-bar {
+                position: fixed;
+                top: 0; left: 0; height: 3px;
+                background: var(--primary-color);
+                width: 0;
+                animation: load-bar 2s ease-in-out forwards;
+                box-shadow: 0 0 10px var(--primary-color);
+            }
+            @keyframes load-bar {
+                0% { width: 0; }
+                50% { width: 70%; }
+                100% { width: 90%; }
+            }
+            .loader-spinner-overlay {
+                position: fixed;
+                top: 2rem; right: 2rem;
+            }
+            .large-spinner {
+                width: 24px; height: 24px;
+                border: 3px solid rgba(255, 122, 0, 0.2);
+                border-top-color: var(--primary-color);
+                border-radius: 50%;
+                animation: btn-spin 0.8s linear infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+});
+
+
 // --- HEADER DROPDOWN LOGIC ---
 function toggleDropdown(event) {
     if (event) event.stopPropagation();
@@ -462,3 +620,4 @@ document.addEventListener('click', function(event) {
         }
     }
 });
+
