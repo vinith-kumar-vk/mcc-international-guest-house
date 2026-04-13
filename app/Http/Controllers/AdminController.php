@@ -28,8 +28,9 @@ class AdminController extends Controller
         $pendingPayments = Booking::where('payment_status', 'Pending')->count();
         $cancelledBookings = Booking::where('payment_status', 'Failed')->count();
 
-        // Feed for the Notification Center
+        // Feed for the Notification Center (Only Unread)
         $notificationBookings = Booking::whereIn('approval_status', ['Pending', 'Principal Approved'])
+            ->where('is_admin_read', false)
             ->orderBy('updated_at', 'desc')
             ->limit(10)
             ->get();
@@ -203,6 +204,12 @@ class AdminController extends Controller
     public function show($id)
     {
         $booking = Booking::findOrFail($id);
+        
+        // Mark as read when admin views details
+        if (!$booking->is_admin_read) {
+            $booking->update(['is_admin_read' => true]);
+        }
+        
         return view('admin.booking_details', compact('booking'));
     }
 
@@ -258,12 +265,16 @@ class AdminController extends Controller
         return back()->with('success', 'Booking fully approved. Guest has been notified.');
     }
 
-    public function reject($id)
+    public function reject($id, Request $request)
     {
         $booking = Booking::findOrFail($id);
         $booking->update(['approval_status' => 'Rejected']);
         
-        return redirect()->route('approval.status')->with('success', 'Booking has been rejected.');
+        if ($request->isMethod('post')) {
+            return back()->with('error', 'Booking has been rejected.');
+        }
+        
+        return redirect()->route('approval.status')->with('error', 'Booking has been rejected.');
     }
 
     public function markAsPaid($id)
@@ -298,7 +309,25 @@ class AdminController extends Controller
         }
 
         $bookings = $query->orderBy('booking_date', 'desc')->get();
-        return view('admin.reports', compact('bookings'));
+        
+        // Calculate dynamic totals for the report summary
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $gstFactor = 1 + ($gstRate / 100);
+        
+        $totalRevenue = $bookings->sum('total_price');
+        $netRevenue = $totalRevenue / $gstFactor;
+        $totalGst = $totalRevenue - $netRevenue;
+        
+        return view('admin.reports', compact('bookings', 'totalRevenue', 'netRevenue', 'totalGst', 'gstRate'));
+    }
+
+    public function markNotificationsRead()
+    {
+        Booking::whereIn('approval_status', ['Pending', 'Principal Approved'])
+            ->where('is_admin_read', false)
+            ->update(['is_admin_read' => true]);
+            
+        return back()->with('success', 'All notifications marked as read.');
     }
 
     public function downloadReport(Request $request)
@@ -314,13 +343,21 @@ class AdminController extends Controller
 
         $bookings = $query->orderBy('booking_date', 'desc')->get();
         
+        // Calculate dynamic totals for the PDF report
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $gstFactor = 1 + ($gstRate / 100);
+        
+        $totalRevenue = $bookings->sum('total_price');
+        $netRevenue = $totalRevenue / $gstFactor;
+        $totalGst = $totalRevenue - $netRevenue;
+        
         $startDate = $request->start_date;
         $endDate = $request->end_date;
         $primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#ff7a00';
 
         // Using the global 'Pdf' alias which is auto-discovered
-        $pdf = \Pdf::loadView('admin.report_pdf', compact('bookings', 'startDate', 'endDate', 'primaryColor'));
+        $pdf = \Pdf::loadView('admin.report_pdf', compact('bookings', 'startDate', 'endDate', 'primaryColor', 'totalRevenue', 'netRevenue', 'totalGst', 'gstRate'));
         
-        return $pdf->download('MCC_IGH_Report_' . now()->format('Ymd_His') . '.pdf');
+        return $pdf->download('Revenue_Report_'.now()->format('dM_Y').'.pdf');
     }
 }

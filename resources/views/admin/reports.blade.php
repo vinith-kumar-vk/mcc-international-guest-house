@@ -82,9 +82,17 @@
             margin-bottom: 0.25rem;
         }
 
-        .menu-item:hover, .menu-item.active {
+        .menu-item:hover {
             background: rgba(255, 122, 0, 0.08);
             color: var(--primary-color);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 122, 0, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+            padding-left: calc(1rem - 3px);
         }
 
         .menu-item i {
@@ -138,8 +146,14 @@
 
         .filter-form {
             display: flex;
-            gap: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
             align-items: flex-end;
+        }
+
+        .filter-form .form-group {
+            flex: 1;
+            min-width: 150px;
         }
 
         .form-group {
@@ -269,6 +283,22 @@
         </div>
 
         <div class="admin-body">
+            <!-- Financial Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Total Revenue</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">₹{{ number_format($totalRevenue, 2) }}</div>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Net Revenue (Excl. GST)</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #1e293b;">₹{{ number_format($netRevenue, 2) }}</div>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Total GST Collected ({{ $gstRate }}%)</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #64748b;">₹{{ number_format($totalGst, 2) }}</div>
+                </div>
+            </div>
+
             <div class="filter-card">
                 <form action="{{ route('admin.reports') }}" method="GET" class="filter-form">
                     <div class="form-group">
@@ -301,33 +331,37 @@
                     <thead>
                         <tr>
                             <th>Booking ID</th>
-                            <th>Guest</th>
-                            <th>Room</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Amount</th>
+                            <th>Guest Details</th>
+                            <th>Room / Slot</th>
+                            <th>Base Price</th>
+                            <th>GST ({{ $gstRate }}%)</th>
+                            <th>Total Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($bookings as $b)
+                        @php
+                            $bGstFactor = 1 + ($gstRate / 100);
+                            $bSubtotal = $b->total_price / $bGstFactor;
+                            $bGstAmount = $b->total_price - $bSubtotal;
+                        @endphp
                         <tr>
                             <td style="font-weight: 600;">BK-{{ str_pad($b->id, 6, '0', STR_PAD_LEFT) }}</td>
                             <td>
                                 <div style="font-weight: 600;">{{ $b->name }}</div>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $b->email }}</div>
                             </td>
-                            <td>{{ str_replace('-', ' ', ucwords($b->room_name, '- ')) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($b->booking_date)->format('d M Y') }}</td>
                             <td>
-                                <span class="status-pill pill-{{ strtolower($b->approval_status) }}">
-                                    {{ $b->approval_status }}
-                                </span>
+                                <div style="font-weight: 600;">{{ str_replace('-', ' ', ucwords($b->room_name, '- ')) }}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ \Carbon\Carbon::parse($b->booking_date)->format('d M Y') }}</div>
                             </td>
+                            <td style="color: #64748b;">₹{{ number_format($bSubtotal, 2) }}</td>
+                            <td style="color: #64748b;">₹{{ number_format($bGstAmount, 2) }}</td>
                             <td style="font-weight: 700; color: var(--text-main);">₹{{ number_format($b->total_price, 2) }}</td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-muted);">
                                 No records found for the selected period.
                             </td>
                         </tr>

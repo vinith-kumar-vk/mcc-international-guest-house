@@ -57,7 +57,11 @@
 </head>
 <body>
     <div class="container">
-        @if(session('success'))
+        @if(session('error'))
+            <div class="icon icon-error" style="color: #ef4444;"><i class="ph-fill ph-x-circle"></i></div>
+            <h1>Action Completed</h1>
+            <p>{{ session('error') }}</p>
+        @elseif(session('success'))
             <div class="icon icon-success"><i class="ph-fill ph-check-circle"></i></div>
             <h1>Action Successful!</h1>
             <p>{{ session('success') }}</p>

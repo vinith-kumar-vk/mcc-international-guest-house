@@ -565,7 +565,6 @@
         <div class="admin-header">
             <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             <div>
-                <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem;">Back to list</div>
                 <h1 id="pdf-header">Booking Details #{{ $booking->id }}</h1>
             </div>
             <button onclick="downloadBookingPDF()" class="btn-download-pdf">
@@ -733,13 +732,19 @@
                     </div>
 
                     <div class="payment-summary">
+                        @php
+                            // $gstRate is shared globally via AppServiceProvider
+                            $gstFactor = 1 + ($gstRate / 100);
+                            $subtotal = $booking->total_price / $gstFactor;
+                            $gstAmount = $booking->total_price - $subtotal;
+                        @endphp
                         <div class="summary-row">
                             <span>Subtotal</span>
-                            <span>₹{{ number_format($booking->total_price / 1.18, 2) }}</span>
+                            <span>₹{{ number_format($subtotal, 2) }}</span>
                         </div>
                         <div class="summary-row">
-                            <span>GST (18%)</span>
-                            <span>₹{{ number_format($booking->total_price - ($booking->total_price / 1.18), 2) }}</span>
+                            <span>GST ({{ $gstRate }}%)</span>
+                            <span>₹{{ number_format($gstAmount, 2) }}</span>
                         </div>
                         <div class="summary-row total">
                             <span>{{ $booking->payment_status === 'Paid' ? 'Amount Paid' : 'Amount to be Paid' }}</span>

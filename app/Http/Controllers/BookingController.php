@@ -45,10 +45,34 @@ class BookingController extends Controller
         $clockIn = \Carbon\Carbon::parse($validated['clock_in']);
         $clockOut = \Carbon\Carbon::parse($validated['clock_out']);
         
-        // Calculate hours and price
+        // Calculate duration in hours
         $durationHours = $clockIn->diffInHours($clockOut);
         if ($durationHours == 0) $durationHours = 1;
-        $totalPrice = $durationHours > 4 ? 5000 : 2000;
+        
+        $basePrice = 0;
+        $roomName = $validated['room_name'];
+        
+        // Dynamic Pricing Logic based on Category
+        if (str_contains(strtolower($roomName), 'standard')) {
+            // Standard Rooms: ₹1400 per 12-hour block (or fraction)
+            $twelveHourBlocks = ceil($durationHours / 12);
+            $basePrice = $twelveHourBlocks * 1400;
+        } elseif (is_numeric($roomName) || (is_numeric(substr($roomName, 0, 1)) && strlen($roomName) <= 4)) {
+            // Advance Rooms (Numbered 101, 201 etc): ₹2500 per 24-hour day
+            $days = ceil($durationHours / 24);
+            $basePrice = $days * 2500;
+        } elseif (in_array(strtolower($roomName), ['conference-hall', 'glass-room', 'suite-room'])) {
+            // Special Facility Rooms: ₹500 per hour (Minimum 4 hours = ₹2000)
+            $billableHours = max(4, $durationHours);
+            $basePrice = $billableHours * 500;
+        } else {
+            // Default Fallback (Previous logic)
+            $basePrice = $durationHours > 4 ? 5000 : 2000;
+        }
+        
+        // Apply Dynamic GST Rate from Settings
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $totalPrice = $basePrice * (1 + ($gstRate / 100));
 
         // Double booking check
         $exists = Booking::where('room_name', $validated['room_name'])
@@ -117,5 +141,17 @@ class BookingController extends Controller
 
         // 4. Redirect directly to the success page
         return redirect()->route('checkout.success', ['id' => $booking->id])->with('success', 'Booking submitted. Your request has been sent for approval.');
+    }
+
+    public function downloadReceipt($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#7f1d1d';
+        
+        // Set paper to A4
+        $pdf = \Pdf::loadView('emails.receipt_pdf', compact('booking', 'primaryColor'))
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->download('MCC_Receipt_#'.str_pad($booking->id, 8, '0', STR_PAD_LEFT).'.pdf');
     }
 }

@@ -340,6 +340,21 @@
                         </div>
                     </div>
 
+                    <h3 style="font-size: 1.1rem; color: #1e293b; margin: 2rem 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem;">
+                        <i class="ph-bold ph-coins" style="color: var(--primary-color);"></i> Financial & Tax Configuration
+                    </h3>
+
+                    <div class="form-group" style="margin-bottom: 2rem; background: #fff; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 12px; max-width: 300px;">
+                        <label style="color: #1e293b; font-weight: 700; margin-bottom: 0.75rem; display: block;">Default GST Rate (%)</label>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <input type="number" name="gst_rate" value="{{ $settings['gst_rate'] ?? '5' }}" step="0.1" min="0" max="100" style="flex: 1; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 700; font-size: 1.25rem; text-align: center;">
+                            <span style="font-weight: 800; color: #64748b; font-size: 1.25rem;">%</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">
+                            <i class="ph ph-info"></i> This rate will be used to calculate GST for all room bookings.
+                        </div>
+                    </div>
+
                 <button type="submit" class="btn-save">Save Configuration</button>
             </form>
         </div>

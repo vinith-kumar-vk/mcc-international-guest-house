@@ -83,8 +83,16 @@
             transition: all 0.2s ease; margin-bottom: 0.25rem;
         }
 
-        .menu-item:hover, .menu-item.active {
+        .menu-item:hover {
             background: rgba(255, 122, 0, 0.08); color: var(--primary-color);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 122, 0, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+            padding-left: calc(1rem - 3px);
         }
 
         .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border); }
@@ -354,7 +362,10 @@
                     <div class="notification-dropdown" id="notifDropdown">
                         <div class="notification-header">
                             <span style="font-weight: 700; font-size: 0.9rem;">Notifications</span>
-                            <span style="font-size: 0.7rem; color: var(--primary-color);">Mark all as read</span>
+                            <form action="{{ route('admin.notifications.read') }}" method="POST" id="markReadForm">
+                                @csrf
+                                <span style="font-size: 0.7rem; color: var(--primary-color); cursor: pointer;" onclick="document.getElementById('markReadForm').submit();">Mark all as read</span>
+                            </form>
                         </div>
                         <div style="max-height: 350px; overflow-y: auto;">
                             @forelse($notificationBookings as $nb)

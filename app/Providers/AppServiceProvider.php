@@ -24,5 +24,12 @@ class AppServiceProvider extends ServiceProvider
         if (!app()->runningInConsole()) {
             config(['app.url' => request()->getSchemeAndHttpHost()]);
         }
+
+        // Share system settings with all views
+        \Illuminate\Support\Facades\View::composer('*', function ($view) {
+            $settings = \App\Models\Setting::all()->pluck('value', 'key')->toArray();
+            $view->with('settings', $settings);
+            $view->with('gstRate', $settings['gst_rate'] ?? '5');
+        });
     }
 }

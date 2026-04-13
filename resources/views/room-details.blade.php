@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -972,7 +972,7 @@
                     <div class="price-box" style="padding: 16px; margin-bottom: 16px;">
                         <span class="price-val" style="font-size: 24px;">{{ $room['price'] }}</span>
                         <span class="price-unit" style="font-size: 14px;">{{ $room['time'] }}</span>
-                        <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-light); font-weight: 500;">+ 5% GST applicable</p>
+                        <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-light); font-weight: 500;">+ {{ $gstRate }}% GST applicable</p>
                     </div>
 
                     <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn" style="width: 100%; padding: 14px 16px !important; border-radius: 6px !important; font-size: 14px !important; margin-bottom: 16px; font-weight: 700;">
@@ -1320,9 +1320,7 @@
             if (event.target == helpModal) {
                 closeHelpModal();
             }
-
-            const dropdownOptions = document.getElementById('helpDropdownOptions');
-            const dropdownSelected = document.querySelector('.dropdown-selected');
+        };
     </script>
     <div class="help-modal-overlay" id="helpModal">
         <div class="help-modal-card">
@@ -1374,5 +1372,11 @@
                     </div>
 
                     <div class="help-form-footer">
+                        <button type="submit" class="help-send-btn">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

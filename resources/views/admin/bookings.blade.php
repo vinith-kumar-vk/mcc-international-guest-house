@@ -91,9 +91,17 @@
             margin-bottom: 0.25rem;
         }
 
-        .menu-item:hover, .menu-item.active {
+        .menu-item:hover {
             background: rgba(255, 122, 0, 0.08);
             color: var(--primary-color);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 122, 0, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+            padding-left: calc(1rem - 3px);
         }
 
         .menu-item i {
@@ -160,19 +168,32 @@
 
         /* Filter Section */
         .filter-section {
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             background: #fff;
             border-bottom: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            align-items: end;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .filter-section .filter-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filter-section .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
         }
 
         @media (max-width: 640px) {
             .filter-section {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
+            .filter-section .filter-group,
+            .filter-section .filter-actions { width: 100%; flex: unset; }
         }
 
         .filter-group {
@@ -208,22 +229,18 @@
         }
 
         .data-table th, .data-table td {
-            padding: 1.1rem 1.5rem;
+            padding: 0.9rem 1.1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
             vertical-align: middle;
         }
 
-        /* Give the last (ACTION) column extra right padding */
+        /* Action column: fixed width, never wrap */
         .data-table th:last-child,
         .data-table td:last-child {
-            padding-right: 2rem;
-        }
-
-        /* Action cell: ensure minimum height with vertical centering */
-        .data-table td:last-child {
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            white-space: nowrap;
+            min-width: 120px;
+            padding-right: 1.5rem;
         }
 
         .data-table th {
@@ -491,8 +508,16 @@
         <div class="admin-body">
 
         @if(session('success'))
-            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
+            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-check-circle"></i>
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #fecaca; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-warning-circle"></i>
+                {{ session('error') }}
             </div>
         @endif
 
@@ -524,9 +549,9 @@
                         <option value="Failed" {{ request('status') == 'Failed' ? 'selected' : '' }}>Failed</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button type="submit" class="btn" style="width: auto; height: 42px; padding: 0 1.25rem;"><i class="ph ph-magnifying-glass"></i></button>
-                    <a href="{{ route('admin.bookings') }}" class="btn btn-outline" style="width: auto; height: 42px; padding: 0 1.25rem; display: flex; align-items: center;"><i class="ph ph-arrows-clockwise"></i></a>
+                <div class="filter-actions">
+                    <button type="submit" class="btn" style="height: 42px; padding: 0 1.1rem;"><i class="ph ph-magnifying-glass"></i></button>
+                    <a href="{{ route('admin.bookings') }}" class="btn btn-outline" style="height: 42px; padding: 0 1.1rem; display: flex; align-items: center;"><i class="ph ph-arrows-clockwise"></i></a>
                 </div>
             </form>
 

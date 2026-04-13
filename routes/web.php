@@ -63,6 +63,8 @@ Route::get('/success/{id}', function ($id) {
     return view('success', compact('booking'));
 })->name('checkout.success');
 
+Route::get('/receipt/{id}/download', [BookingController::class, 'downloadReceipt'])->name('receipt.download');
+
 Route::get('/failure/{id?}', function ($id = null) {
     return view('failure', compact('id'));
 })->name('checkout.failure');
@@ -85,6 +87,7 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::post('/bookings/{id}/approve', [AdminController::class, 'adminApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
     Route::post('/bookings/{id}/pay', [AdminController::class, 'markAsPaid'])->name('admin.bookings.pay');
+    Route::post('/notifications/mark-read', [AdminController::class, 'markNotificationsRead'])->name('admin.notifications.read');
     Route::delete('/bookings/{id}', [AdminController::class, 'destroy'])->name('admin.bookings.destroy');
 });
 

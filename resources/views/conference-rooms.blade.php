@@ -273,7 +273,7 @@
                         
                         <div class="price-highlight">
                             <span id="price-{{ $roomId }}">₹2000</span> <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">for </span><span id="time-text-{{ $roomId }}" style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">4 hours</span></div>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         
                         <!-- Room Features -->
                         <div class="room-features-box" style="margin: 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }};">
@@ -332,7 +332,7 @@
                 <div class="modal-price-line">
                     <span id="modalRoomPrice">₹0</span> 
                     <span style="font-size: 0.95rem; color: #666; font-weight: 600;" id="modalRoomTime">/ period</span>
-                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ 5% GST</span>
+                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ {{ $gstRate }}% GST</span>
                 </div>
 
                 <p style="color: #666; line-height: 1.4; font-size: 0.85rem; margin: 0.25rem 0;" id="modalRoomDesc"></p>

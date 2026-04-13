@@ -15,6 +15,7 @@ class BookingNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $booking;
+    public $primaryColor;
 
     /**
      * Create a new message instance.
@@ -22,6 +23,7 @@ class BookingNotification extends Mailable
     public function __construct(Booking $booking)
     {
         $this->booking = $booking;
+        $this->primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#ff7a00';
     }
 
     /**

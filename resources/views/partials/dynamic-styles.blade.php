@@ -27,6 +27,14 @@
         --secondary-color: {{ $secondaryColor }};
         --secondary: {{ $secondaryColor }};
     }
+
+    * {
+        font-family: 'Inter', sans-serif !important;
+    }
+
+    body, input, select, textarea, button, h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', sans-serif !important;
+    }
     
     /* Secondary Style Overrides for Visual Balance */
     @if($useSecondary == '1')
@@ -91,6 +99,142 @@
         color: var(--primary-color) !important;
     }
 
+    .header-container {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
+        padding: 0 2rem !important;
+        height: 80px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .igh-text {
+        font-family: 'Inter', sans-serif !important;
+        color: #64748b !important;
+    }
+
+    .help-btn {
+        background: rgba({{ $primaryRgb }}, 0.08) !important;
+        color: var(--primary-color) !important;
+        border: 1px solid rgba({{ $primaryRgb }}, 0.2) !important;
+        padding: 0.5rem 1.25rem !important;
+        border-radius: 50px !important;
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+    }
+
+    .help-btn:hover {
+        background: var(--primary-color) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 15px rgba({{ $primaryRgb }}, 0.3) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* Header center: only visible on large screens (1280px+) */
+    .header-center {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        text-align: center !important;
+        display: none !important; /* hidden by default, shown on large screens below */
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: none !important;
+        white-space: nowrap !important;
+    }
+
+    .logo-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
+    /* Fixed alignment for header parts */
+    .header-left, .header-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 1rem !important;
+        z-index: 2 !important;
+    }
+
+    @media (max-width: 992px) {
+        .header-title {
+            display: none !important; /* Hide long title on mobile/tablet to avoid overlap */
+        }
+    }
+
+    /* Show header center text only on wide screens */
+    @media (min-width: 1280px) {
+        .header-center {
+            display: flex !important;
+        }
+    }
+
+    /* ── Logo and link base styles (must be before mobile overrides) ── */
+    .logo-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        height: auto !important;
+    }
+
+    /* Default (desktop) logo size */
+    .header-logo {
+        height: 70px !important;
+        width: auto !important;
+        object-fit: contain !important;
+    }
+
+    /* Mobile header adjustments */
+    @media (max-width: 767px) {
+        .header-container {
+            padding: 0 0.75rem !important;
+            height: 60px !important;
+        }
+        .header-logo {
+            height: 38px !important;
+        }
+        .help-btn {
+            padding: 0.35rem 0.65rem !important;
+            font-size: 0.75rem !important;
+            letter-spacing: 0 !important;
+        }
+        .help-btn span {
+            display: none !important;
+        }
+        .header-left, .header-right {
+            gap: 0.5rem !important;
+        }
+    }
+
+    /* Tablet header adjustments */
+    @media (min-width: 768px) and (max-width: 1279px) {
+        .header-container {
+            padding: 0 1.5rem !important;
+            height: 70px !important;
+        }
+        .header-logo {
+            height: 52px !important;
+        }
+    }
+
+
     .border-primary, .room-highlights, .form-section-title {
         border-color: var(--primary-color) !important;
     }
@@ -138,10 +282,11 @@
     .btn-outline:hover,
     .btn-outline:active,
     .btn-outline:focus {
-        background-color: transparent !important;
+        background-color: var(--primary-color) !important;
         border-color: var(--primary-color) !important;
-        color: var(--primary-color) !important;
-        filter: brightness(90%) !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba({{ $primaryRgb }}, 0.3) !important;
     }
 
     .btn:not(.btn-outline):hover, 

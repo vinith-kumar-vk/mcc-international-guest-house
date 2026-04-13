@@ -15,6 +15,7 @@ class BookingApproved extends Mailable
     use Queueable, SerializesModels;
 
     public $booking;
+    public $primaryColor;
 
     /**
      * Create a new message instance.
@@ -22,6 +23,7 @@ class BookingApproved extends Mailable
     public function __construct(Booking $booking)
     {
         $this->booking = $booking;
+        $this->primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#ff7a00';
     }
 
     /**
@@ -51,6 +53,14 @@ class BookingApproved extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        // Generate receipt PDF dynamically
+        $booking = $this->booking;
+        $primaryColor = $this->primaryColor;
+        $pdf = \Pdf::loadView('emails.receipt_pdf', compact('booking', 'primaryColor'));
+        
+        return [
+            \Illuminate\Mail\Mailables\Attachment::fromData(fn () => $pdf->output(), 'MCC_IGH_Receipt.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

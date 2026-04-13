@@ -98,7 +98,8 @@ class SuperAdminController extends Controller
             'mail_mailer'         => 'required|string',
             'primary_color'       => 'nullable|string',
             'secondary_color'     => 'nullable|string',
-            'use_secondary_color' => 'nullable'
+            'use_secondary_color' => 'nullable',
+            'gst_rate'            => 'required|numeric|min:0|max:100'
         ]);
 
         Setting::updateOrCreate(['key' => 'principal_email'], ['value' => $request->system_email]);
@@ -113,6 +114,7 @@ class SuperAdminController extends Controller
         Setting::updateOrCreate(['key' => 'primary_color'],   ['value' => $request->primary_color ?? '#ff7a00']);
         Setting::updateOrCreate(['key' => 'secondary_color'], ['value' => $request->secondary_color ?? '#001a33']);
         Setting::updateOrCreate(['key' => 'use_secondary_color'], ['value' => $request->has('use_secondary_color') ? '1' : '0']);
+        Setting::updateOrCreate(['key' => 'gst_rate'],            ['value' => $request->gst_rate ?? '5']);
 
         return redirect()->back()->with('success', 'System settings updated successfully.');
     }

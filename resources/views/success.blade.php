@@ -171,99 +171,113 @@
                 @endif
             </div>
 
-            <div class="success-body">
-                <table class="receipt-table">
-                    <tbody>
-                        <tr>
-                            <th>Booking ID</th>
-                            <td id="recBkId">BK-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <td id="recName">{{ $booking->name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td id="recEmail">{{ $booking->email }}</td>
-                        </tr>
-                        <tr>
-                            <th>Phone</th>
-                            <td id="recPhone">{{ $booking->phone }}</td>
-                        </tr>
-                        <tr>
-                            <th>GST ID</th>
-                            <td id="recCompany">{{ $booking->gst_id ?: '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Guests</th>
-                            <td id="recGuests">{{ $booking->primary_guest_name ?: $booking->name }} ({{ $booking->no_of_persons }} {{ Str::plural('Person', $booking->no_of_persons) }})</td>
-                        </tr>
-                        <tr>
-                            <th>Room Name</th>
-                            <td id="recRoom">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Date & Time</th>
-                            <td id="recDateTime">{{ \Carbon\Carbon::parse($booking->booking_date)->format('M d, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ $booking->payment_status === 'Paid' ? 'Total Amount Paid' : 'Total Amount to be Paid' }}</th>
-                            <td id="recAmount" style="color: var(--primary-color); font-size: 1.1rem;">₹{{ number_format($booking->total_price, 2) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                @if($booking->approval_status === 'Pending')
-                                    <span style="background: #fef3c7; color: #92400e; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #fde68a;">Waiting for Approval</span>
-                                @elseif($booking->approval_status === 'Principal Approved')
-                                    <span style="background: #ecfdf5; color: #065f46; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #a7f3d0;">Principal Approved</span>
-                                @elseif($booking->approval_status === 'Approved')
-                                    <span style="background: var(--primary-color); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Fully Approved</span>
-                                @elseif($booking->approval_status === 'Rejected')
-                                    <span style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid #fecaca;">Rejected</span>
-                                @else
-                                    <span style="background: #f1f5f9; color: #475569; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">{{ $booking->approval_status }}</span>
-                                @endif
-                            </td>
-                        </tr>
-                    </tbody>
+            <div class="success-body" id="receiptContent" style="background: #ffffff; padding: 40px; border-radius: 12px;">
+                <!-- Official Header -->
+                <div style="text-align: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 20px; margin-bottom: 30px;">
+                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 60px; margin-bottom: 10px;">
+                    <h3 style="margin: 0; color: #7f1d1d; font-weight: 800; font-size: 20px; text-transform: uppercase;">Madras Christian College</h3>
+                    <p style="margin: 5px 0 0; color: #64748b; font-size: 14px; font-weight: 600;">International Guest House & Conference Centre</p>
+                    <div style="display: inline-block; background: #f1f5f9; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; margin-top: 15px; color: #475569; letter-spacing: 2px;">OFFICIAL RECEIPT SUMMARY</div>
+                </div>
+
+                <!-- Info Grid using Table for PDF Compatibility -->
+                <table style="width: 100%; margin-bottom: 30px; border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+                            <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Guest Details</p>
+                            <table style="width: 100%; font-size: 13px;">
+                                <tr>
+                                    <td style="color: #64748b; padding: 4px 0; width: 40%;">Name:</td>
+                                    <td style="font-weight: 700; color: #1e293b;">{{ $booking->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #64748b; padding: 4px 0;">Phone:</td>
+                                    <td style="font-weight: 700; color: #1e293b;">{{ $booking->phone }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding-left: 20px;">
+                            <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Booking Details</p>
+                            <table style="width: 100%; font-size: 13px;">
+                                <tr>
+                                    <td style="color: #64748b; padding: 4px 0; width: 40%;">ID:</td>
+                                    <td style="font-weight: 700; color: #1e293b;">#{{ str_pad($booking->id, 8, '0', STR_PAD_LEFT) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #64748b; padding: 4px 0;">Date:</td>
+                                    <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
+
+                <!-- Stay Details -->
+                <div style="margin-bottom: 30px;">
+                    <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Stay Information</p>
+                    <table style="width: 100%; font-size: 13px;">
+                        <tr>
+                            <td style="color: #64748b; padding: 8px 0; width: 20%;">Category:</td>
+                            <td style="font-weight: 700; color: #1e293b;">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #64748b; padding: 8px 0;">Schedule:</td>
+                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                @php
+                    $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+                    $gstFactor = 1 + ($gstRate / 100);
+                    $subtotal = $booking->total_price / $gstFactor;
+                    $gstAmount = $booking->total_price - $subtotal;
+                @endphp
+
+                <!-- Pricing Breakdown -->
+                <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="color: #64748b; font-size: 13px; padding-bottom: 10px;">Accommodation (Subtotal)</td>
+                            <td style="text-align: right; font-weight: 600; font-size: 14px; padding-bottom: 10px;">Rs. {{ number_format($subtotal, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #64748b; font-size: 13px; padding-bottom: 15px; border-bottom: 1px solid #cbd5e1;">Tax (GST {{ $gstRate }}%)</td>
+                            <td style="text-align: right; font-weight: 600; font-size: 14px; padding-bottom: 15px; border-bottom: 1px solid #cbd5e1;">Rs. {{ number_format($gstAmount, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #1e293b; font-size: 14px; font-weight: 800; padding-top: 15px;">TOTAL AMOUNT</td>
+                            <td style="text-align: right; color: #7f1d1d; font-size: 24px; font-weight: 900; padding-top: 15px;">Rs. {{ number_format($booking->total_price, 2) }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Footer Notes -->
+                <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 20px; text-align: center;">
+                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 5px 0;">Payment Status: {{ $booking->payment_status === 'Paid' ? 'PAID' : 'PAY AT COUNTER' }}</p>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Madras Christian College, Tambaram, Chennai</p>
+                </div>
             </div>
 
-            <div class="success-actions">
+            <div class="success-actions" style="margin-top: 2rem;">
+                <a href="{{ route('receipt.download', $booking->id) }}" class="btn-download" id="manualDownloadBtn">
+                    <i class="ph-bold ph-download-simple"></i> Download Official Receipt
+                </a>
                 <button class="btn-home" onclick="window.location.href='{{ route('home') }}'">
                     <i class="ph-bold ph-house"></i> Back to Home
                 </button>
             </div>
         </div>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
-        function downloadReceiptPDF() {
-            const element = document.querySelector('.success-wrapper');
-            const bookingId = 'BK-{{ str_pad($booking->id, 6, "0", STR_PAD_LEFT) }}';
-            const opt = {
-                margin: 0.2,
-                filename: `Booking_Receipt_${bookingId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            // Hide house icon/buttons during capture if any
-            const actions = document.querySelector('.success-actions');
-            if (actions) actions.style.display = 'none';
-            
-            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-                if (actions) actions.style.display = 'flex';
-            }).save();
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             // Check if auto-download is requested from email link
             if (window.location.search.includes('download=1')) {
-                setTimeout(downloadReceiptPDF, 1500);
+                // For auto-download, we redirect to the direct download route
+                setTimeout(() => {
+                    window.location.href = "{{ route('receipt.download', $booking->id) }}";
+                }, 1500);
             }
         });
     </script>

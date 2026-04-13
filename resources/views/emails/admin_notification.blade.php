@@ -21,7 +21,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: {{ $primaryColor }};
+            background: linear-gradient(135deg, {{ $primaryColor }} 0%, {{ $primaryColor }} 100%);
             padding: 30px;
             text-align: center;
             color: white;
@@ -71,14 +72,14 @@
         }
         .btn-approve {
             background-color: #28a745;
-            color: white;
+            color: #ffffff !important;
         }
         .btn-approve:hover {
             background-color: #218838;
         }
         .btn-reject {
             background-color: #dc3545;
-            color: white;
+            color: #ffffff !important;
         }
         .btn-reject:hover {
             background-color: #c82333;
@@ -140,16 +141,16 @@
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="center">
-                            <a href="{{ route('admin.bookings.approve.get', $booking->id) }}" class="btn btn-approve">FINAL APPROVE</a>
+                            <a href="{{ route('admin.bookings.approve.get', $booking->id) }}" class="btn btn-approve" style="color: #ffffff !important;">FINAL APPROVE</a>
                             &nbsp;&nbsp;
-                            <a href="{{ route('admin.bookings.reject.get', $booking->id) }}" class="btn btn-reject">REJECT</a>
+                            <a href="{{ route('admin.bookings.reject.get', $booking->id) }}" class="btn btn-reject" style="color: #ffffff !important;">REJECT</a>
                         </td>
                     </tr>
                 </table>
             </div>
             
             <p style="text-align: center; margin-top: 30px;">
-                <a href="{{ route('admin.bookings.show', $booking->id) }}" style="color: #1e3a8a; font-size: 14px;">View in Admin Dashboard</a>
+                <a href="{{ route('admin.bookings.show', $booking->id) }}" style="color: {{ $primaryColor }}; font-size: 14px; font-weight: 700; text-decoration: none;">View in Admin Dashboard</a>
             </p>
         </div>
         <div class="footer">

@@ -68,35 +68,39 @@
         /*  FACILITY SECTION  */
         .premium-facility-card {
             background: linear-gradient(135deg, #fff, #fbfbfb);
-            border-radius: 24px; padding: 4rem 2rem;
+            border-radius: 24px; padding: 3rem 2.5rem;
             box-shadow: 0 10px 50px rgba(0,0,0,0.04);
             border: 1px solid #f1f1f1;
             transition: all 0.5s cubic-bezier(0.165,0.84,0.44,1);
-            max-width: 900px; margin: 4rem auto;
+            max-width: 900px; margin: 1.5rem auto;
             opacity: 0; transform: translateY(30px);
             text-align: center;
         }
         .premium-facility-card.visible { opacity: 1; transform: translateY(0); }
         .premium-facility-card:hover { transform: translateY(-5px); box-shadow: 0 15px 60px rgba(0,0,0,0.08); }
         .facility-title {
-            font-size: 2.2rem; font-weight: 800; color: #111;
+            font-size: 2rem; font-weight: 800; color: #111;
             margin-bottom: 0.5rem; display: inline-block; letter-spacing: -0.5px;
         }
         .facility-divider {
             width: 50px; height: 3px; background: var(--primary-color);
-            margin: 1.5rem auto; border-radius: 5px; opacity: 0.8;
+            margin: 1.25rem auto; border-radius: 5px; opacity: 0.8;
         }
         .feature-grid {
             display: grid; 
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem; 
-            margin-top: 3rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; 
+            margin-top: 2rem;
             width: 100%;
         }
+        @media (max-width: 900px) {
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .premium-facility-card { padding: 2.5rem 1.5rem; }
+        }
         @media (max-width: 650px) {
-            .feature-grid { grid-template-columns: 1fr; }
-            .premium-facility-card { padding: 3rem 1.5rem; margin: 3rem auto; }
-            .facility-title { font-size: 1.8rem; }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .premium-facility-card { padding: 2rem 1.25rem; margin: 1rem auto; }
+            .facility-title { font-size: 1.6rem; }
         }
         .feature-item {
             display: flex; align-items: center; gap: 15px;
@@ -131,11 +135,14 @@
         .slider-card .btn-outline {
             border-width: 2px !important;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            background: #fff !important;
+            background: #fff;
+            color: var(--primary-color);
         }
         .slider-card .btn-outline:hover {
+            background: var(--primary-color) !important;
+            color: #fff !important;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,122,0,0.2) !important;
+            box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.3) !important;
         }
         .slider-card:hover {
             box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
@@ -314,19 +321,12 @@
 
     <main>
 
-        <!-- HERO SECTION -->
-        <section class="hero-section">
-            <h1 class="welcome-title">Welcome to MCC IGH
-                <span style="position:absolute;width:40%;height:5px;bottom:-8px;left:30%;background-color:#ff7a00;border-radius:4px;"></span>
-            </h1>
-            <p class="welcome-subtitle">Book comfortable guest house rooms effortlessly and manage your professional stay with ease.</p>
-        </section>
-
-        <!-- EXPLORE OUR ROOMS RE-INTEGRATED SLIDER -->
-        <section class="explore-rooms-section">
+        <!-- EXPLORE OUR ROOMS SLIDER -->
+        <section class="explore-rooms-section" style="padding-top: 2.5rem;">
             <div class="slider-master-container">
-                <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                    <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Room Categories</h2>
+                <div class="title-section" style="text-align: center; margin-bottom: 1.75rem; padding: 0 1rem;">
+                    <h2 style="font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.4rem;">Room Categories</h2>
+                    <p style="color: #64748b; font-size: 0.95rem; font-weight: 400;">Choose from our range of professionally equipped rooms and halls</p>
                 </div>
 
                 <div class="slider-outer-frame">
@@ -353,7 +353,8 @@
                                     <div class="card-content">
                                         <h2>{{ $card['title'] }}</h2>
                                         <p class="description">{!! $card['desc'] !!}</p>
-                                        <p class="gst-text">+ 5% GST applicable</p>
+                                        @php $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5; @endphp
+                                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                                         <div class="card-btn-wrapper">
                                             <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center;">{{ $card['btnText'] }}</a>
                                         </div>
@@ -434,10 +435,11 @@
                 });
             });
         </script>
-        <!-- ROOM CATEGORIES COMPARISON -->
-        <section style="max-width: 1250px; margin: 0 auto 3rem; padding: 0 1rem;">
-            <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: var(--text-color);">Room Categories</h2>
+        <!-- ROOM CATEGORIES QUICK REFERENCE -->
+        <section style="max-width: 1100px; margin: 2rem auto; padding: 0 1.25rem;">
+            <div class="title-section" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Pricing Overview</h2>
+                <p style="color: #64748b; font-size: 0.9rem;">Quick reference for room rates and availability</p>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: stretch;">
                 <!-- Standard Rooms Info -->
@@ -454,7 +456,7 @@
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">ADVANCE ROOMS</h3>
                     <ul style="list-style: none; padding: 0; color: var(--text-light); font-size: 0.95rem; line-height: 1.8;">
-                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹2500 / day</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ 5% GST)</span></li>
+                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹2500 / day</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ {{ $gstRate }}% GST)</span></li>
                         <li><i class="ph-fill ph-shield-star" style="color: var(--primary-color); margin-right: 8px;"></i> Premium stay experience</li>
                         <li><i class="ph-fill ph-star" style="color: var(--primary-color); margin-right: 8px;"></i> Better interiors + privacy</li>
                         <li><i class="ph-fill ph-door" style="color: var(--primary-color); margin-right: 8px;"></i> Rooms 101–104, 201–207</li>
@@ -463,9 +465,14 @@
             </div>
         </section>
 
-        <!-- CATEGORY SELECTION (TIGHTER BALANCED) -->
-        <section style="max-width: 1350px; margin: 0 auto 5rem; padding: 0 1.25rem;">
+        <!-- CATEGORY SELECTION -->
+        <section style="max-width: 1350px; margin: 2.5rem auto 3rem; padding: 0 1.25rem;">
+            <div class="title-section" style="text-align: center; margin-bottom: 1.75rem;">
+                <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Browse All Rooms</h2>
+                <p style="color: #64748b; font-size: 0.9rem;">Select a category to explore availability and book your stay</p>
+            </div>
             <div class="dashboard-rooms-grid" style="align-items: stretch;">
+
                 <!-- Standard Rooms -->
                 <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
@@ -475,7 +482,7 @@
                     <div class="card-content">
                         <h2>Standard Rooms</h2>
                         <p class="description">Thoughtfully designed for efficiency and comfort, our Standard Rooms provide a restful haven for short-term visitors with essential modern amenities.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -491,7 +498,7 @@
                     <div class="card-content">
                         <h2>Advance Rooms</h2>
                         <p class="description">Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -507,7 +514,7 @@
                     <div class="card-content">
                         <h2>Conference / Glass Rooms</h2>
                         <p class="description">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('conference.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -516,8 +523,8 @@
             </div>
         </section>
 
-        <!-- GUEST HOUSE DESCRIPTION (PREMIUM ENHANCED) -->
-        <section class="description-section" style="padding: 0 20px;">
+        <!-- ABOUT FACILITIES -->
+        <section class="description-section" style="padding: 0 1rem 2rem;">
             <div class="premium-facility-card" id="facilityCard">
                 <h2 class="facility-title">About Our Facilities</h2>
                 <div class="facility-divider"></div>
@@ -577,7 +584,7 @@
                     <p><strong>Date:</strong> <span id="modalDate"></span></p>
                     <p><strong>Time:</strong> <span id="modalTime"></span></p>
                     <p><strong>Rate:</strong> ₹<span id="modalPrice"></span> / hr</p>
-                    <p class="gst-text">+ 5% GST applicable</p>
+                    <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                 </div>
                 <div class="modal-warning" id="modalWarning" style="display:none;"></div>
                 <p>Are you sure you want to proceed to the details page with this schedule?</p>

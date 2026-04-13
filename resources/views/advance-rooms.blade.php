@@ -416,13 +416,7 @@
             font-weight: 700;
         }
 
-        .header-logo {
-            height: 50px !important;
-            width: auto !important;
-            object-fit: contain !important;
-            image-rendering: -webkit-optimize-contrast !important;
-            image-rendering: crisp-edges !important;
-        }
+
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -485,7 +479,7 @@
                             <p class="description">{{ $room['type'] }}</p>
 
                             <div class="price-highlight"><span>₹2500</span> / day</div>
-                            <p class="gst-text">+ 5% GST applicable</p>
+                            <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
 
                             <!-- Premium Features -->
                             <div class="room-highlights"
@@ -552,7 +546,7 @@
                 <div class="modal-price-line">
                     <span id="modalRoomPrice">₹0</span>
                     <span style="font-size: 0.95rem; color: #666; font-weight: 600;" id="modalRoomTime">/ period</span>
-                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ 5% GST</span>
+                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ {{ $gstRate }}% GST</span>
                 </div>
 
                 <p style="color: #666; line-height: 1.4; font-size: 0.85rem; margin: 0.25rem 0;" id="modalRoomDesc"></p>

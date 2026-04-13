@@ -65,38 +65,33 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Guest</th>
-                <th>Space / Room</th>
-                <th>Stay Schedule</th>
-                <th>Payment</th>
-                <th align="right">Amount (Rs.)</th>
+                <th width="40%">Booking Details</th>
+                <th width="15%" align="right">Base Price</th>
+                <th width="15%" align="right">GST ({{ $gstRate }}%)</th>
+                <th width="15%" align="right">Total</th>
+                <th width="15%">Status</th>
             </tr>
         </thead>
         <tbody>
-            @php $totalPrice = 0; @endphp
             @foreach($bookings as $b)
-                @php $totalPrice += $b->total_price; @endphp
+                @php
+                    $bGstFactor = 1 + ($gstRate / 100);
+                    $bSubtotal = $b->total_price / $bGstFactor;
+                    $bGstAmount = $b->total_price - $bSubtotal;
+                @endphp
                 <tr>
-                    <td>BK-{{ str_pad($b->id, 5, '0', STR_PAD_LEFT) }}</td>
                     <td>
-                        <strong>{{ $b->name }}</strong><br>
-                        <span style="color: #64748b; font-size: 9px;">{{ $b->email }}</span>
+                        <strong>BK-{{ str_pad($b->id, 5, '0', STR_PAD_LEFT) }}</strong> - {{ $b->name }}<br>
+                        <span style="color: #64748b; font-size: 8px;">{{ str_replace('-', ' ', ucwords($b->room_name, '- ')) }} | {{ \Carbon\Carbon::parse($b->booking_date)->format('d M Y') }}</span>
                     </td>
-                    <td>{{ str_replace('-', ' ', ucwords($b->room_name, '- ')) }}</td>
-                    <td>
-                        {{ \Carbon\Carbon::parse($b->booking_date)->format('d M Y') }}<br>
-                        <span style="color: #64748b; font-size: 9px;">{{ \Carbon\Carbon::parse($b->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($b->end_time)->format('h:i A') }}</span>
+                    <td align="right">{{ number_format($bSubtotal, 2) }}</td>
+                    <td align="right">{{ number_format($bGstAmount, 2) }}</td>
+                    <td align="right" style="font-weight: bold;">{{ number_format($b->total_price, 2) }}</td>
+                    <td align="center">
+                        <span class="badge {{ $b->payment_status === 'Paid' ? 'status-paid' : 'status-failed' }}">
+                            {{ $b->payment_status }}
+                        </span>
                     </td>
-                    <td>
-                        <span class="badge {{ $b->payment_status === 'Paid' ? 'status-paid' : ($b->payment_status === 'Pending' ? 'status-pending' : 'status-failed') }}">
-                            {{ strtoupper($b->payment_status) }}
-                        </span><br>
-                        @if($b->razorpay_payment_id)
-                            <span style="color: #94a3b8; font-size: 8px;">{{ $b->razorpay_payment_id }}</span>
-                        @endif
-                    </td>
-                    <td align="right">{{ number_format($b->total_price, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -105,12 +100,16 @@
     <div class="clearfix">
         <div class="summary-box">
             <div class="summary-row">
-                <span class="summary-label">Subtotal Bookings:</span>
-                <span class="summary-value">{{ count($bookings) }}</span>
+                <span class="summary-label">Net Revenue:</span>
+                <span class="summary-value">Rs. {{ number_format($netRevenue, 2) }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Total GST Collected:</span>
+                <span class="summary-value">Rs. {{ number_format($totalGst, 2) }}</span>
             </div>
             <div class="summary-row total-row">
                 <span class="summary-label">TOTAL REVENUE:</span>
-                <span class="summary-value total-value">Rs. {{ number_format($totalPrice, 2) }}</span>
+                <span class="summary-value total-value">Rs. {{ number_format($totalRevenue, 2) }}</span>
             </div>
         </div>
     </div>

@@ -565,7 +565,7 @@
                         <div class="form-section-title full-width" style="margin-top: 0.75rem;"><i
                                 class="ph-bold ph-calendar-check" style="color: var(--primary-color);"></i> Booking
                             Details</div>
-                        <p class="gst-text" style="margin-bottom: 0.75rem;">+ 5% GST applicable on all room rates</p>
+                        <p class="gst-text" style="margin-bottom: 0.75rem;">+ {{ $gstRate }}% GST applicable on all room rates</p>
 
                         <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
                         <div class="paired-row">
