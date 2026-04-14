@@ -32,7 +32,6 @@
         body {
             background-color: var(--bg-color);
             display: flex;
-            min-height: 100vh;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -147,6 +146,21 @@
             padding: 1rem; border-bottom: 1px solid var(--border); text-decoration: none;
             display: block; transition: background 0.2s;
         }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); width: var(--sidebar-width) !important; }
+            .sidebar.open { transform: translateX(0) !important; }
+            .admin-main { margin-left: 0 !important; width: 100% !important; }
+            .top-navbar { padding: 0 1rem !important; }
+            .admin-body { padding: 1.5rem !important; }
+            .stats-grid { grid-template-columns: 1fr 1fr !important; }
+            .menu-toggle { display: flex !important; }
+            .topbar-title { font-size: 1rem !important; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr !important; }
+            .nav-right .user-info div:first-child { display: none !important; }
+        }
 
         .notification-item:hover { background: #f8fafc; }
 
@@ -155,7 +169,7 @@
         .notification-item .time { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; }
 
         .admin-body {
-            padding: 2.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
+            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         /* Stats Cards */
@@ -342,7 +356,10 @@
 
     <main class="admin-main">
         <div class="top-navbar">
-            <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" class="menu-toggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
                 <div class="topbar-title" style="font-weight: 700; font-size: 1.15rem; color: var(--text-main);">Dashboard Overview</div>
             </div>
             <div class="nav-right">
@@ -581,7 +598,7 @@
             </div>
 
             <!-- Row 4: Recent Bookings Table (Full Width) -->
-            <div class="dashboard-section" style="margin-bottom: 2rem;">
+            <div class="dashboard-section" style="margin-bottom: 1rem;">
                 <div class="section-header">
                     <h3><i class="ph-bold ph-clock-counter-clockwise" style="color: var(--primary-color);"></i> Recent Bookings</h3>
                     <div style="display: flex; gap: 0.5rem;">
@@ -697,13 +714,23 @@
         }
 
         // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
                 
-                if (!isClickInsideSidebar) {
+                if (!isClickInsideSidebar && !isClickOnToggle) {
                     sidebar.classList.remove('open');
                 }
             }

@@ -172,10 +172,11 @@
     <section class="main-image-slider">
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
-            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" loading="eager">
+            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Home" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" loading="eager">
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Welcome to MCC IGH</h2>
                 <p class="slide-subtitle">Comfortable and secure guest house booking</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 2 -->
@@ -184,6 +185,7 @@
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Premium Stay Experience</h2>
                 <p class="slide-subtitle">Book rooms easily with modern facilities</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 3 -->
@@ -192,6 +194,7 @@
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Simple &amp; Fast Booking</h2>
                 <p class="slide-subtitle">Plan your stay with ease and convenience</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 4 -->
@@ -200,6 +203,7 @@
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Modern Amenities</h2>
                 <p class="slide-subtitle">Experience comfort with state-of-the-art facilities</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 5 -->
@@ -208,6 +212,7 @@
             <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
                 <h2 class="slide-title">Serene Environment</h2>
                 <p class="slide-subtitle">Enjoy a peaceful and quiet stay at the campus</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Nav Arrows -->
@@ -322,7 +327,7 @@
     <main>
 
         <!-- EXPLORE OUR ROOMS SLIDER -->
-        <section class="explore-rooms-section" style="padding-top: 2.5rem;">
+        <section id="explore-rooms" class="explore-rooms-section">
             <div class="slider-master-container">
                 <div class="title-section" style="text-align: center; margin-bottom: 1.75rem; padding: 0 1rem;">
                     <h2 style="font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.4rem;">Room Categories</h2>
@@ -436,7 +441,7 @@
             });
         </script>
         <!-- ROOM CATEGORIES QUICK REFERENCE -->
-        <section style="max-width: 1100px; margin: 2rem auto; padding: 0 1.25rem;">
+        <section style="max-width: 1100px;">
             <div class="title-section" style="text-align: center; margin-bottom: 1.5rem;">
                 <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Pricing Overview</h2>
                 <p style="color: #64748b; font-size: 0.9rem;">Quick reference for room rates and availability</p>
@@ -446,7 +451,7 @@
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">STANDARD ROOMS</h3>
                     <ul style="list-style: none; padding: 0; color: var(--text-light); font-size: 0.95rem; line-height: 1.8;">
-                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹1400 / 12 hrs</strong></li>
+                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹1400 / 12 hrs</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ {{ $gstRate }}% GST)</span></li>
                         <li><i class="ph-fill ph-clock" style="color: var(--primary-color); margin-right: 8px;"></i> Ideal for short stay</li>
                         <li><i class="ph-fill ph-check-circle" style="color: var(--primary-color); margin-right: 8px;"></i> Basic amenities (AC, WiFi, Work Desk)</li>
                         <li><i class="ph-fill ph-door" style="color: var(--primary-color); margin-right: 8px;"></i> Rooms 1 – 8</li>
@@ -466,7 +471,7 @@
         </section>
 
         <!-- CATEGORY SELECTION -->
-        <section style="max-width: 1350px; margin: 2.5rem auto 3rem; padding: 0 1.25rem;">
+        <section style="max-width: 1350px;">
             <div class="title-section" style="text-align: center; margin-bottom: 1.75rem;">
                 <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Browse All Rooms</h2>
                 <p style="color: #64748b; font-size: 0.9rem;">Select a category to explore availability and book your stay</p>
@@ -524,12 +529,12 @@
         </section>
 
         <!-- ABOUT FACILITIES -->
-        <section class="description-section" style="padding: 0 1rem 2rem;">
+        <section class="description-section">
             <div class="premium-facility-card" id="facilityCard">
                 <h2 class="facility-title">About Our Facilities</h2>
                 <div class="facility-divider"></div>
                 <div class="desc-content">
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Experience a refined stay tailored to the needs of modern professionals and distinguished guests. At MCC IGH, we combine traditional hospitality with premium modern amenities—from high-speed connectivity to climate-controlled comfort—ensuring every moment of your visit is both relaxing and highly productive.</p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Experience a refined stay tailored to the needs of modern professionals and distinguished guests. At MCC IGH, we combine traditional hospitality with premium modern amenities, ensuring every moment of your visit is both relaxing and highly productive.</p>
                 </div>
 
                 <div class="feature-grid">
@@ -612,99 +617,14 @@
     <!-- Alert Toast (View Details dummy action) -->
     <div class="toast" id="toast"></div>
 
-    <!-- Help Modal -->
-    <div class="help-modal-overlay" id="helpModal">
-        <div class="help-modal-card">
-            <button class="help-modal-close" onclick="closeHelpModal()">
-                <i class="ph ph-x"></i>
-            </button>
-            <div class="help-modal-content">
-                <h2 class="help-modal-title">Contact Us</h2>
-                <form class="help-form" onsubmit="event.preventDefault(); return false;">
-                    <div class="help-form-row">
-                        <div class="help-input-group">
-                            <label>Name</label>
-                            <input type="text" placeholder="Your name">
-                        </div>
-                        <div class="help-input-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="Your email">
-                        </div>
-                    </div>
-                    
-                    <div class="help-input-group full-width">
-                        <label>Subject</label>
-                        <div class="custom-dropdown" id="helpSubjectDropdown">
-                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
-                                <span id="selectedSubject">Choose subject…</span>
-                                <i class="ph ph-caret-down"></i>
-                            </div>
-                            <div class="dropdown-options" id="helpDropdownOptions">
-                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
-                            </div>
-                        </div>
-                    </div>
+    @include('partials.help-modal')
 
-                    <div class="help-input-group full-width">
-                        <label>Message</label>
-                        <textarea placeholder="How can we help you?" rows="5"></textarea>
-                    </div>
-
-                    <div class="help-form-footer">
-                        <button type="submit" class="help-send-btn">SEND</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', initIndexPage);
 
-        function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-        }
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.remove('active');
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        function toggleHelpDropdown(event) {
-            event.stopPropagation();
-            document.getElementById('helpDropdownOptions').classList.toggle('active');
-        }
-
-        function selectHelpOption(val) {
-            document.getElementById('selectedSubject').innerText = val;
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        window.onclick = function(event) {
-            const helpModal = document.getElementById('helpModal');
-            if (event.target == helpModal) {
-                closeHelpModal();
-            }
-
-            const dropdownOptions = document.getElementById('helpDropdownOptions');
-            const dropdownSelected = document.querySelector('.dropdown-selected');
-            if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
-                dropdownOptions.classList.remove('active');
-            }
-        }
 
         function slideLeft() {
             const slider = document.getElementById('roomSlider');

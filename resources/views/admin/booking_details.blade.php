@@ -46,13 +46,13 @@
             transition: transform 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .admin-main { margin-left: 0 !important; width: 100% !important; padding: 1.25rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .admin-header h1 { font-size: 1.15rem !important; }
+            .btn-download-pdf { display: none !important; }
         }
 
         .sidebar-header {
@@ -563,11 +563,16 @@
 
     <main class="admin-main">
         <div class="admin-header">
-            <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
-            <div>
-                <h1 id="pdf-header">Booking Details #{{ $booking->id }}</h1>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
+                <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             </div>
-            <button onclick="downloadBookingPDF()" class="btn-download-pdf">
+            <div>
+                <h1 id="pdf-header">Booking Details</h1>
+            </div>
+            <button onclick="downloadBookingPDF()" class="btn-download-pdf" style="margin-left: auto;">
                 <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
                 Download PDF
             </button>
@@ -872,20 +877,26 @@
             if (pendingForm) pendingForm.submit();
         });
 
+        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
 
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                
-                if (!isClickInsideSidebar) {
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
                     sidebar.classList.remove('open');
                 }
             }
         });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
+
         function downloadBookingPDF() {
             const element = document.querySelector('.details-grid');
             const bookingId = '{{ $booking->id }}';
@@ -896,13 +907,9 @@
                 html2canvas: { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
-            
-            // Add a temporary title for the PDF
-            const header = document.createElement('div');
-            header.innerHTML = `<h1 style="color: #1e293b; font-family: sans-serif; margin-bottom: 20px;">Booking Details #${bookingId}</h1>`;
-            
             html2pdf().set(opt).from(element).save();
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>

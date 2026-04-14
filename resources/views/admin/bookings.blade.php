@@ -46,15 +46,6 @@
             transition: transform 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-        }
-
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--border);
@@ -449,6 +440,19 @@
         .confirm-btn-confirm.is-reject { background: #ef4444; }
         .confirm-btn-cancel:hover { background: #f1f5f9; color: #475569; }
         .confirm-btn-confirm:hover { filter: brightness(0.95); transform: translateY(-1px); }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; }
+            .sidebar.open { transform: translateX(0); }
+            .admin-main { margin-left: 0 !important; width: 100% !important; }
+            .top-navbar { padding: 0 1rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .top-navbar div:first-child { font-size: 1rem !important; }
+            .filter-section { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 640px) {
+            .filter-section { grid-template-columns: 1fr !important; }
+            .top-navbar div:last-child a { padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; }
+        }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -484,9 +488,14 @@
     <main class="admin-main">
         <!-- Sticky Top Navbar -->
         <div class="top-navbar">
-            <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">
-                <i class="ph-bold ph-calendar-check" style="color: var(--primary-color); margin-right: 0.4rem;"></i>
-                Booking Management
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">
+                    <i class="ph-bold ph-calendar-check" style="color: var(--primary-color); margin-right: 0.4rem;"></i>
+                    Bookings
+                </div>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <a href="{{ route('admin.bookings.export', request()->only(['search','date','status','workspace'])) }}"
@@ -698,12 +707,22 @@
             if (pendingForm) pendingForm.submit();
         });
 
+        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
         document.addEventListener('click', (event) => {
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                
-                if (!isClickInsideSidebar) {
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
                     sidebar.classList.remove('open');
                 }
             }

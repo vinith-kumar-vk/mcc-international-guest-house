@@ -174,7 +174,7 @@
             <div class="success-body" id="receiptContent" style="background: #ffffff; padding: 40px; border-radius: 12px;">
                 <!-- Official Header -->
                 <div style="text-align: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 20px; margin-bottom: 30px;">
-                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 60px; margin-bottom: 10px;">
+                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 85px; margin-bottom: 15px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
                     <h3 style="margin: 0; color: #7f1d1d; font-weight: 800; font-size: 20px; text-transform: uppercase;">Madras Christian College</h3>
                     <p style="margin: 5px 0 0; color: #64748b; font-size: 14px; font-weight: 600;">International Guest House & Conference Centre</p>
                     <div style="display: inline-block; background: #f1f5f9; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; margin-top: 15px; color: #475569; letter-spacing: 2px;">OFFICIAL RECEIPT SUMMARY</div>

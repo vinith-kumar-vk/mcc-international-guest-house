@@ -96,64 +96,79 @@ header, .main-header, .header-container {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 2rem;
+    margin-bottom: 3rem;
     width: 100%;
+    align-items: stretch;
 }
 
 /* ── BREAKPOINT: < 768px (MOBILE) ── */
 @media (max-width: 767px) {
-    header, .main-header, .header-container { padding: 0.6rem 0.75rem !important; min-height: 60px !important; gap: 0.5rem !important; }
-    .header-logo { height: 32px !important; max-width: 140px !important; object-fit: contain !important; }
+    header, .main-header, .header-container { padding: 0.5rem 1rem !important; min-height: 56px !important; gap: 0.5rem !important; }
+    .header-logo { height: 28px !important; max-width: 120px !important; }
     .header-center { display: none !important; }
-    .help-btn { font-size: 0.75rem !important; padding: 4px 6px !important; letter-spacing: 0; }
-    .header-right { gap: 8px !important; flex: 1.5 !important; }
+    .help-btn { font-size: 0.7rem !important; padding: 4px 5px !important; }
+    .header-right { gap: 6px !important; flex: 1.5 !important; }
     .header-left { flex: 2 !important; gap: 4px !important; }
-    .header-right .btn-outline { padding: 0.5rem 0.8rem !important; font-size: 0.75rem !important; }
+    .header-right .btn-outline { padding: 0.45rem 0.6rem !important; font-size: 0.7rem !important; border-width: 1.5px !important; }
 
     .rooms-grid, .dashboard-rooms-grid { 
         grid-template-columns: 1fr !important; 
-        gap: 1.5rem !important; 
+        gap: 1.25rem !important; 
         padding-bottom: 2rem !important;
+        margin-top: 1.5rem !important;
     }
     .slider-card, .room-card { 
         width: 100% !important; 
         max-width: 100% !important; 
         margin: 0 !important;
-        overflow-wrap: break-word !important;
-        word-wrap: break-word !important;
     }
-    .card-content h2 { font-size: 1.3rem !important; }
-    .card-content p { font-size: 0.85rem !important; line-height: 1.4 !important; }
+    .card-content { padding: 1.25rem 1rem !important; }
+    .card-content h2 { font-size: 1.25rem !important; margin-bottom: 0.4rem !important; }
+    .card-content p { font-size: 0.85rem !important; line-height: 1.5 !important; }
     
-    h1, h1 strong { font-size: 2.2rem !important; letter-spacing: -1px !important; line-height: 1.1 !important; }
-    h2 { font-size: 1.6rem !important; letter-spacing: -0.5px !important; }
+    h1, h1 strong { font-size: 1.8rem !important; letter-spacing: -0.8px !important; line-height: 1.15 !important; }
+    h2 { font-size: 1.4rem !important; letter-spacing: -0.4px !important; }
     
     .facility-grid, .luxury-features div, .facility-features div {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.5rem !important;
+        gap: 0.4rem !important;
     }
     
-    .main-image-slider { height: 68vw !important; min-height: 350px !important; max-height: 550px !important; }
-    .hero-slide .slide-title { font-size: 1.4rem !important; margin-bottom: 0.4rem !important; }
-    .hero-slide .slide-subtitle { font-size: 0.8rem !important; }
+    .main-image-slider { height: 60vh !important; min-height: 300px !important; }
+    .hero-slide .slide-title { font-size: 1.35rem !important; margin-bottom: 0.3rem !important; }
+    .hero-slide .slide-subtitle { font-size: 0.75rem !important; }
     .hero-prev, .hero-next, .room-nav-btn { display: none !important; }
-    .welcome-title { font-size: 1.7rem !important; }
-    .welcome-subtitle { font-size: 0.9rem !important; margin-top: 0.75rem !important; }
-    .slider-outer-frame { padding: 0 8px !important; }
-    .slider-card { flex: 0 0 240px !important; }
-    .help-modal-card { padding: 24px 16px !important; }
-    .help-form-row { flex-direction: column !important; gap: 16px !important; }
-    .premium-facility-card { padding: 3rem 1.5rem !important; margin: 3rem 1rem !important; }
-    .facility-title { font-size: 1.6rem !important; }
-    .feature-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    
+    .welcome-title { font-size: 1.6rem !important; letter-spacing: -0.5px !important; }
+    .welcome-subtitle { font-size: 0.88rem !important; margin-top: 0.5rem !important; line-height: 1.5 !important; }
+    
+    .slider-outer-frame { padding: 0 !important; }
+    .cards-container { padding: 1rem 12px 2rem !important; gap: 16px !important; scroll-snap-type: x mandatory; }
+    .slider-card { flex: 0 0 calc(90vw - 24px) !important; scroll-snap-align: center; }
+    
+    .help-modal-card { padding: 20px 14px !important; margin: 10px !important; }
+    .help-modal-title { font-size: 1.4rem !important; margin-bottom: 15px !important; }
+    .help-input-group label { font-size: 0.75rem !important; }
+    .help-input-group input, .help-input-group select, .help-input-group textarea { padding: 12px !important; font-size: 0.9rem !important; }
+    
+    .premium-facility-card { padding: 2.25rem 1.25rem !important; margin: 2rem 0 !important; border-radius: 16px !important; }
+    .facility-title { font-size: 1.5rem !important; }
+    .feature-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+    .feature-item { padding: 1rem !important; border-radius: 12px !important; }
     
     /* Main element padding for mobile */
-    main { padding: 0 12px 40px !important; }
+    main { padding: 0 10px 30px !important; }
+    
+    /* Breadcrumb mobile */
+    .breadcrumb { font-size: 0.75rem !important; margin-bottom: 1rem !important; white-space: nowrap; overflow-x: auto; padding-bottom: 5px; }
+    .breadcrumb::-webkit-scrollbar { display: none; }
     
     /* Prevent any section from breaking layout */
-    section { overflow-x: hidden !important; width: 100% !important; }
+    section { overflow-x: hidden !important; width: 100% !important; padding: 0 !important; }
     
     /* Summary banner responsive */
-    .summary-banner { flex-direction: column !important; gap: 0.5rem !important; text-align: left !important; }
+    .summary-banner { flex-direction: column !important; gap: 0.5rem !important; text-align: left !important; align-items: flex-start !important; }
+    .summary-banner h3 { font-size: 1rem !important; }
 }
 
 /* ── BREAKPOINT: 768px – 1279px (TABLET) ── */

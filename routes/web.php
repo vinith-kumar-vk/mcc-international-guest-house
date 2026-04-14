@@ -57,6 +57,7 @@ Route::get('/room-details/{id}', function ($id) {
 
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
 Route::post('/booking', [BookingController::class, 'storeBooking'])->name('booking.store');
+Route::post('/contact', [BookingController::class, 'sendSupportMail'])->name('contact.send');
 
 Route::get('/success/{id}', function ($id) {
     $booking = Booking::findOrFail($id);

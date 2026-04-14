@@ -285,8 +285,12 @@
         }
 
         document.addEventListener('click', (event) => {
-            if (window.innerWidth <= 1024 && sidebar && !sidebar.contains(event.target)) {
-                sidebar.classList.remove('open');
+            if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('open');
+                }
             }
         });
 

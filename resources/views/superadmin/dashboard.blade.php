@@ -118,7 +118,6 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
             background: var(--bg);
         }
 
@@ -149,7 +148,7 @@
         }
 
 
-        .page-body { padding: 2rem; max-width: 1400px; }
+        .page-body { padding: 2rem; padding-bottom: 2.5rem; max-width: 1400px; }
 
         /* ── Welcome Banner ── */
         .welcome-banner {
@@ -293,6 +292,32 @@
         /* ── Progress Bar ── */
         .progress-bg   { height: 6px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 4px; }
         .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; }
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+            .topbar { padding: 0 1rem !important; }
+            .page-body { padding: 1.25rem !important; }
+            #sidebarToggle { display: flex !important; margin-right: 0.5rem; }
+            .stat-card { padding: 1rem !important; }
+            .stat-value { font-size: 1.4rem !important; }
+            .topbar-title { font-size: 1rem !important; }
+            .welcome-banner { padding: 1.5rem !important; flex-direction: column; text-align: center; gap: 1.5rem; }
+            .welcome-stats { gap: 1rem; width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr 1fr !important; }
+            .row-2, .row-2-equal { grid-template-columns: 1fr !important; }
+            .welcome-stats { flex-wrap: wrap; }
+            .welcome-banner h1 { font-size: 1.4rem !important; }
+            .topbar-right { display: none !important; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr !important; }
+        }
 
     </style>
     @include('partials.dynamic-styles')
@@ -337,8 +362,8 @@
         <!-- Topbar -->
         <div class="topbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
+                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border) !important; background: white !important; color: var(--text-main) !important; box-shadow: none !important;">
+                    <i class="ph ph-list" style="font-size: 1.35rem; font-weight: 800;"></i>
                 </button>
                 <div class="topbar-title">System Overview</div>
             </div>

@@ -59,12 +59,18 @@
             width: 100%;
             height: 500px;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .main-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .main-img-wrapper:hover img {
+            transform: scale(1.03);
         }
 
         .thumbnail-grid {
@@ -415,7 +421,7 @@
         /* ===== RESPONSIVE: MOBILE (≤ 768px) ===== */
         @media (max-width: 768px) {
             .details-container {
-                padding: 0 12px !important;
+                padding: 0 1.25rem !important;
                 margin: 0.5rem auto 2rem !important;
                 gap: 1.25rem !important;
             }
@@ -501,7 +507,7 @@
 
         /* ===== RESPONSIVE: SMALL PHONE (≤ 480px) ===== */
         @media (max-width: 480px) {
-            .details-container { padding: 0 10px !important; }
+            .details-container { padding: 0 1.25rem !important; }
             .main-img-wrapper { height: 210px !important; }
             .thumbnail-grid { grid-template-columns: repeat(3, 1fr) !important; }
             .thumb-item { height: 60px !important; }
@@ -696,7 +702,7 @@
                 </nav>
 
                 <div class="gallery-section">
-                    <div class="main-img-wrapper">
+                    <div class="main-img-wrapper" onclick="openLightbox()">
                         <img id="mainImage" src="{{ $room['img'] }}" alt="{{ $room['name'] }}" onerror="this.src='https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=90'">
                     </div>
                     <div class="thumbnail-grid">
@@ -782,9 +788,6 @@
                 </div>
 
                 <div class="gallery-actions">
-                    <div style="display: flex; gap: 24px;">
-                        <span class="action-btn" onclick="openLightbox()"><i class="ph ph-corners-out"></i> Full Screen</span>
-                    </div>
                     <div style="display: flex; gap: 16px;">
                         <span id="likeBtn" class="action-btn" onclick="toggleLike()"><i class="ph ph-heart"></i></span>
                         <span class="action-btn" onclick="openShareModal()"><i class="ph ph-share-network"></i></span>
@@ -941,7 +944,7 @@
                 </div>
 
                 <div id="faq" class="tab-pane">
-                    <h2 class="section-title"><i class="ph-fill ph-question"></i> Frequently Asked Questions</h2>
+                    <h2 class="section-title"><i class="ph-fill ph-chats-circle"></i> Frequently Asked Questions</h2>
                     <div class="faq-accordion" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
                         @php
                             $faqs = [
@@ -956,7 +959,7 @@
                         @foreach($faqs as $faq)
                         <div class="faq-item-compact" style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; transition: all 0.3s ease;">
                             <h4 style="font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: start; gap: 10px;">
-                                <i class="ph-fill ph-circle-wavy-question" style="color: var(--primary-color); margin-top: 2px;"></i>
+                                <i class="ph-fill ph-chats-teardrop" style="color: var(--primary-color); margin-top: 2px;"></i>
                                 {{ $faq['q'] }}
                             </h4>
                             <p style="font-size: 14px; color: var(--text-medium); line-height: 1.6; margin: 0; padding-left: 28px;">{{ $faq['a'] }}</p>
@@ -968,54 +971,61 @@
 
             <!-- Right Column (Sidebar) -->
             <aside class="sidebar-section">
-                <div class="sidebar-card">
-                    <div class="price-box" style="padding: 16px; margin-bottom: 16px;">
-                        <span class="price-val" style="font-size: 24px;">{{ $room['price'] }}</span>
-                        <span class="price-unit" style="font-size: 14px;">{{ $room['time'] }}</span>
-                        <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-light); font-weight: 500;">+ {{ $gstRate }}% GST applicable</p>
+                <div class="sidebar-card" style="padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #eef2f6; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                    <div class="price-box" style="padding: 24px 16px; margin-bottom: 20px; background: #fff8f3; border: 1px solid rgba(255,122,0,0.15); border-radius: 16px; text-align: center;">
+                        <span class="price-val" style="font-size: 28px; font-weight: 800; color: var(--primary-color);">{{ $room['price'] }}</span>
+                        <span class="price-unit" style="font-size: 16px; color: #475569; font-weight: 600;">{{ $room['time'] }}</span>
+                        <p style="margin: 8px 0 0 0; font-size: 13px; color: #64748b; font-weight: 500;">+ {{ $gstRate }}% GST applicable</p>
                     </div>
 
-                    <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn" style="width: 100%; padding: 14px 16px !important; border-radius: 6px !important; font-size: 14px !important; margin-bottom: 16px; font-weight: 700;">
+                    <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn" style="width: 100%; padding: 16px !important; border-radius: 12px !important; font-size: 15px !important; margin-bottom: 24px; font-weight: 800; background: var(--primary-color); color: #fff; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(255,122,0,0.2);">
                         Book Now <i class="ph-bold ph-arrow-right"></i>
                     </a>
 
                     <!-- Sidebar Content with Improved Typography -->
-                    <div class="sidebar-section-box" style="background: #fff8f3; border-color: rgba(255, 122, 0, 0.2); margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-sketch-logo"></i> Key Highlights</h4>
-                        <div class="highlights-list" style="gap: 8px;">
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-sketch-logo" style="color: var(--primary-color);"></i> Key Highlights
+                        </h4>
+                        <div class="highlights-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             @foreach($room['highlights'] ?? [['text' => 'Clean & Modern', 'icon' => 'ph ph-sparkles'], ['text' => 'Prime Campus Spot', 'icon' => 'ph ph-map-pin']] as $highlight)
-                                <div class="highlight-item" style="font-size: 12px;">
-                                    <i class="ph-bold ph-check" style="color: #16a34a; font-size: 0.8rem;"></i>
-                                    <span>{{ $highlight['text'] }}</span>
+                                <div class="highlight-item" style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #4a5568;">
+                                    <i class="ph-bold ph-check" style="color: #2f855a; font-size: 14px;"></i>
+                                    <span style="font-weight: 500;">{{ $highlight['text'] }}</span>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="sidebar-section-box" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-users"></i> Room Capacity</h4>
-                        <div class="capacity-grid" style="background: none; border: none;">
-                            @foreach(array_slice($room['capacity_breakdown'] ?? [['title' => 'Standard', 'value' => $room['capacity']]], 0, 3) as $cap)
-                                <div class="capacity-item" style="background: none; border: none; padding: 0;">
-                                    <i class="ph ph-users" style="font-size: 24px; color: var(--text-light);"></i>
-                                    <span class="cap-val" style="font-size: 18px;">{{ $cap['value'] }}</span>
-                                    <span class="cap-label" style="font-size: 10px;">{{ $cap['title'] }}</span>
-                                </div>
-                            @endforeach
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-users" style="color: var(--primary-color);"></i> Room Capacity
+                        </h4>
+                        <div class="capacity-grid" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;">
+                            <i class="ph ph-users-three" style="font-size: 32px; color: #cbd5e0; margin-bottom: 4px;"></i>
+                            <div style="font-size: 32px; font-weight: 800; color: #1a202c; line-height: 1;">4</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #4a5568;">Members</div>
+                            <div style="font-size: 11px; font-weight: 800; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">{{ $room['category'] }}</div>
                         </div>
                     </div>
 
-                    <div class="sidebar-section-box" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-grid-four"></i> Performance</h4>
-                        <div class="amenity-mini-grid" style="gap: 12px;">
-                            @foreach(array_slice($room['amenities'], 0, 4) as $amenity)
-                                <div class="amenity-mini-icon" style="flex-direction: column; height: auto; padding: 8px; text-align: center; gap: 4px;">
-                                    <i class="ph {{ $amenity['icon'] }}" style="font-size: 24px; width: 50px; height: 50px;"></i>
-                                    <div class="amenity-mini-label" style="font-size: 11px;">{{ $amenity['name'] }}</div>
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-grid-four" style="color: var(--primary-color);"></i> Performance
+                        </h4>
+                        <div class="amenity-mini-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            @foreach(array_slice($room['amenities'], 0, 2) as $amenity)
+                                <div class="amenity-mini-icon" style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+                                    <div style="background: #fff8f3; border-radius: 8px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="ph {{ $amenity['icon'] }}" style="font-size: 20px; color: var(--primary-color);"></i>
+                                    </div>
+                                    <div class="amenity-mini-label" style="font-size: 12px; font-weight: 700; color: #4a5568;">{{ $amenity['name'] }}</div>
                                 </div>
                             @endforeach
                         </div>
-                        <a href="javascript:void(0)" onclick="scrollToAmenities()" style="font-size: 12px; color: var(--primary-color); font-weight: 700; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 10px;">More Amenities <i class="ph ph-arrow-right"></i></a>
+                        <a href="javascript:void(0)" onclick="scrollToAmenities()" style="font-size: 12px; color: var(--primary-color); font-weight: 800; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #edf2f7;">
+                            View More Services <i class="ph ph-arrow-right"></i>
+                        </a>
                     </div>
 
                     <div class="sidebar-section-box footer-section" style="background: #f8fafc; border: 1px solid var(--border-light); padding: 12px; margin-bottom: 0;">
@@ -1038,34 +1048,63 @@
         </div>
 
         <!-- Related Rooms -->
-        <div class="related-section">
-            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem;">Related Rooms</h2>
-            <div class="rooms-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-                <!-- Dummy related items reusing card styles -->
-                <div class="card">
-                    <div class="card-image-wrapper" style="height: 200px;">
-                        <img src="{{ asset('assets/room1.JPG') }}" alt="Related Room">
-                        <span class="badge" style="top: 1rem; right: 1rem; background: var(--primary-color); color: white; position: absolute;">Available</span>
+        <section class="related-section" style="border-top: 1px solid var(--border-light); margin-top: 40px !important;">
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem; color: var(--text-dark);">Related Rooms</h2>
+            
+            @php 
+                $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+            @endphp
+            
+            <div class="rooms-grid dashboard-rooms-grid">
+                <!-- Related Standard Room -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge standard-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
+                        <img src="{{ asset('assets/standard/standardroom.JPG') }}" alt="Standard Room">
                     </div>
-                    <div class="card-content" style="padding: 1.25rem;">
-                        <h2 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Standard Guest Room</h2>
-                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">₹1400 / 12h</div>
-                        <a href="#" class="btn btn-outline" style="width: 100%;">View Details</a>
+                    <div class="card-content">
+                        <h2>Standard Guest Room</h2>
+                        <p class="description">Thoughtfully designed for efficiency and comfort, providing a restful haven for short-term visitors with essential modern amenities.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-image-wrapper" style="height: 200px;">
-                        <img src="{{ asset('assets/suite.JPG') }}" alt="Related Room">
-                        <span class="badge" style="top: 1rem; right: 1rem; background: var(--primary-color); color: white; position: absolute;">Available</span>
+                
+                <!-- Related Advance Room -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge premium-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
+                        <img src="{{ asset('assets/room1.JPG') }}" alt="Advance Room">
                     </div>
-                    <div class="card-content" style="padding: 1.25rem;">
-                        <h2 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Advance Executive Room</h2>
-                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">₹2500 / day</div>
-                        <a href="#" class="btn btn-outline" style="width: 100%;">View Details</a>
+                    <div class="card-content">
+                        <h2>Advance Executive Room</h2>
+                        <p class="description">Experience elevated hospitality curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Suite Room -->
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge suite-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Luxury</span>
+                        <img src="{{ asset('assets/suite.JPG') }}" alt="Suite Room">
+                    </div>
+                    <div class="card-content">
+                        <h2>Luxury Suite Room</h2>
+                        <p class="description">Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <!-- Interactive Modals -->
@@ -1322,61 +1361,7 @@
             }
         };
     </script>
-    <div class="help-modal-overlay" id="helpModal">
-        <div class="help-modal-card">
-            <button class="help-modal-close" onclick="closeHelpModal()">
-                <i class="ph ph-x"></i>
-            </button>
-            <div class="help-modal-content">
-                <h2 class="help-modal-title">Contact Us</h2>
-                <form class="help-form" onsubmit="event.preventDefault(); return false;">
-                    <div class="help-form-row">
-                        <div class="help-input-group">
-                            <label>Name</label>
-                            <input type="text" placeholder="Your name">
-                        </div>
-                        <div class="help-input-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="Your email">
-                        </div>
-                    </div>
-                    
-                    <div class="help-input-group full-width">
-                        <label>Subject</label>
-                        <div class="custom-dropdown" id="helpSubjectDropdown">
-                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
-                                <span id="selectedSubject">Choose subject…</span>
-                                <i class="ph ph-caret-down"></i>
-                            </div>
-                            <div class="dropdown-options" id="helpDropdownOptions">
-                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
-                            </div>
-                        </div>
-                    </div>
+    @include('partials.help-modal')
 
-                    <div class="help-input-group full-width">
-                        <label>Message</label>
-                        <textarea placeholder="How can we help you?" rows="5"></textarea>
-                    </div>
-
-                    <div class="help-form-footer">
-                        <button type="submit" class="help-send-btn">Send Message</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

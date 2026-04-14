@@ -244,6 +244,18 @@
         .pill-pending { background: #fff7ed; color: #c2410c; }
         .pill-approved { background: #f0fdf4; color: #15803d; }
         .pill-rejected { background: #fef2f2; color: #b91c1c; }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0) !important; }
+            .admin-main { margin-left: 0 !important; width: 100% !important; }
+            .top-navbar { padding: 0 1rem !important; }
+            .admin-body { padding: 1.25rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .top-navbar div:first-child { font-size: 1rem !important; }
+            .stat-card { padding: 1rem !important; }
+            .stats-grid { grid-template-columns: 1fr !important; }
+        }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -279,7 +291,12 @@
 
     <main class="admin-main">
         <div class="top-navbar">
-            <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-main);">Booking Reports</div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-main);">Booking Reports</div>
+            </div>
         </div>
 
         <div class="admin-body">
@@ -371,5 +388,27 @@
             </div>
         </div>
     </main>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

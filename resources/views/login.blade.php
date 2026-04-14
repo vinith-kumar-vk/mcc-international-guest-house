@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
-            --primary-color: #ff7a00;
             --bg-color: #f8fafc;
             --border: #e2e8f0;
             --text-main: #1e293b;
@@ -29,9 +28,9 @@
         .auth-main {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             flex: 1;
-            padding: 2rem;
+            padding: 40px 2rem;
         }
 
         .auth-card {
@@ -100,7 +99,7 @@
         .input-wrapper input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
         }
 
         .auth-utils {
@@ -145,7 +144,7 @@
         .btn-auth:hover {
             transform: translateY(-1px);
             filter: brightness(1.1);
-            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
         }
 
         .auth-footer {
@@ -190,11 +189,11 @@
 
     <main class="auth-main">
         <div class="auth-card">
-            <div class="auth-header">
-                <div class="sidebar-logo" style="justify-content: center; font-size: 2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
-                    <i class="ph-bold ph-rocket-launch"></i> Space<span style="color: var(--primary-color);">Admin</span>
+            <div class="auth-header" style="margin-top: 10px;">
+                <div class="sidebar-logo" style="justify-content: center; font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--text-main);">
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i> Member<span style="color: var(--primary-color);">Login</span>
                 </div>
-                <p>Login to manage your bookings</p>
+                <p>Access your guest portal</p>
             </div>
 
             @if ($errors->any())

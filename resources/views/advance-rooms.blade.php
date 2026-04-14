@@ -10,18 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
-        /* Compact Card Fixes */
-        .card { height: auto !important; min-height: 0 !important; }
-        .card-content { padding: 1.25rem !important; gap: 0.25rem !important; }
-        .card-content h2 { min-height: 0 !important; margin-bottom: 0.25rem !important; line-height: 1.2 !important; }
-        .card-content .description { min-height: 0 !important; margin-bottom: 0.5rem !important; }
-        .price-highlight { margin-bottom: 0 !important; }
-        .gst-text { margin-bottom: 0.5rem !important; }
-        .facility-features, .luxury-features { margin: 0.5rem 0 !important; padding: 0.75rem !important; }
-        .next-available { margin-top: 0.5rem !important; padding: 0.5rem !important; }
-        .card-actions { margin-top: 0.75rem !important; }
-
-        /* Visibility Improvements */
+        /* Style consistency is now handled by style.css & responsive.css */
         .card h2 { color: #0f172a !important; font-weight: 800 !important; }
         .card .description { color: #334155 !important; font-weight: 500 !important; }
         .card .gst-text { color: #64748b !important; font-weight: 600 !important; }
@@ -422,14 +411,14 @@
 </head>
 
 <body style="background: #fbfbfb;">
-    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard'], 'showHelpBtn' => true])
+    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Home'], 'showHelpBtn' => true])
 
     <main>
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.25rem;">
             <!-- Breadcrumbs -->
             <div class="breadcrumb" style="font-size: 1rem; margin-bottom: 1.5rem;">
                 <a href="{{ route('home') }}"
-                    style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Dashboard</a>
+                    style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Home</a>
                 <span style="color: #333; margin: 0 8px;">></span>
                 <span style="color: var(--text-color); font-weight: 500;">Advance Rooms</span>
             </div>
@@ -573,57 +562,8 @@
     </div>
 
     <!-- Help Modal -->
-    <div class="help-modal-overlay" id="helpModal">
-        <div class="help-modal-card">
-            <button class="help-modal-close" onclick="closeHelpModal()">
-                <i class="ph ph-x"></i>
-            </button>
-            <div class="help-modal-content">
-                <h2 class="help-modal-title">Contact Us</h2>
-                <form class="help-form" onsubmit="event.preventDefault(); return false;">
-                    <div class="help-form-row">
-                        <div class="help-input-group">
-                            <label>Name</label>
-                            <input type="text" placeholder="Your name">
-                        </div>
-                        <div class="help-input-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="Your email">
-                        </div>
-                    </div>
-                    
-                    <div class="help-input-group full-width">
-                        <label>Subject</label>
-                        <select class="form-input" style="background: #fafafa !important;">
-                            <option value="" disabled selected>Choose subject…</option>
-                            <option>Are you a property owner who needs help?</option>
-                            <option>Change booking</option>
-                            <option>Cancel booking</option>
-                            <option>I did not stay at the hotel</option>
-                            <option>Hotel info</option>
-                            <option>Partnership</option>
-                            <option>Other</option>
-                            <option>Check prices and availability</option>
-                            <option>Group booking (for business clients)</option>
-                            <option>Group booking (for travel agencies)</option>
-                            <option>Request my personal data</option>
-                            <option>Remove my personal data</option>
-                            <option>Legal and law-related matters</option>
-                        </select>
-                    </div>
+    @include('partials.help-modal')
 
-                    <div class="help-input-group full-width">
-                        <label>Message</label>
-                        <textarea placeholder="How can we help you?" rows="5"></textarea>
-                    </div>
-
-                    <div class="help-form-footer">
-                        <button type="submit" class="help-send-btn">SEND</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script>
         window.showQuickRoomDetails = function (btn) {
@@ -670,13 +610,7 @@
             document.getElementById(id).classList.remove('active');
         }
 
-        function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-        }
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.remove('active');
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
             const detailsModal = document.getElementById('detailsModal');

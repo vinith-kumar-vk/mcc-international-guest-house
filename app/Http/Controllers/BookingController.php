@@ -7,6 +7,7 @@ use App\Models\Booking;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingNotification;
+use App\Mail\SupportMail;
 
 class BookingController extends Controller
 {
@@ -141,6 +142,48 @@ class BookingController extends Controller
 
         // 4. Redirect directly to the success page
         return redirect()->route('checkout.success', ['id' => $booking->id])->with('success', 'Booking submitted. Your request has been sent for approval.');
+    }
+
+    public function sendSupportMail(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        try {
+            // Get dynamic settings (same as storeBooking)
+            $supportEmail   = 'prasathragul75@gmail.com'; // Hardcoded as per request
+            $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
+            $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
+            $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
+            $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
+            $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
+            $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+
+            config([
+                'mail.default' => $mailMailer,
+                'mail.mailers.smtp.host' => $mailHost,
+                'mail.mailers.smtp.port' => $mailPort,
+                'mail.mailers.smtp.encryption' => $mailEncryption,
+                'mail.mailers.smtp.username' => $senderEmail,
+                'mail.mailers.smtp.password' => $mailPassword,
+                'mail.from.address' => $senderEmail,
+                'mail.from.name' => 'MCC IGH Support System'
+            ]);
+
+            \Illuminate\Support\Facades\Mail::purge('smtp');
+
+            Mail::to($supportEmail)->send(new SupportMail($validated));
+            Log::info('Support email sent to ' . $supportEmail . ' from ' . $validated['email']);
+
+            return response()->json(['success' => true, 'message' => 'Message delivered successfully to the Support Desk!']);
+        } catch (\Exception $e) {
+            Log::error('Support Request Failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Mail Server Failure: ' . $e->getMessage()], 500);
+        }
     }
 
     public function downloadReceipt($id)
