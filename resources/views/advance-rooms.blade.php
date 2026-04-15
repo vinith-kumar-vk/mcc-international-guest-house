@@ -505,13 +505,14 @@
                                 </div>
                             @endif
 
-                            <div class="card-actions" style="margin-top: 1rem;">
-                                <a href="{{ route('room.details', ['id' => 'advance-room-' . $room['no']]) }}" class="btn btn-outline" style="flex: 1;">View Details</a>
+                            <div class="card-actions" style="margin-top: auto; padding-top: 1.25rem; display: flex; gap: 10px;">
+                                <a href="{{ route('room.details', ['id' => 'advance-room-' . $room['no']]) }}" class="btn btn-outline" style="flex: 1; justify-content: center; text-align: center;">View Details</a>
                                 @if($bookedInfo)
                                     <a href="javascript:void(0)" class="btn"
-                                        style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.5; pointer-events: none;">Booked</a>
+                                        style="flex: 1; background: #bc8e8e; border-color: #bc8e8e; cursor: not-allowed; opacity: 0.8; justify-content: center;">Booked</a>
                                 @else
-                                    <a href="{{ route('booking.form.full', ['room' => $room['no']]) }}" class="btn">Book Now</a>
+                                    <a href="{{ route('booking.form.full', ['room' => $room['no']]) }}"
+                                        class="btn" style="flex: 1; justify-content: center;">Book Now</a>
                                 @endif
                             </div>
                         </div>

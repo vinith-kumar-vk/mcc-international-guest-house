@@ -256,6 +256,32 @@
             .stat-card { padding: 1rem !important; }
             .stats-grid { grid-template-columns: 1fr !important; }
         }
+        /* Refined Admin Profile Dropdown - Text Only Logout */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 34px; height: 34px;
+            background: none; border: none;
+            display: flex; align-items: center; justify-content: center;
+            color: #64748b; cursor: pointer; font-size: 1.15rem;
+            transition: color 0.15s;
+        }
+        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: 100%; right: 0;
+            display: none; z-index: 2000;
+            background: transparent; border: none;
+            padding: 4px 0 0 0;
+        }
+        .admin-profile-menu.open { display: block; }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: block; width: 100%; padding: 8px 12px;
+            background: none; border: none; text-align: right;
+            font-size: 0.9rem; color: #1e293b; font-weight: 500;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            white-space: nowrap; transition: color 0.15s, background 0.15s;
+        }
+        .admin-logout-btn:hover { background: #f5f5f5; color: var(--primary-color); border-radius: 4px; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -296,6 +322,17 @@
                     <i class="ph ph-list"></i>
                 </button>
                 <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-main);">Booking Reports</div>
+            </div>
+            <div class="admin-profile-wrap">
+                <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                    <i class="ph-fill ph-user"></i>
+                </button>
+                <div class="admin-profile-menu" id="adminProfileMenu">
+                    <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="admin-logout-btn">Logout</button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -391,7 +428,18 @@
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
-        
+
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+
+        // Sidebar Toggle
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -401,6 +449,7 @@
         }
 
         document.addEventListener('click', (event) => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
                 const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);

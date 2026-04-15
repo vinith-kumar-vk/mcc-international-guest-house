@@ -173,7 +173,7 @@
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
             <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Home" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" loading="eager">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Welcome to MCC IGH</h2>
                 <p class="slide-subtitle">Comfortable and secure guest house booking</p>
                 <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
@@ -182,7 +182,7 @@
         <!-- Slide 2 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc1.png') }}" alt="MCC IGH Premium" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Premium Stay Experience</h2>
                 <p class="slide-subtitle">Book rooms easily with modern facilities</p>
                 <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
@@ -191,7 +191,7 @@
         <!-- Slide 3 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc2.png') }}" alt="MCC IGH Booking" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Simple &amp; Fast Booking</h2>
                 <p class="slide-subtitle">Plan your stay with ease and convenience</p>
                 <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
@@ -200,7 +200,7 @@
         <!-- Slide 4 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner2.jpg') }}" alt="MCC IGH Modern" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Modern Amenities</h2>
                 <p class="slide-subtitle">Experience comfort with state-of-the-art facilities</p>
                 <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
@@ -209,7 +209,7 @@
         <!-- Slide 5 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner1.JPG') }}" alt="MCC IGH Serene" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Serene Environment</h2>
                 <p class="slide-subtitle">Enjoy a peaceful and quiet stay at the campus</p>
                 <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
@@ -344,24 +344,24 @@
                                 ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => asset('assets/room1.JPG'), 'title' => 'Advance Rooms', 'desc' => 'Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
                                 ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/conference.JPG'), 'title' => 'Conference Hall', 'desc' => 'A versatile venue designed for large-scale gatherings and corporate events with high-definition projection and professional acoustics.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
                                 ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/glass.JPG'), 'title' => 'Glass Room', 'desc' => 'Inspire creativity in our modern Glass Room, designed for collaborative brainstorming and focused team sessions with ample natural light.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
-                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE SUITE'],
+                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE SUITE'],
                             ];
                         @endphp
 
                         @for ($i = 0; $i < 2; $i++)
                             @foreach ($roomCards as $card)
-                                <div class="card slider-card">
-                                    <div class="card-image-wrapper" style="height: 160px;">
+                                <div class="card slider-card" style="display: flex; flex-direction: column; height: 100%; min-width: 320px;">
+                                    <div class="card-image-wrapper" style="height: 160px; flex-shrink: 0;">
                                         <span class="badge {{ $card['badgeClass'] }}" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">{{ $card['badge'] }}</span>
                                         <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}">
                                     </div>
-                                    <div class="card-content">
-                                        <h2>{{ $card['title'] }}</h2>
-                                        <p class="description">{!! $card['desc'] !!}</p>
+                                    <div class="card-content" style="flex: 1; display: flex; flex-direction: column; padding: 1.25rem;">
+                                        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a;">{{ $card['title'] }}</h2>
+                                        <p class="description" style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 1rem; flex: none; min-height: 90px;">{!! $card['desc'] !!}</p>
                                         @php $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5; @endphp
-                                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
-                                        <div class="card-btn-wrapper">
-                                            <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center;">{{ $card['btnText'] }}</a>
+                                        <p class="gst-text" style="font-size: 0.8rem; color: #94a3b8; margin-top: auto; margin-bottom: 1rem;">+ {{ $gstRate }}% GST applicable</p>
+                                        <div class="card-btn-wrapper" style="margin-top: 0;">
+                                            <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center; text-transform: uppercase; font-weight: 700;">{{ $card['btnText'] }}</a>
                                         </div>
                                     </div>
                                 </div>

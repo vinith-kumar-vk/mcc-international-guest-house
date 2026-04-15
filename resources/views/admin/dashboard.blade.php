@@ -117,6 +117,33 @@
 
         .nav-right { display: flex; align-items: center; gap: 1.25rem; }
 
+        /* Refined Admin Profile Dropdown - Text Only Logout */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 34px; height: 34px;
+            background: none; border: none;
+            display: flex; align-items: center; justify-content: center;
+            color: #64748b; cursor: pointer; font-size: 1.15rem;
+            transition: color 0.15s;
+        }
+        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: 100%; right: 0;
+            display: none; z-index: 2000;
+            background: transparent; border: none;
+            padding: 4px 0 0 0;
+        }
+        .admin-profile-menu.open { display: block; }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: block; width: 100%; padding: 8px 12px;
+            background: none; border: none; text-align: right;
+            font-size: 0.9rem; color: #1e293b; font-weight: 500;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            white-space: nowrap; transition: color 0.15s, background 0.15s;
+        }
+        .admin-logout-btn:hover { background: #f5f5f5; color: var(--primary-color); border-radius: 4px; }
+
         .notification-bell {
             position: relative; font-size: 1.25rem; color: #64748b; cursor: pointer;
             display: flex; align-items: center;
@@ -408,13 +435,15 @@
                         <a href="{{ route('admin.bookings') }}" style="display: block; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--primary-color); border-top: 1px solid var(--border); background: #f8fafc; text-decoration: none;">View All Bookings</a>
                     </div>
                 </div>
-                <div class="user-info" style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="text-align: right;">
-                        <div style="font-weight: 600; font-size: 0.85rem; color: #1e293b;">Praveen</div>
-                        <div style="font-size: 0.7rem; color: #64748b;">Admin</div>
-                    </div>
-                    <div style="width: 34px; height: 34px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
                         <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn">Logout</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -642,6 +671,19 @@
 
 
     <script>
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+        document.addEventListener('click', () => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
+        });
+
         // Notification Toggle
         const notifToggle = document.getElementById('notifToggle');
         const notifDropdown = document.getElementById('notifDropdown');

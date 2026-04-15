@@ -2,16 +2,17 @@
     $primaryColor = \App\Models\Setting::where('key', 'primary_color')->first()->value ?? '#ff7a00';
     $secondaryColor = \App\Models\Setting::where('key', 'secondary_color')->first()->value ?? '#001a33';
 
-    function hexToRgb($hex) {
+    function hexToRgb($hex)
+    {
         $hex = str_replace("#", "", $hex);
-        if(strlen($hex) == 3) {
-            $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-            $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-            $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+        if (strlen($hex) == 3) {
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
         } else {
-            $r = hexdec(substr($hex,0,2));
-            $g = hexdec(substr($hex,2,2));
-            $b = hexdec(substr($hex,4,2));
+            $r = hexdec(substr($hex, 0, 2));
+            $g = hexdec(substr($hex, 2, 2));
+            $b = hexdec(substr($hex, 4, 2));
         }
         return "$r, $g, $b";
     }
@@ -21,57 +22,79 @@
 @endphp
 <style>
     :root {
-        --primary-color: {{ $primaryColor }};
-        --primary-rgb: {{ $primaryRgb }};
-        --primary: {{ $primaryColor }};
-        --secondary-color: {{ $secondaryColor }};
-        --secondary: {{ $secondaryColor }};
+        --primary-color:
+            {{ $primaryColor }}
+        ;
+        --primary-rgb:
+            {{ $primaryRgb }}
+        ;
+        --primary:
+            {{ $primaryColor }}
+        ;
+        --secondary-color:
+            {{ $secondaryColor }}
+        ;
+        --secondary:
+            {{ $secondaryColor }}
+        ;
     }
 
     * {
         font-family: 'Inter', sans-serif !important;
     }
 
-    body, input, select, textarea, button, h1, h2, h3, h4, h5, h6 {
+    body,
+    input,
+    select,
+    textarea,
+    button,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-family: 'Inter', sans-serif !important;
     }
-    
+
     /* Secondary Style Overrides for Visual Balance */
     @if($useSecondary == '1')
-    header:not(.auth-header) {
-        border-bottom: 2px solid var(--secondary-color) !important;
-    }
+        header:not(.auth-header) {
+            border-bottom: 2px solid var(--secondary-color) !important;
+        }
 
-    .main-footer {
-        border-top: 4px solid var(--secondary-color) !important;
-        background: var(--secondary-color) !important;
-        color: #fff !important;
-    }
+        .main-footer {
+            border-top: 4px solid var(--secondary-color) !important;
+            background: var(--secondary-color) !important;
+            color: #fff !important;
+        }
 
-    .main-footer .footer-column h4,
-    .main-footer .footer-column h4::after,
-    .main-footer .footer-column ul li,
-    .main-footer .footer-column ul li a,
-    .main-footer .footer-contact-link,
-    .main-footer .footer-column p {
-        color: #f1f5f9 !important;
-    }
+        .main-footer .footer-column h4,
+        .main-footer .footer-column h4::after,
+        .main-footer .footer-column ul li,
+        .main-footer .footer-column ul li a,
+        .main-footer .footer-contact-link,
+        .main-footer .footer-column p {
+            color: #f1f5f9 !important;
+        }
 
-    .main-footer .footer-bottom {
-        background: rgba(0,0,0,0.15) !important;
-        border-top: 1px solid rgba(255,255,255,0.05) !important;
-        color: #cbd5e1 !important;
-    }
+        .main-footer .footer-bottom {
+            background: rgba(0, 0, 0, 0.15) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+            color: #cbd5e1 !important;
+        }
 
-    .sidebar, .admin-sidebar {
-        border-right: 1px solid var(--secondary-color) !important;
-    }
+        .sidebar,
+        .admin-sidebar {
+            border-right: 1px solid var(--secondary-color) !important;
+        }
+
     @endif
 
     /* Global overrides for common elements */
-    .btn:not(.btn-outline), 
-    .btn-primary, 
-    .btn-save, 
+    .btn:not(.btn-outline),
+    .btn-primary,
+    .btn-save,
     .submit-btn,
     .help-send-btn,
     .confirm-booking-btn,
@@ -81,32 +104,37 @@
         border-color: var(--primary-color) !important;
         color: #ffffff !important;
     }
-    
-    .text-primary, 
-    .primary-text, 
+
+    .text-primary,
+    .primary-text,
     .welcome-title span,
     .price-highlight span,
     .modal-price-line span:first-child,
     .breadcrumb a,
     .footer-column h4::after,
     .header-logo i,
-    .hero-prev:hover, .hero-next:hover,
+    .hero-prev:hover,
+    .hero-next:hover,
     .dropdown-item:hover {
         color: var(--primary-color) !important;
     }
 
-    .room-highlights i, .facility-item i, .ph-list {
+    .room-highlights i,
+    .facility-item i,
+    .ph-list {
         color: var(--primary-color) !important;
     }
 
-    .header-container, header:not(.auth-header) {
+    .header-container,
+    header:not(.auth-header) {
         background: rgba(255, 255, 255, 0.98) !important;
         backdrop-filter: blur(12px) !important;
         -webkit-backdrop-filter: blur(12px) !important;
         border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
         padding: 0 2.5rem !important;
-        height: 100px !important; /* Increased for better visibility */
+        height: 100px !important;
+        /* Increased for better visibility */
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
@@ -117,9 +145,43 @@
         box-sizing: border-box !important;
     }
 
+    .logo-text {
+        gap: 2px !important;
+    }
+
+    .mcc-text {
+        font-weight: 800 !important;
+        color: #7f1d1d !important; /* Maroon */
+        font-size: 1.5rem !important;
+        letter-spacing: 1px !important;
+    }
+
     .igh-text {
         font-family: 'Inter', sans-serif !important;
-        color: #64748b !important;
+        color: #7f1d1d !important; /* Now also maroon */
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Standardized Breadcrumb Spacing for Category Pages */
+    .breadcrumb {
+        margin-top: 30px !important;
+        margin-bottom: 1.5rem !important;
+        font-size: 0.9rem !important;
+        color: #7f1d1d !important; /* Maroon */
+        font-weight: 500 !important;
+    }
+
+    .breadcrumb a {
+        color: #7f1d1d !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+    }
+
+    .breadcrumb span {
+        color: #7f1d1d !important;
+        opacity: 0.8 !important;
     }
 
     .help-btn {
@@ -149,7 +211,8 @@
         left: 50% !important;
         transform: translateX(-50%) !important;
         text-align: center !important;
-        display: none !important; /* hidden by default, shown on large screens below */
+        display: none !important;
+        /* hidden by default, shown on large screens below */
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
@@ -166,7 +229,8 @@
     }
 
     /* Fixed alignment for header parts */
-    .header-left, .header-right {
+    .header-left,
+    .header-right {
         display: flex !important;
         align-items: center !important;
         gap: 1rem !important;
@@ -175,7 +239,8 @@
 
     @media (max-width: 992px) {
         .header-title {
-            display: none !important; /* Hide long title on mobile/tablet to avoid overlap */
+            display: none !important;
+            /* Hide long title on mobile/tablet to avoid overlap */
         }
     }
 
@@ -199,6 +264,9 @@
         height: 70px !important;
         width: auto !important;
         object-fit: contain !important;
+        mix-blend-mode: multiply !important;
+        /* Enhances clarity and visual pop - removes "dull" look */
+        filter: brightness(1.08) contrast(1.08) saturate(1.1);
     }
 
     /* Mobile header adjustments */
@@ -207,19 +275,25 @@
             padding: 0 1rem !important;
             height: 75px !important;
         }
+
         .header-logo {
             height: 55px !important;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.12)) !important;
+            mix-blend-mode: multiply !important;
+            filter: brightness(1.08) contrast(1.08) saturate(1.1);
         }
+
         .help-btn {
             padding: 0.35rem 0.65rem !important;
             font-size: 0.75rem !important;
             letter-spacing: 0 !important;
         }
+
         .help-btn span {
             display: none !important;
         }
-        .header-left, .header-right {
+
+        .header-left,
+        .header-right {
             gap: 0.5rem !important;
         }
     }
@@ -230,25 +304,33 @@
             padding: 0 2rem !important;
             height: 90px !important;
         }
+
         .header-logo {
             height: 72px !important;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1)) !important;
+            mix-blend-mode: multiply !important;
         }
     }
 
 
-    .border-primary, .room-highlights, .form-section-title {
+    .border-primary,
+    .room-highlights,
+    .form-section-title {
         border-color: var(--primary-color) !important;
     }
 
     /* Input focus */
-    .form-input:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
+    .form-input:focus,
+    .form-select:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
         border-color: var(--primary-color) !important;
         box-shadow: 0 0 0 3px rgba({{ $primaryRgb }}, 0.15) !important;
     }
 
     /* Radio/Checkbox */
-    input[type="radio"], input[type="checkbox"] {
+    input[type="radio"],
+    input[type="checkbox"] {
         accent-color: var(--primary-color) !important;
     }
 
@@ -275,7 +357,11 @@
     }
 
     /* Form Fields */
-    .form-input:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
+    .form-input:focus,
+    .form-select:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
         border-color: var(--primary-color) !important;
         box-shadow: 0 0 0 4px rgba({{ $primaryRgb }}, 0.1) !important;
     }
@@ -291,16 +377,16 @@
         box-shadow: 0 8px 25px rgba({{ $primaryRgb }}, 0.3) !important;
     }
 
-    .btn:not(.btn-outline):hover, 
+    .btn:not(.btn-outline):hover,
     .btn:not(.btn-outline):active,
     .btn:not(.btn-outline):focus,
-    .btn-primary:hover, 
+    .btn-primary:hover,
     .btn-primary:active,
     .btn-primary:focus,
-    .submit-btn:hover, 
+    .submit-btn:hover,
     .submit-btn:active,
     .submit-btn:focus,
-    .help-send-btn:hover, 
+    .help-send-btn:hover,
     .help-send-btn:active,
     .help-send-btn:focus,
     .confirm-booking-btn:hover,
@@ -317,13 +403,14 @@
     }
 
     /* Sidebar and Navigation */
-    .sidebar-menu a.active { 
-        color: var(--primary-color) !important; 
-        background: rgba({{ $primaryRgb }}, 0.08) !important; 
+    .sidebar-menu a.active {
+        color: var(--primary-color) !important;
+        background: rgba({{ $primaryRgb }}, 0.08) !important;
         border-left: 4px solid var(--primary-color) !important;
     }
 
-    .nav-link:hover, .menu-item:hover {
+    .nav-link:hover,
+    .menu-item:hover {
         color: var(--primary-color) !important;
     }
 
@@ -342,66 +429,100 @@
 
     /* 1. Header Logo Size Fix (CRITICAL VISIBILITY) */
     .header-logo {
-        height: 55px !important; /* Mobile */
+        height: 55px !important;
+        /* Mobile */
         width: auto !important;
         object-fit: contain !important;
         transition: all 0.3s ease !important;
-        image-rendering: -webkit-optimize-contrast !important;
-        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08)) !important;
+        mix-blend-mode: multiply !important;
+        /* Removes visible white box border around logo PNG */
     }
 
     @media (min-width: 768px) {
         .header-logo {
-            height: 75px !important; /* Tablet */
+            height: 75px !important;
+            /* Tablet */
+            mix-blend-mode: multiply !important;
         }
     }
 
     @media (min-width: 1280px) {
         .header-logo {
-            height: 85px !important; /* Desktop */
+            height: 85px !important;
+            /* Desktop */
+            mix-blend-mode: multiply !important;
         }
     }
 
-    /* 2. Full Screen Hero Banner */
+    /* 2. Compact Hero Banner */
     .main-image-slider {
-        height: 100vh !important;
-        min-height: 100vh !important;
-        max-height: none !important;
+        height: 600px !important;
+        min-height: 600px !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
 
-    /* 3. Image Blur + Dark Overlay */
+    @media (max-width: 767px) {
+        .main-image-slider {
+            height: 450px !important;
+            min-height: 450px !important;
+        }
+    }
+
+    /* 3. Modern Hero Gradient Overlay (Professional Corporate Style) */
     .hero-slide::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.4); /* Exact request: 0.4 */
-        backdrop-filter: blur(6px); /* Exact request: 6px */
-        -webkit-backdrop-filter: blur(6px);
+        /* Balanced gradient for centered text: darker in middle/left, clear on right */
+        background: linear-gradient(to right, 
+            rgba(0, 0, 0, 0.6) 0%, 
+            rgba(0, 0, 0, 0.4) 40%, 
+            rgba(0, 0, 0, 0.1) 70%, 
+            transparent 100%) !important;
+        backdrop-filter: blur(1.5px);
+        /* Extremely subtle for readability */
+        -webkit-backdrop-filter: blur(1.5px);
         z-index: 1;
+    }
+
+    /* Ensure the Right side is explicitly clear - we can use a mask or just reliable gradient */
+    .hero-slide {
+        overflow: hidden;
     }
 
     /* Ensure text layers are above the overlay */
     .hero-layer {
         z-index: 5 !important;
-        background: none !important; /* Overriding existing gradient */
+        background: transparent !important;
+        /* Centered alignment for natural balance with the header */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 0 10% !important;
     }
 
     .hero-slide img {
         z-index: 0;
+        object-fit: cover !important;
     }
 
     /* 4. Text Visibility Improvement */
     .slide-title {
         font-size: clamp(2rem, 8vw, 4rem) !important;
         font-weight: 800 !important;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important; /* Exact request */
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+        /* Exact request */
         margin-bottom: 0.8rem !important;
         color: #fff !important;
     }
 
     .slide-subtitle {
         font-size: clamp(1rem, 3vw, 1.3rem) !important;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important; /* Exact request */
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+        /* Exact request */
         color: #fff !important;
         max-width: 800px;
     }
@@ -409,7 +530,8 @@
     /* 5. "BOOK NOW" Button Style */
     .banner-cta {
         margin-top: 2rem !important;
-        padding: 0.5rem 1.5rem !important; /* Smaller rounded button */
+        padding: 0.5rem 1.5rem !important;
+        /* Smaller rounded button */
         background: var(--primary-color) !important;
         color: #fff !important;
         font-size: 0.8rem !important;
@@ -417,7 +539,7 @@
         border-radius: 50px !important;
         letter-spacing: 0.5px !important;
         text-transform: uppercase !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
         text-decoration: none !important;
         display: inline-flex !important;
@@ -427,9 +549,11 @@
     }
 
     .banner-cta:hover {
-        transform: scale(1.05) !important; /* Slight scale */
+        transform: scale(1.05) !important;
+        /* Slight scale */
         background: var(--primary-color) !important;
-        box-shadow: 0 6px 20px rgba({{ $primaryRgb }}, 0.4) !important; /* Shadow */
+        box-shadow: 0 6px 20px rgba({{ $primaryRgb }}, 0.4) !important;
+        /* Shadow */
         color: #fff !important;
     }
 
@@ -438,7 +562,7 @@
        ============================================================= */
 
     /* 1. Global Section Spacing & 5. Section Gap Rule */
-    main > section {
+    main>section {
         padding-top: 30px !important;
         padding-bottom: 30px !important;
         margin-top: 0 !important;
@@ -454,16 +578,16 @@
     }
 
     /* 1 (Special Cases). First and Last Section Padding */
-    main > section:first-of-type {
+    main>section:first-of-type {
         padding-top: 40px !important;
     }
 
-    main > section:last-of-type {
+    main>section:last-of-type {
         padding-bottom: 40px !important;
     }
 
     /* 3. Heading & Subtext Spacing */
-    .title-section h2, 
+    .title-section h2,
     main h2 {
         margin-bottom: 6px !important;
     }
@@ -475,14 +599,42 @@
         margin-top: 0 !important;
     }
 
-    /* 4. Card Grid Spacing & Normalization */
-    .cards-container,
-    .dashboard-rooms-grid,
-    .rooms-grid,
-    .grid,
-    .dashboard-rooms-grid,
-    .feature-grid {
-        gap: 16px !important;
+/* Standardized Card Grid Alignment (Parallel Buttons) */
+.rooms-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+}
+
+.card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+.card-content {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+.card-actions {
+    margin-top: auto !important;
+}
+
+    /* Slider Specific Width Normalization (Wider) */
+    .explore-rooms-section,
+    .slider-master-container {
+        max-width: 1400px !important;
+        width: 100% !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .slider-outer-frame {
+        padding: 0 10px !important;
     }
 
     /* 4. Card Inner Details */
@@ -522,7 +674,8 @@
     }
 
     /* 8. Removal of Random Large Spacing */
-    header, .main-header {
+    header,
+    .main-header {
         margin-bottom: 0 !important;
     }
 
@@ -556,14 +709,15 @@
         background: #fff !important;
         border-radius: 12px !important;
         overflow: hidden !important;
-        border: 1px solid rgba(0,0,0,0.05) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
         transition: all 0.3s ease !important;
     }
 
     .premium-card .card-image-wrapper {
         height: 180px !important;
         width: 100% !important;
-        margin-bottom: 0 !important; /* Reset margin for image container */
+        margin-bottom: 0 !important;
+        /* Reset margin for image container */
     }
 
     .premium-card .card-image-wrapper img {
@@ -577,15 +731,17 @@
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        padding: 20px !important; /* Standardized deep padding */
+        padding: 20px !important;
+        /* Standardized deep padding */
     }
 
-    .premium-card h2, 
+    .premium-card h2,
     .premium-card h3 {
         font-size: 1.25rem !important;
         font-weight: 700 !important;
         margin-bottom: 6px !important;
-        min-height: 40px !important; /* Title alignment */
+        min-height: 40px !important;
+        /* Title alignment */
         display: flex !important;
         align-items: center !important;
     }
@@ -593,13 +749,15 @@
     .premium-card .description {
         font-size: 0.95rem !important;
         line-height: 1.5 !important;
-        min-height: 60px !important; /* Description alignment */
+        min-height: 60px !important;
+        /* Description alignment */
         margin-bottom: 16px !important;
         color: #64748b !important;
     }
 
     .premium-card .card-btn-wrapper {
-        margin-top: auto !important; /* Buttons at bottom */
+        margin-top: auto !important;
+        /* Buttons at bottom */
         padding-top: 12px !important;
     }
 
@@ -607,6 +765,7 @@
         width: 100% !important;
         justify-content: center !important;
     }
+
     /* Admin Sidebar Logo Enhancement */
     .sidebar-logo {
         font-size: 1.5rem !important;
@@ -616,6 +775,7 @@
         align-items: center !important;
         gap: 0.75rem !important;
     }
+
     .sidebar-logo i {
         font-size: 1.8rem !important;
         color: var(--primary-color) !important;
@@ -645,12 +805,12 @@
         const allElements = document.getElementsByTagName('*');
         for (let i = 0; i < allElements.length; i++) {
             const el = allElements[i];
-            
+
             // Skip interactive elements whose states (hover, active, focus) must remain controlled purely by CSS
             if (el.matches('.tab-btn, .btn, [class*="btn-"], button, .submit-btn')) continue;
 
             const style = window.getComputedStyle(el);
-            
+
             // Background
             if (orangeShades.includes(style.backgroundColor)) {
                 el.style.setProperty('background-color', window.primaryColor, 'important');
@@ -660,7 +820,7 @@
                 const alpha = style.backgroundColor.split(',').pop().replace(')', '').trim();
                 el.style.setProperty('background-color', `rgba(${window.primaryColorRGB}, ${alpha})`, 'important');
             }
- 
+
             // Border
             if (orangeShades.includes(style.borderColor)) {
                 el.style.setProperty('border-color', window.primaryColor, 'important');
@@ -681,12 +841,12 @@
     // Run on load and whenever the DOM changes
     window.addEventListener('DOMContentLoaded', applyDynamicTheme);
     window.addEventListener('load', applyDynamicTheme);
-    
+
     // Mutation Observer to catch dynamic content (like modals or JS-generated elements)
     const observer = new MutationObserver((mutations) => {
         applyDynamicTheme();
     });
-    
+
     observer.observe(document.body, {
         childList: true,
         subtree: true,

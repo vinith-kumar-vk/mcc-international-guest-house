@@ -119,32 +119,7 @@
         .spec-card .val { display: block; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .spec-card .lbl { font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; font-weight: 600; }
 
-        .gallery-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            margin-bottom: 24px;
-            width: 100%;
-            gap: 12px;
-        }
 
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-medium);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .action-btn:hover { color: var(--primary-color); }
-        .action-btn i { font-size: 1.1rem; }
 
         /* Main Content Typography */
         .room-title {
@@ -460,13 +435,7 @@
             }
             .spec-card .lbl { font-size: 0.72rem !important; }
 
-            /* Gallery Actions */
-            .gallery-actions {
-                padding: 10px 14px !important;
-                gap: 10px !important;
-                margin-bottom: 18px !important;
-                flex-wrap: wrap !important;
-            }
+
 
             /* Room header */
             .room-title { font-size: 1.5rem !important; line-height: 1.2 !important; }
@@ -787,12 +756,7 @@
                     </div>
                 </div>
 
-                <div class="gallery-actions">
-                    <div style="display: flex; gap: 16px;">
-                        <span id="likeBtn" class="action-btn" onclick="toggleLike()"><i class="ph ph-heart"></i></span>
-                        <span class="action-btn" onclick="openShareModal()"><i class="ph ph-share-network"></i></span>
-                    </div>
-                </div>
+
 
                 <div class="room-info-header">
                     <h1 class="room-title">{{ $room['name'] }}</h1>
@@ -823,7 +787,7 @@
                     </div>
 
                     <h2 class="section-title"><i class="ph-fill ph-map-pin"></i> Getting There</h2>
-                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, Tambaram East, Chennai, Tamil Nadu, India</p>
+                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, East Tambaram, Chennai, Tamil Nadu, India</p>
                     <div style="height: 300px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 30px;">
                         <iframe 
                             width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
@@ -917,7 +881,7 @@
 
                 <div id="location" class="tab-pane">
                     <h2 class="section-title"><i class="ph-fill ph-map-pin"></i> Getting There</h2>
-                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, Tambaram East, Chennai, Tamil Nadu, India</p>
+                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, East Tambaram, Chennai, Tamil Nadu, India</p>
                     <div style="height: 450px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-light); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
                         <iframe 
                             width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
@@ -1057,6 +1021,7 @@
             
             <div class="rooms-grid dashboard-rooms-grid">
                 <!-- Related Standard Room -->
+                @if(!str_contains($roomId, 'standard'))
                 <div class="card premium-card">
                     <div class="card-image-wrapper">
                         <span class="badge standard-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
@@ -1071,8 +1036,10 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 
                 <!-- Related Advance Room -->
+                @if(!str_contains($roomId, 'advance'))
                 <div class="card premium-card">
                     <div class="card-image-wrapper">
                         <span class="badge premium-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
@@ -1087,8 +1054,10 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Related Suite Room -->
+                @if($roomId !== 'suite-room')
                 <div class="card premium-card">
                     <div class="card-image-wrapper">
                         <span class="badge suite-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Luxury</span>
@@ -1099,29 +1068,16 @@
                         <p class="description">Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.</p>
                         <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
-                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                            <a href="{{ route('room.details', ['id' => 'suite-room']) }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </section>
     </main>
 
-    <!-- Interactive Modals -->
-    <div id="shareModal" class="modal-overlay" onclick="closeModal(event, 'shareModal')">
-        <div class="modal-content">
-            <span class="modal-close" onclick="document.getElementById('shareModal').classList.remove('active')"><i class="ph ph-x"></i></span>
-            <h3 style="margin-bottom: 10px; color: var(--text-dark);">Share this Room</h3>
-            <p style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 20px;">Help others discover this amazing space!</p>
-            <div class="share-grid">
-                <a href="javascript:void(0)" onclick="shareWhatsApp()" class="share-option"><i class="ph ph-whatsapp-logo" style="color: #25D366;"></i> WhatsApp</a>
-                <a href="javascript:void(0)" onclick="shareFacebook()" class="share-option"><i class="ph ph-facebook-logo" style="color: #1877F2;"></i> Facebook</a>
-                <a href="javascript:void(0)" onclick="shareTwitter()" class="share-option"><i class="ph ph-x-logo" style="color: #000000;"></i> Twitter</a>
-                <a href="javascript:void(0)" onclick="shareEmail()" class="share-option"><i class="ph ph-envelope" style="color: #EA4335;"></i> Email</a>
-                <a href="javascript:void(0)" onclick="copyToClipboard()" class="share-option" style="grid-column: span 2;"><i class="ph ph-link"></i> Copy Room Link</a>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Lightbox Modal -->
     <div id="lightboxModal" class="modal-overlay" onclick="closeModal(event, 'lightboxModal')">
@@ -1216,63 +1172,7 @@
             }
         }
 
-        // Like Functionality
-        const roomId = "{{ $roomId }}";
-        function initLike() {
-            const liked = localStorage.getItem('liked_' + roomId);
-            if (liked === 'true') {
-                document.getElementById('likeBtn').classList.add('liked');
-            }
-        }
 
-        function toggleLike() {
-            const btn = document.getElementById('likeBtn');
-            const isLiked = btn.classList.toggle('liked');
-            localStorage.setItem('liked_' + roomId, isLiked);
-            
-            if (isLiked) {
-                showToast("Added to your favorites!", "ph ph-heart");
-                btn.style.transform = "scale(1.3)";
-                setTimeout(() => btn.style.transform = "scale(1.1)", 200);
-            } else {
-                showToast("Removed from favorites");
-            }
-        }
-
-        // Share Functionality
-        function openShareModal() {
-            document.getElementById('shareModal').classList.add('active');
-        }
-
-        function shareWhatsApp() {
-            const text = encodeURIComponent("Check out this " + "{{ $room['name'] }}" + " at MCC International Guest House! Book now: " + window.location.href);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-        }
-
-        function shareFacebook() {
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, 'facebook-share-dialog', 'width=800,height=600');
-        }
-
-        function shareTwitter() {
-            const text = encodeURIComponent("Amazing " + "{{ $room['name'] }}" + " at @MCCInnovation Park. Book now: ");
-            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
-        }
-
-        function shareEmail() {
-            const subject = encodeURIComponent("Inquiry about " + "{{ $room['name'] }}");
-            const body = encodeURIComponent("I found this room at MCC International Guest House and thought you might like it: " + window.location.href);
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-        }
-
-        async function copyToClipboard() {
-            try {
-                await navigator.clipboard.writeText(window.location.href);
-                showToast("Link copied to clipboard!");
-                document.getElementById('shareModal').classList.remove('active');
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-            }
-        }
 
         // Lightbox
         function openLightbox() {
@@ -1332,8 +1232,7 @@
             }
         });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', initLike);
+
 
         function openHelpModal() {
             document.getElementById('helpModal').classList.add('active');

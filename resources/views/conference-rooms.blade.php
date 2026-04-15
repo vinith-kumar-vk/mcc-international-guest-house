@@ -160,9 +160,40 @@
             filter: brightness(80%) !important;
         }
         /* Style consistency is now handled by style.css & responsive.css */
-        .card h2 { color: #0f172a !important; font-weight: 800 !important; }
-        .card .description { color: #334155 !important; font-weight: 500 !important; }
-        .card .gst-text { color: #64748b !important; font-weight: 600 !important; }
+        .card h2 { color: #0f172a !important; font-weight: 800 !important; margin-bottom: 0.5rem !important; }
+        .card { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            min-height: 620px !important; 
+            height: 100% !important; 
+        }
+        .card-content { 
+            flex: 1 !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            justify-content: flex-start !important;
+        }
+        .card .description { 
+            color: #334155 !important; 
+            font-weight: 500 !important; 
+            flex: none !important; 
+            min-height: 115px !important; /* Unified height to keep prices parallel */
+            margin-bottom: 0.5rem !important;
+            line-height: 1.5 !important;
+        }
+        .price-highlight { 
+            min-height: 45px !important; 
+            display: flex !important; 
+            align-items: baseline !important; 
+            gap: 5px !important;
+            margin-bottom: 0px !important;
+        }
+        .card .gst-text { 
+            color: #64748b !important; 
+            font-weight: 600 !important; 
+            margin-bottom: 1rem !important;
+            min-height: 20px !important;
+        }
         .btn-outline { border-width: 2px !important; font-weight: 700 !important; }
         /* Header Centering */
         .header-container { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
@@ -271,9 +302,9 @@
                         <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         
                         <!-- Room Features -->
-                        <div class="room-features-box" style="margin: 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }};">
-                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">{{ $room['theme']['title'] }}</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
+                        <div class="room-features-box" style="margin: 0.5rem 0 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }}; min-height: 155px; display: flex; flex-direction: column;">
+                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px;">{{ $room['theme']['title'] }}</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.75rem; color: #666; flex-grow: 1;">
                                 @foreach($room['amenities'] as $amenity)
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <i class="ph {{ $amenity['icon'] }}" style="color: {{ $room['theme']['icon'] }};"></i> 
@@ -281,7 +312,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">
+                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.8rem; font-style: italic; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 0.5rem;">
                                 {{ $room['name'] === 'Suite Room' ? 'Luxury stay with maximum comfort' : ($room['name'] === 'Glass Room' ? 'Designed for transparency and innovation' : 'Perfect for meetings and collaboration') }}
                             </p>
                         </div>
@@ -298,12 +329,12 @@
                             </div>
                         @endif
 
-                        <div class="card-actions" style="margin-top: 1rem;">
-                            <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1;">View Details</a>
+                        <div class="card-actions" style="margin-top: auto; padding-top: 1.5rem; display: flex; gap: 10px; width: 100%;">
+                            <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1; justify-content: center; text-align: center; text-transform: uppercase;">View Details</a>
                             @if($bookedInfo)
-                                <a href="javascript:void(0)" class="btn" style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.5; pointer-events: none;">Booked</a>
+                                <a href="javascript:void(0)" class="btn" style="flex: 1; background: #bc8e8e; border-color: #bc8e8e; cursor: not-allowed; opacity: 0.8; justify-content: center; text-transform: uppercase;">Booked</a>
                             @else
-                                <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn">Book Now</a>
+                                <a href="{{ route('booking.form.full', ['room' => $room['name']]) }}" class="btn" style="flex: 1; justify-content: center; text-transform: uppercase;">Book Now</a>
                             @endif
                         </div>
                     </div>

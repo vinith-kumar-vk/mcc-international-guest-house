@@ -128,11 +128,11 @@
                     <td><strong>{{ $booking->room_name }}</strong></td>
                 </tr>
                 <tr>
-                    <th>Check-in</th>
+                    <th>Clock In</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->format('d M Y, h:i A') }}</td>
                 </tr>
                 <tr>
-                    <th>Check-out</th>
+                    <th>Clock Out</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->end_time)->format('d M Y, h:i A') }}</td>
                 </tr>
                 <tr>

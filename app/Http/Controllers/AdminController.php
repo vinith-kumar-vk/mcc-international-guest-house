@@ -262,7 +262,7 @@ class AdminController extends Controller
             \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Booking fully approved. Guest has been notified.');
+        return back()->with('success', 'Booking approved. Guest has been notified.');
     }
 
     public function reject($id, Request $request)

@@ -126,8 +126,12 @@
                     <td>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                 </tr>
                 <tr>
-                    <th>Check-in</th>
+                    <th>Clock In</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->format('M d, Y, h:i A') }}</td>
+                </tr>
+                <tr>
+                    <th>Clock Out</th>
+                    <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->end_time)->format('M d, Y, h:i A') }}</td>
                 </tr>
                 <tr>
                     <th>Pay at Counter</th>

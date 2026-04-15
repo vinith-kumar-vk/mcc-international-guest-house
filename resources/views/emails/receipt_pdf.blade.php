@@ -8,20 +8,20 @@
         body { 
             font-family: 'Inter', 'Helvetica', 'Arial', sans-serif; 
             color: #1e293b; 
-            line-height: 1.5; 
+            line-height: 1.4; 
             margin: 0; 
-            padding: 40px;
+            padding: 25px 35px;
             background: #fff;
         }
         .header { 
             text-align: center; 
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             border-bottom: 2px solid {{ $primaryColor }};
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
         .logo {
-            height: 70px;
-            margin-bottom: 10px;
+            height: 55px;
+            margin-bottom: 8px;
         }
         .institution-name {
             font-size: 20px;
@@ -32,35 +32,35 @@
             margin: 0;
         }
         .dept-name {
-            font-size: 14px;
+            font-size: 13px;
             color: #64748b;
-            margin: 5px 0 0 0;
+            margin: 3px 0 0 0;
             font-weight: 600;
         }
         .receipt-label {
             display: inline-block;
             background: #f1f5f9;
-            padding: 6px 20px;
+            padding: 4px 16px;
             border-radius: 4px;
             font-weight: 800;
-            font-size: 14px;
-            margin-top: 20px;
+            font-size: 12px;
+            margin-top: 15px;
             color: #334155;
             letter-spacing: 2px;
         }
         .grid {
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .section-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             color: {{ $primaryColor }};
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
             border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
         .info-table { width: 100%; border-collapse: collapse; }
         .info-table th { 
@@ -73,10 +73,10 @@
         }
         .info-table td { 
             text-align: left; 
-            padding: 8px 0; 
+            padding: 4px 0; 
             color: #1e293b; 
             font-weight: 600; 
-            font-size: 13px;
+            font-size: 12px;
         }
         .price-table { 
             width: 100%; 
@@ -86,7 +86,7 @@
             border-radius: 8px;
         }
         .price-table th, .price-table td { 
-            padding: 15px; 
+            padding: 10px 15px; 
             border-bottom: 1px solid #e2e8f0;
         }
         .price-table th {
@@ -100,20 +100,18 @@
             font-weight: 600;
         }
         .total-amount {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             color: {{ $primaryColor }};
         }
         .footer { 
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            right: 40px;
+            margin-top: 30px;
             text-align: center; 
-            font-size: 11px; 
+            font-size: 10px; 
             color: #94a3b8;
             border-top: 1px solid #f1f5f9;
-            padding-top: 20px;
+            padding-top: 15px;
+            width: 100%;
         }
         .status-badge {
             background: #dcfce7;
@@ -138,7 +136,7 @@
         <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/logo.png'))) }}" class="logo">
         <h1 class="institution-name">Madras Christian College</h1>
         <p class="dept-name">International Guest House & Conference Centre</p>
-        <div class="receipt-label">OFFICIAL RECEIPT</div>
+        <div class="receipt-label">RECEIPT SUMMARY</div>
     </div>
 
     <table class="grid" style="table-layout: fixed;">
@@ -193,8 +191,12 @@
             <td>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
         </tr>
         <tr>
-            <th>Schedule</th>
-            <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d F, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
+            <th style="width: 20%;">Clock In</th>
+            <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d F, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</td>
+        </tr>
+        <tr>
+            <th style="width: 20%;">Clock Out</th>
+            <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d F, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
         </tr>
     </table>
 
@@ -227,7 +229,7 @@
         </tr>
     </table>
 
-    <div style="margin-top: 40px; font-size: 12px; color: #64748b; line-height: 1.8;">
+    <div style="margin-top: 25px; font-size: 11px; color: #64748b; line-height: 1.6;">
         <p style="margin-bottom: 5px;"><strong>Important Notes:</strong></p>
         <ul style="padding-left: 20px; margin: 0;">
             <li>This is a computer-generated receipt and does not require a physical signature.</li>
@@ -238,7 +240,7 @@
 
     <div class="footer">
         <p><strong>Madras Christian College (Autonomous)</strong></p>
-        <p>Tambaram, Chennai - 600 059, Tamil Nadu, India</p>
+        <p>East Tambaram, Chennai - 600 059, Tamil Nadu, India</p>
         <p style="margin-top: 10px;">&copy; {{ date('Y') }} MCC IGH. Generated on {{ date('d/m/Y h:i A') }}</p>
     </div>
 </body>

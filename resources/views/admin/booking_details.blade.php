@@ -333,11 +333,10 @@
             color: #ffffff !important;
             transform: none !important;
             width: 100% !important;
-            padding: 1.1rem 2rem !important;
         }
 
         .btn-approve {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #ff7a00 !important;
             color: #ffffff !important;
             border: none !important;
@@ -371,7 +370,7 @@
         }
 
         .btn-reject {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #e11d48 !important;
             color: #ffffff !important;
             border: none !important;
@@ -537,6 +536,37 @@
             margin-top: 0.25rem;
         }
 
+        /* Refined Admin Profile Dropdown - Text Only Logout */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 34px; height: 34px;
+            background: none; border: none;
+            display: flex; align-items: center; justify-content: center;
+            color: #64748b; cursor: pointer; font-size: 1.15rem;
+            transition: color 0.15s;
+        }
+        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: 100%; right: 0;
+            display: none; z-index: 2000;
+            background: #fff; 
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 100px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .admin-profile-menu.open { display: block; }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: block; width: 100%; padding: 10px 15px;
+            background: none; border: none; text-align: center;
+            font-size: 0.9rem; color: #ef4444; font-weight: 600;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            white-space: nowrap; transition: background 0.15s;
+        }
+        .admin-logout-btn:hover { background: #fff1f2; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -572,10 +602,23 @@
             <div>
                 <h1 id="pdf-header">Booking Details</h1>
             </div>
-            <button onclick="downloadBookingPDF()" class="btn-download-pdf" style="margin-left: auto;">
-                <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
-                Download PDF
-            </button>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: auto;">
+                <button onclick="downloadBookingPDF()" class="btn-download-pdf">
+                    <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
+                    Download PDF
+                </button>
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                        <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if(session('success'))
@@ -681,11 +724,15 @@
                             <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('F d, Y') }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Time Slot</span>
-                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</span>
+                            <span class="info-label">Clock In</span>
+                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Duration</span>
+                            <span class="info-label">Clock Out</span>
+                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total Duration</span>
                             <span class="info-value">
                                 @php
                                     $start = \Carbon\Carbon::parse($booking->start_time);
@@ -778,13 +825,14 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: 0 1.5rem 2rem 1.5rem;">
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         @if($booking->approval_status === 'Pending')
-                            <div class="pulse-status" style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center; margin-bottom: 1rem;">
-                            <p style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif;">
-                                    <i class="ph-fill ph-hourglass"></i> Waiting for Principal Approval
-                                </p>
+                            <div class="pulse-status" style="background: rgba(245, 158, 11, 0.1); height: 75px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); display: flex; align-items: center; justify-content: center; width: 100%;">
+                                <div style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; line-height: 1;">
+                                    <i class="ph-fill ph-hourglass" style="font-size: 1.1rem; position: relative; top: -1px;"></i>
+                                    <span>Waiting for Principal Approval</span>
+                                </div>
                             </div>
                         @endif
 
@@ -794,7 +842,7 @@
                                     style="width: 100%;"
                                     {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
                                 <i class="ph-bold ph-check" style="color:#fff !important;"></i>
-                                Final Approve
+                                Confirm & Approve
                             </button>
                         </form>
                         
@@ -807,10 +855,11 @@
                     @endif
 
                     @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
-                        <div style="background: rgba(59, 130, 246, 0.08); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); text-align: center; margin-bottom: 0.5rem;">
-                            <p style="margin: 0; font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif;">
-                                <i class="ph-fill ph-info"></i> Approved — waiting for payment at counter
-                            </p>
+                        <div style="background: rgba(59, 130, 246, 0.1); height: 75px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; width: 100%;">
+                            <div style="margin: 0; font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; line-height: 1;">
+                                <i class="ph-fill ph-info" style="font-size: 1.1rem; position: relative; top: -1px;"></i>
+                                <span>Approved — waiting for payment at counter</span>
+                            </div>
                         </div>
                         <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
                             @csrf
@@ -820,7 +869,7 @@
                         </form>
                     @endif
 
-                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 0.5rem 0;">
+                    <div style="height: 1px; background: #e2e8f0; margin: 0.25rem 0;"></div>
 
                     <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');">
                         @csrf
@@ -879,7 +928,17 @@
 
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
-        
+
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -888,6 +947,7 @@
         }
 
         document.addEventListener('click', (event) => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
                 const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);

@@ -174,10 +174,10 @@
             <div class="success-body" id="receiptContent" style="background: #ffffff; padding: 40px; border-radius: 12px;">
                 <!-- Official Header -->
                 <div style="text-align: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 20px; margin-bottom: 30px;">
-                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 85px; margin-bottom: 15px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));">
+                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 85px; margin-bottom: 15px;">
                     <h3 style="margin: 0; color: #7f1d1d; font-weight: 800; font-size: 20px; text-transform: uppercase;">Madras Christian College</h3>
                     <p style="margin: 5px 0 0; color: #64748b; font-size: 14px; font-weight: 600;">International Guest House & Conference Centre</p>
-                    <div style="display: inline-block; background: #f1f5f9; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; margin-top: 15px; color: #475569; letter-spacing: 2px;">OFFICIAL RECEIPT SUMMARY</div>
+                    <div style="display: inline-block; background: #f1f5f9; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; margin-top: 15px; color: #475569; letter-spacing: 2px;">RECEIPT SUMMARY</div>
                 </div>
 
                 <!-- Info Grid using Table for PDF Compatibility -->
@@ -221,8 +221,12 @@
                             <td style="font-weight: 700; color: #1e293b;">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                         </tr>
                         <tr>
-                            <td style="color: #64748b; padding: 8px 0;">Schedule:</td>
-                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
+                            <td style="color: #64748b; padding: 8px 0; width: 20%;">Clock In:</td>
+                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #64748b; padding: 8px 0;">Clock Out:</td>
+                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -255,13 +259,13 @@
                 <!-- Footer Notes -->
                 <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 20px; text-align: center;">
                     <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 5px 0;">Payment Status: {{ $booking->payment_status === 'Paid' ? 'PAID' : 'PAY AT COUNTER' }}</p>
-                    <p style="font-size: 12px; color: #64748b; margin: 0;">Madras Christian College, Tambaram, Chennai</p>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Madras Christian College, East Tambaram, Chennai</p>
                 </div>
             </div>
 
             <div class="success-actions" style="margin-top: 2rem;">
                 <a href="{{ route('receipt.download', $booking->id) }}" class="btn-download" id="manualDownloadBtn">
-                    <i class="ph-bold ph-download-simple"></i> Download Official Receipt
+                    <i class="ph-bold ph-download-simple"></i> Download Receipt
                 </a>
                 <button class="btn-home" onclick="window.location.href='{{ route('home') }}'">
                     <i class="ph-bold ph-house"></i> Back to Home
