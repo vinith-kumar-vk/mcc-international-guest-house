@@ -159,42 +159,132 @@
             border-color: var(--primary-color) !important;
             filter: brightness(80%) !important;
         }
-        /* Style consistency is now handled by style.css & responsive.css */
-        .card h2 { color: #0f172a !important; font-weight: 800 !important; margin-bottom: 0.5rem !important; }
+
+        /* Card Alignment Fixes */
         .card { 
             display: flex !important; 
             flex-direction: column !important; 
-            min-height: 620px !important; 
             height: 100% !important; 
+            background: #fff !important;
+            border-radius: 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.3s ease !important;
+            padding: 0 !important; /* Padding moved to content */
+        }
+        .card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1) !important;
         }
         .card-content { 
             flex: 1 !important; 
             display: flex !important; 
             flex-direction: column !important; 
+            padding: 1.5rem !important;
+        }
+        .card-header { 
+            min-height: 52px !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
             justify-content: flex-start !important;
+            align-items: flex-start !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .card h2 { 
+            color: #0f172a !important; 
+            font-weight: 800 !important; 
+            margin-bottom: 0 !important; 
+            font-size: 1.3rem !important;
+        }
+        .card-header .rating {
+            margin-bottom: 0.2rem !important;
+            font-size: 0.8rem !important;
+            color: #64748b !important;
         }
         .card .description { 
-            color: #334155 !important; 
+            color: #475569 !important; 
             font-weight: 500 !important; 
-            flex: none !important; 
-            min-height: 115px !important; /* Unified height to keep prices parallel */
-            margin-bottom: 0.5rem !important;
-            line-height: 1.5 !important;
+            min-height: 85px !important; 
+            margin-bottom: 0.75rem !important;
+            line-height: 1.4 !important;
+            font-size: 0.9rem !important;
+        }
+        .price-section {
+            min-height: 60px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-bottom: 1rem !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
         }
         .price-highlight { 
-            min-height: 45px !important; 
             display: flex !important; 
             align-items: baseline !important; 
             gap: 5px !important;
-            margin-bottom: 0px !important;
+            margin-bottom: 0 !important;
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            color: var(--primary-color) !important;
         }
         .card .gst-text { 
             color: #64748b !important; 
             font-weight: 600 !important; 
-            margin-bottom: 1rem !important;
-            min-height: 20px !important;
+            margin-bottom: 0 !important;
+            font-size: 0.8rem !important;
+            min-height: 18px !important;
+        }
+        .room-features-box {
+            margin-bottom: 0.5rem !important;
+            padding: 0.75rem !important;
+            background: #f8fafc !important;
+            border-radius: 12px !important;
+            border: 1px dashed #cbd5e1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            min-height: 140px !important;
+        }
+        .features-title {
+            font-size: 0.7rem !important;
+            font-weight: 700 !important;
+            color: #64748b !important;
+            margin-bottom: 0.6rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+        }
+        .features-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            font-size: 0.75rem !important;
+            color: #475569 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .features-footer-text {
+            font-size: 0.7rem !important;
+            color: #94a3b8 !important;
+            font-style: italic !important;
+            border-top: 1px solid rgba(0,0,0,0.05) !important;
+            padding-top: 0.4rem !important;
+            margin-bottom: 1.5rem !important; /* Breathing room before buttons */
+        }
+        .card-actions { 
+            margin-top: auto !important; /* Pushes buttons to the absolute bottom */
+            display: flex !important; 
+            gap: 10px !important; 
+            width: 100% !important;
+            padding-top: 1rem !important;
         }
         .btn-outline { border-width: 2px !important; font-weight: 700 !important; }
+
+        .card .description { 
+            color: #475569 !important; 
+            font-weight: 500 !important; 
+            margin-bottom: 0.5rem !important;
+            line-height: 1.4 !important;
+            font-size: 0.95rem !important;
+            min-height: 48px !important;
+        }
+
         /* Header Centering */
         .header-container { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
         .header-title {
@@ -295,16 +385,24 @@
                             <h2>{{ $room['name'] }}</h2>
                             <div class="rating"><i class="ph-fill ph-users"></i> {{ $room['capacity'] }} Members</div>
                         </div>
-                        <p class="description">{!! $room['desc'] !!}</p>
                         
-                        <div class="price-highlight">
-                            <span id="price-{{ $roomId }}">₹2000</span> <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">for </span><span id="time-text-{{ $roomId }}" style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">4 hours</span></div>
-                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <!-- 1. Description -->
+                        <p class="description" style="margin-top: 0 !important; margin-bottom: 2px !important; line-height: 1.4 !important;">{!! $room['desc'] !!}</p>
                         
-                        <!-- Room Features -->
-                        <div class="room-features-box" style="margin: 0.5rem 0 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }}; min-height: 155px; display: flex; flex-direction: column;">
-                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px;">{{ $room['theme']['title'] }}</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.75rem; color: #666; flex-grow: 1;">
+                        <!-- 2. Pricing Section (Zero Gap) -->
+                        <div class="price-section">
+                            <div class="price-highlight">
+                                <span id="price-{{ $roomId }}">₹2000</span> 
+                                <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">for </span>
+                                <span id="time-text-{{ $roomId }}" style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">4 hours</span>
+                            </div>
+                            <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        </div>
+                        
+                        <!-- 3. Room Features (Tight Spacing) -->
+                        <div class="room-features-box" style="background: {{ $room['theme']['bg'] }}; border-color: {{ $room['theme']['border'] }};">
+                            <h3 class="features-title">{{ $room['theme']['title'] }}</h3>
+                            <div class="features-grid">
                                 @foreach($room['amenities'] as $amenity)
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <i class="ph {{ $amenity['icon'] }}" style="color: {{ $room['theme']['icon'] }};"></i> 
@@ -312,7 +410,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.8rem; font-style: italic; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 0.5rem;">
+                            <p class="features-footer-text">
                                 {{ $room['name'] === 'Suite Room' ? 'Luxury stay with maximum comfort' : ($room['name'] === 'Glass Room' ? 'Designed for transparency and innovation' : 'Perfect for meetings and collaboration') }}
                             </p>
                         </div>
@@ -321,21 +419,20 @@
                             $bookedInfo = $bookedRooms[$room['name']] ?? $bookedRooms[$roomId] ?? null;
                         @endphp
                         @if($bookedInfo)
-                            <div class="next-available" style="margin-top: 0.5rem; padding: 0.6rem; background: #fff1f2; border-radius: 10px; border: 1px solid #fee2e2; text-align: center;">
-                                <p style="font-size: 0.75rem; font-weight: 700; color: #991b1b; margin: 0;">
-                                    <i class="ph-bold ph-clock-countdown"></i> Next Available:<br>
-                                    {{ date('d M, Y', strtotime($bookedInfo['date'])) }} at {{ date('h:i A', strtotime($bookedInfo['time'])) }}
+                            <div class="next-available" style="margin-bottom: 0.5rem; padding: 0.5rem; background: #fff1f2; border-radius: 8px; border: 1px solid #fee2e2; text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                                <p style="font-size: 0.7rem; font-weight: 700; color: #991b1b; margin: 0;">
+                                    <i class="ph-bold ph-clock-countdown"></i> Booked - Next: {{ date('d M, Y', strtotime($bookedInfo['date'])) }}
                                 </p>
                             </div>
+                        @else
+                            <div class="next-available-placeholder" style="margin-bottom: 0.5rem; height: 60px;"></div> <!-- Spacer for breathing room if not booked -->
                         @endif
 
-                        <div class="card-actions" style="margin-top: auto; padding-top: 1.5rem; display: flex; gap: 10px; width: 100%;">
+                        <div class="card-actions" style="margin-top: auto;">
                             <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1; justify-content: center; text-align: center; text-transform: uppercase;">View Details</a>
-                            @if($bookedInfo)
-                                <a href="javascript:void(0)" class="btn" style="flex: 1; background: #bc8e8e; border-color: #bc8e8e; cursor: not-allowed; opacity: 0.8; justify-content: center; text-transform: uppercase;">Booked</a>
-                            @else
-                                <a href="{{ route('booking.form.full', ['room' => $room['name']]) }}" class="btn" style="flex: 1; justify-content: center; text-transform: uppercase;">Book Now</a>
-                            @endif
+                            <a href="{{ route('booking.form.full', ['room' => $room['name']]) }}" class="btn" style="flex: 1; justify-content: center; text-transform: uppercase; {{ $bookedInfo ? 'opacity: 0.7; pointer-events: none; background: #bc8e8e; border-color: #bc8e8e;' : '' }}">
+                                {{ $bookedInfo ? 'Booked' : 'Book Now' }}
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -11,10 +11,142 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         /* Style consistency is now handled by style.css & responsive.css */
-        .card h2 { color: #0f172a !important; font-weight: 800 !important; }
-        .card .description { color: #334155 !important; font-weight: 500 !important; }
-        .card .gst-text { color: #64748b !important; font-weight: 600 !important; }
+        /* Card Alignment Fixes */
+        .card { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            min-height: 680px !important; 
+            height: 100% !important; 
+            background: #fff !important;
+            border-radius: 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.3s ease !important;
+        }
+        .card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1) !important;
+        }
+        .card-content { 
+            flex: 1 !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            padding: 1.5rem !important;
+        }
+        .card-header { 
+            min-height: 52px !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .card h2 { color: #0f172a !important; font-weight: 800 !important; font-size: 1.4rem !important; margin-bottom: 0 !important; line-height: 1.2 !important; }
+        .card .description { 
+            color: #475569 !important; 
+            font-weight: 500 !important; 
+            min-height: 48px !important; 
+            margin-bottom: 0.5rem !important;
+            line-height: 1.4 !important;
+            font-size: 0.9rem !important;
+        }
+        .price-section {
+            min-height: 60px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-bottom: 1rem !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+        }
+        .price-highlight { 
+            min-height: 35px !important; 
+            display: flex !important; 
+            align-items: baseline !important; 
+            gap: 5px !important;
+            margin-bottom: 0.1rem !important;
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            color: var(--primary-color) !important;
+        }
+        .card .gst-text { 
+            color: #64748b !important; 
+            font-weight: 600 !important; 
+            margin-bottom: 0 !important;
+            min-height: 20px !important;
+            font-size: 0.85rem !important;
+        }
+        .room-highlights {
+            margin-bottom: 1rem !important;
+            padding: 0.85rem !important;
+            background: #fff8f3 !important;
+            border-radius: 12px !important;
+            border: 1px dashed var(--primary-color) !important;
+            min-height: 135px !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .features-title {
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            color: #555 !important;
+            margin-bottom: 0.6rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+        }
+        .features-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            font-size: 0.75rem !important;
+            color: #666 !important;
+        }
+        .feature-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+        .feature-item i {
+            color: var(--primary-color) !important;
+        }
+        .features-footer {
+            font-size: 0.7rem !important;
+            color: #999 !important;
+            margin-top: auto !important;
+            padding-top: 0.5rem !important;
+            font-style: italic !important;
+        }
+        .card-actions { 
+            margin-top: auto !important; 
+            display: flex !important; 
+            gap: 12px !important; 
+            width: 100% !important;
+            padding-top: 1.5rem !important;
+        }
         .btn-outline { border-width: 2px !important; font-weight: 700 !important; }
+
+        /* Booking Status Banners */
+        .next-available {
+            margin-top: 0.5rem !important;
+            padding: 0.6rem !important;
+            background: #fff1f2 !important;
+            border-radius: 10px !important;
+            border: 1px solid #fee2e2 !important;
+            text-align: center !important;
+            min-height: 65px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .next-available p {
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            color: #991b1b !important;
+            margin: 0 !important;
+            line-height: 1.4 !important;
+        }
+        .next-available-placeholder {
+            margin-top: 0.5rem !important;
+            min-height: 65px !important;
+        }
 
         /* Room grid base is in responsive.css, but we keep our specific gap/margin */
 
@@ -467,45 +599,39 @@
                             </div>
                             <p class="description">{{ $room['type'] }}</p>
 
-                            <div class="price-highlight"><span>₹2500</span> / day</div>
-                            <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                            <div class="price-section">
+                                <div class="price-highlight"><span>₹2500</span> / day</div>
+                                <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                            </div>
 
                             <!-- Premium Features -->
-                            <div class="room-highlights"
-                                style="margin: 1rem 0; padding: 0.8rem; background: #fff8f3; border-radius: 12px; border: 1px dashed var(--primary-color);">
-                                <h3
-                                    style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">
-                                    Premium Features</h3>
-                                <div
-                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
-                                    <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wifi-high"
-                                            style="color: var(--primary-color);"></i> WiFi</div>
-                                    <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-wind"
-                                            style="color: var(--primary-color);"></i> AC</div>
-                                    <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-television"
-                                            style="color: var(--primary-color);"></i> Smart TV</div>
-                                    <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-snowflake"
-                                            style="color: var(--primary-color);"></i> Mini Fridge</div>
-                                    <div style="display: flex; align-items: center; gap: 6px;"><i class="ph ph-bed"
-                                            style="color: var(--primary-color);"></i> Premium Bedding</div>
+                            <div class="room-highlights">
+                                <h3 class="features-title">Premium Features</h3>
+                                <div class="features-grid">
+                                    <div class="feature-item"><i class="ph ph-wifi-high"></i> WiFi</div>
+                                    <div class="feature-item"><i class="ph ph-wind"></i> AC</div>
+                                    <div class="feature-item"><i class="ph ph-television"></i> Smart TV</div>
+                                    <div class="feature-item"><i class="ph ph-snowflake"></i> Mini Fridge</div>
+                                    <div class="feature-item"><i class="ph ph-bed"></i> Premium Bedding</div>
                                 </div>
-                                <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">Ideal for
-                                    comfortable and extended stays</p>
+                                <p class="features-footer">Ideal for comfortable and extended stays</p>
                             </div>
 
                             @php 
                                 $bookedInfo = $bookedRooms[$room['type'] . ' ' . $room['no']] ?? $bookedRooms[$room['no']] ?? null;
                             @endphp
                             @if($bookedInfo)
-                                <div class="next-available" style="margin-top: 0.5rem; padding: 0.6rem; background: #fff1f2; border-radius: 10px; border: 1px solid #fee2e2; text-align: center;">
-                                    <p style="font-size: 0.75rem; font-weight: 700; color: #991b1b; margin: 0;">
+                                <div class="next-available">
+                                    <p>
                                         <i class="ph-bold ph-clock-countdown"></i> Next Available:<br>
                                         {{ date('d M, Y', strtotime($bookedInfo['date'])) }} at {{ date('h:i A', strtotime($bookedInfo['time'])) }}
                                     </p>
                                 </div>
+                            @else
+                                <div class="next-available-placeholder"></div>
                             @endif
 
-                            <div class="card-actions" style="margin-top: auto; padding-top: 1.25rem; display: flex; gap: 10px;">
+                            <div class="card-actions">
                                 <a href="{{ route('room.details', ['id' => 'advance-room-' . $room['no']]) }}" class="btn btn-outline" style="flex: 1; justify-content: center; text-align: center;">View Details</a>
                                 @if($bookedInfo)
                                     <a href="javascript:void(0)" class="btn"

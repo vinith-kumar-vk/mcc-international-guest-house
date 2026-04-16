@@ -49,7 +49,8 @@
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
-            .admin-main { margin-left: 0 !important; width: 100% !important; padding: 1.25rem !important; }
+            .admin-main { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
+            .top-navbar { padding: 0 1rem !important; }
             #sidebarToggle { display: flex !important; }
             .admin-header h1 { font-size: 1.15rem !important; }
             .btn-download-pdf { display: none !important; }
@@ -146,17 +147,22 @@
         .admin-main {
             margin-left: var(--sidebar-width);
             flex: 1;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
             width: calc(100% - var(--sidebar-width));
+            min-width: 0;
             transition: all 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .admin-main {
-                margin-left: 0;
-                width: 100%;
-                padding: 1rem;
-            }
+        .top-navbar {
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .admin-body {
+            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         .admin-header {
@@ -536,37 +542,43 @@
             margin-top: 0.25rem;
         }
 
-        /* Refined Admin Profile Dropdown - Text Only Logout */
+        /* Refined Admin Profile Dropdown - Polished Card Style */
         .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
         .admin-profile-btn {
-            width: 34px; height: 34px;
-            background: none; border: none;
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: #64748b; cursor: pointer; font-size: 1.15rem;
-            transition: color 0.15s;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
         }
-        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
         .admin-profile-menu {
-            position: absolute; top: 100%; right: 0;
+            position: absolute; top: calc(100% + 8px); right: 0;
             display: none; z-index: 2000;
-            background: #fff; 
+            background: #ffffff;
             border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            min-width: 100px;
-            margin-top: 5px;
-            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
         }
-        .admin-profile-menu.open { display: block; }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-logout-form { margin: 0; padding: 0; }
         .admin-logout-btn {
-            display: block; width: 100%; padding: 10px 15px;
-            background: none; border: none; text-align: center;
-            font-size: 0.9rem; color: #ef4444; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
             cursor: pointer; font-family: 'Inter', sans-serif;
-            white-space: nowrap; transition: background 0.15s;
+            transition: all 0.2s;
         }
-        .admin-logout-btn:hover { background: #fff1f2; }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -592,21 +604,17 @@
     </div>
 
     <main class="admin-main">
-        <div class="admin-header">
+        <div class="top-navbar">
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <button id="sidebarToggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                <button id="sidebarToggle" class="menu-toggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
                     <i class="ph ph-list"></i>
                 </button>
                 <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             </div>
             <div>
-                <h1 id="pdf-header">Booking Details</h1>
+                <h1 id="pdf-header" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0;">Booking Details</h1>
             </div>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: auto;">
-                <button onclick="downloadBookingPDF()" class="btn-download-pdf">
-                    <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
-                    Download PDF
-                </button>
                 <div class="admin-profile-wrap">
                     <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
                         <i class="ph-fill ph-user"></i>
@@ -614,12 +622,14 @@
                     <div class="admin-profile-menu" id="adminProfileMenu">
                         <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="admin-logout-btn">Logout</button>
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="admin-body">
 
         @if(session('success'))
             <div style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 0.5rem;">
@@ -871,7 +881,7 @@
 
                     <div style="height: 1px; background: #e2e8f0; margin: 0.25rem 0;"></div>
 
-                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');">
+                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('delete', this);">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-delete">
@@ -880,7 +890,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> <!-- end admin-body -->
     </main>
 
     <!-- Confirmation Modal -->
@@ -909,10 +919,15 @@
                 msg.innerText = 'Are you sure you want to approve this booking?';
                 confirmBtn.innerText = 'Yes, Approve';
                 confirmBtn.className = 'confirm-btn-confirm';
-            } else {
+            } else if (type === 'reject') {
                 title.innerText = 'Reject Booking';
                 msg.innerText = 'Are you sure you want to reject this booking?';
                 confirmBtn.innerText = 'Yes, Reject';
+                confirmBtn.className = 'confirm-btn-confirm is-reject';
+            } else if (type === 'delete') {
+                title.innerText = 'Delete Booking';
+                msg.innerText = 'Are you sure you want to delete this booking permanently? This action cannot be undone.';
+                confirmBtn.innerText = 'Yes, Delete';
                 confirmBtn.className = 'confirm-btn-confirm is-reject';
             }
             modal.style.display = 'flex';
@@ -957,19 +972,6 @@
             }
         });
 
-        function downloadBookingPDF() {
-            const element = document.querySelector('.details-grid');
-            const bookingId = '{{ $booking->id }}';
-            const opt = {
-                margin: 0.5,
-                filename: `Booking_Details_${bookingId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>

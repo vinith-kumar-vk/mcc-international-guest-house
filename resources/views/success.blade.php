@@ -142,6 +142,56 @@
             filter: brightness(92%);
             box-shadow: 0 6px 20px rgba(255, 122, 0, 0.45) !important;
         }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .success-wrapper {
+                margin: 1.5rem 1rem;
+                border-radius: 12px;
+            }
+            .success-header {
+                padding: 2.5rem 1.5rem 2rem;
+            }
+            .success-header h2 {
+                font-size: 1.5rem;
+            }
+            .success-body {
+                padding: 1.5rem !important;
+            }
+            .success-actions {
+                flex-direction: column;
+                padding: 0 1.5rem 2rem;
+            }
+            
+            /* Stacking the main 50/50 blocks on mobile */
+            .info-table > tbody > tr > td {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin-bottom: 2rem;
+            }
+            .info-table > tbody > tr > td:last-child {
+                margin-bottom: 0;
+            }
+            
+            /* Ensure inner table cells in details stay side-by-side if possible */
+            .detail-table td {
+                display: table-cell !important;
+                width: auto !important;
+                padding: 4px 0 !important;
+                margin: 0 !important;
+            }
+            
+            .receipt-header h3 {
+                font-size: 16px !important;
+            }
+            .receipt-header p {
+                font-size: 12px !important;
+            }
+            .total-amount {
+                font-size: 20px !important;
+            }
+        }
     </style>
 </head>
 
@@ -171,41 +221,41 @@
                 @endif
             </div>
 
-            <div class="success-body" id="receiptContent" style="background: #ffffff; padding: 40px; border-radius: 12px;">
+            <div class="success-body" id="receiptContent" style="background: #ffffff; border-radius: 12px;">
                 <!-- Official Header -->
-                <div style="text-align: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 20px; margin-bottom: 30px;">
-                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 85px; margin-bottom: 15px;">
-                    <h3 style="margin: 0; color: #7f1d1d; font-weight: 800; font-size: 20px; text-transform: uppercase;">Madras Christian College</h3>
-                    <p style="margin: 5px 0 0; color: #64748b; font-size: 14px; font-weight: 600;">International Guest House & Conference Centre</p>
-                    <div style="display: inline-block; background: #f1f5f9; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; margin-top: 15px; color: #475569; letter-spacing: 2px;">RECEIPT SUMMARY</div>
+                <div class="receipt-header" style="text-align: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px;">
+                    <img src="{{ asset('assets/logo.png') }}" alt="MCC Logo" style="height: 70px; margin-bottom: 12px; opacity: 0.9;">
+                    <h3 style="margin: 0; color: #1e293b; font-weight: 700; font-size: 18px; text-transform: uppercase;">Madras Christian College</h3>
+                    <p style="margin: 5px 0 0; color: #64748b; font-size: 13px; font-weight: 500;">International Guest House & Conference Centre</p>
+                    <div style="display: inline-block; background: #f8fafc; padding: 4px 16px; border-radius: 6px; font-weight: 700; font-size: 11px; margin-top: 15px; color: #475569; letter-spacing: 1.5px; border: 1px solid #e2e8f0;">RECEIPT SUMMARY</div>
                 </div>
 
                 <!-- Info Grid using Table for PDF Compatibility -->
-                <table style="width: 100%; margin-bottom: 30px; border-collapse: collapse;">
+                <table class="info-table" style="width: 100%; margin-bottom: 25px; border-collapse: collapse;">
                     <tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 20px;">
-                            <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Guest Details</p>
-                            <table style="width: 100%; font-size: 13px;">
+                            <p style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;">Guest Details</p>
+                            <table class="detail-table" style="width: 100%; font-size: 13px;">
                                 <tr>
                                     <td style="color: #64748b; padding: 4px 0; width: 40%;">Name:</td>
-                                    <td style="font-weight: 700; color: #1e293b;">{{ $booking->name }}</td>
+                                    <td style="font-weight: 600; color: #1e293b;">{{ $booking->name }}</td>
                                 </tr>
                                 <tr>
                                     <td style="color: #64748b; padding: 4px 0;">Phone:</td>
-                                    <td style="font-weight: 700; color: #1e293b;">{{ $booking->phone }}</td>
+                                    <td style="font-weight: 600; color: #1e293b;">{{ $booking->phone }}</td>
                                 </tr>
                             </table>
                         </td>
                         <td style="width: 50%; vertical-align: top; padding-left: 20px;">
-                            <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Booking Details</p>
-                            <table style="width: 100%; font-size: 13px;">
+                            <p style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;">Booking Details</p>
+                            <table class="detail-table" style="width: 100%; font-size: 13px;">
                                 <tr>
                                     <td style="color: #64748b; padding: 4px 0; width: 40%;">ID:</td>
-                                    <td style="font-weight: 700; color: #1e293b;">#{{ str_pad($booking->id, 8, '0', STR_PAD_LEFT) }}</td>
+                                    <td style="font-weight: 600; color: #1e293b;">#{{ str_pad($booking->id, 8, '0', STR_PAD_LEFT) }}</td>
                                 </tr>
                                 <tr>
                                     <td style="color: #64748b; padding: 4px 0;">Date:</td>
-                                    <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }}</td>
+                                    <td style="font-weight: 600; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }}</td>
                                 </tr>
                             </table>
                         </td>
@@ -213,20 +263,20 @@
                 </table>
 
                 <!-- Stay Details -->
-                <div style="margin-bottom: 30px;">
-                    <p style="font-size: 11px; font-weight: 800; color: #7f1d1d; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">Stay Information</p>
+                <div style="margin-bottom: 25px;">
+                    <p style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;">Stay Information</p>
                     <table style="width: 100%; font-size: 13px;">
                         <tr>
                             <td style="color: #64748b; padding: 8px 0; width: 20%;">Category:</td>
-                            <td style="font-weight: 700; color: #1e293b;">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
+                            <td style="font-weight: 600; color: #1e293b;">{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                         </tr>
                         <tr>
                             <td style="color: #64748b; padding: 8px 0; width: 20%;">Clock In:</td>
-                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</td>
+                            <td style="font-weight: 600; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</td>
                         </tr>
                         <tr>
                             <td style="color: #64748b; padding: 8px 0;">Clock Out:</td>
-                            <td style="font-weight: 700; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
+                            <td style="font-weight: 600; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -251,7 +301,7 @@
                         </tr>
                         <tr>
                             <td style="color: #1e293b; font-size: 14px; font-weight: 800; padding-top: 15px;">TOTAL AMOUNT</td>
-                            <td style="text-align: right; color: #7f1d1d; font-size: 24px; font-weight: 900; padding-top: 15px;">Rs. {{ number_format($booking->total_price, 2) }}</td>
+                            <td class="total-amount" style="text-align: right; color: #7f1d1d; font-size: 24px; font-weight: 900; padding-top: 15px;">Rs. {{ number_format($booking->total_price, 2) }}</td>
                         </tr>
                     </table>
                 </div>

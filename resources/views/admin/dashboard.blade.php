@@ -31,7 +31,6 @@
 
         body {
             background-color: var(--bg-color);
-            display: flex;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -99,7 +98,6 @@
         /* Main Content */
         .admin-main {
             margin-left: var(--sidebar-width); 
-            flex: 1; 
             padding: 0;
             display: flex; 
             flex-direction: column;
@@ -117,32 +115,43 @@
 
         .nav-right { display: flex; align-items: center; gap: 1.25rem; }
 
-        /* Refined Admin Profile Dropdown - Text Only Logout */
+        /* Refined Admin Profile Dropdown - Polished Card Style */
         .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
         .admin-profile-btn {
-            width: 34px; height: 34px;
-            background: none; border: none;
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: #64748b; cursor: pointer; font-size: 1.15rem;
-            transition: color 0.15s;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
         }
-        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
         .admin-profile-menu {
-            position: absolute; top: 100%; right: 0;
+            position: absolute; top: calc(100% + 8px); right: 0;
             display: none; z-index: 2000;
-            background: transparent; border: none;
-            padding: 4px 0 0 0;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
         }
-        .admin-profile-menu.open { display: block; }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-logout-form { margin: 0; padding: 0; }
         .admin-logout-btn {
-            display: block; width: 100%; padding: 8px 12px;
-            background: none; border: none; text-align: right;
-            font-size: 0.9rem; color: #1e293b; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
             cursor: pointer; font-family: 'Inter', sans-serif;
-            white-space: nowrap; transition: color 0.15s, background 0.15s;
+            transition: all 0.2s;
         }
-        .admin-logout-btn:hover { background: #f5f5f5; color: var(--primary-color); border-radius: 4px; }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
 
         .notification-bell {
             position: relative; font-size: 1.25rem; color: #64748b; cursor: pointer;
@@ -175,18 +184,37 @@
         }
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); width: var(--sidebar-width) !important; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
             .sidebar.open { transform: translateX(0) !important; }
             .admin-main { margin-left: 0 !important; width: 100% !important; }
-            .top-navbar { padding: 0 1rem !important; }
-            .admin-body { padding: 1.5rem !important; }
-            .stats-grid { grid-template-columns: 1fr 1fr !important; }
+            .top-navbar { padding: 0 1rem !important; height: 60px !important; }
+            .admin-body { padding: 1rem 1rem 1rem 1rem !important; }
+            .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0.75rem !important; }
+            .row-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; margin-bottom: 0.75rem !important; }
+            .right-box { flex-direction: row !important; gap: 0.75rem !important; }
+            .right-box .dashboard-section { flex: 1 !important; }
+            .quick-actions { grid-template-columns: repeat(4, 1fr) !important; gap: 0.5rem !important; }
             .menu-toggle { display: flex !important; }
             .topbar-title { font-size: 1rem !important; }
+            .chart-container { height: 180px !important; }
         }
 
         @media (max-width: 640px) {
-            .stats-grid { grid-template-columns: 1fr !important; }
+            .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
+            .stat-card { padding: 0.85rem 1rem !important; }
+            .stat-value { font-size: 1.35rem !important; }
+            .stat-icon { width: 32px !important; height: 32px !important; font-size: 1rem !important; }
             .nav-right .user-info div:first-child { display: none !important; }
+            .admin-body { padding: 0.75rem !important; }
+            .row-grid { grid-template-columns: 1fr !important; }
+            .right-box { flex-direction: column !important; }
+            .mini-table th, .mini-table td { padding: 0.5rem 0.4rem !important; font-size: 0.72rem !important; }
+            .chart-container { height: 160px !important; }
+            .dashboard-section { padding: 1rem !important; }
+            .section-header h3 { font-size: 0.85rem !important; }
+            .quick-actions { grid-template-columns: repeat(4, 1fr) !important; gap: 0.4rem !important; }
+            .action-btn { padding: 0.5rem 0.25rem !important; font-size: 0.65rem !important; }
+            .action-btn i { font-size: 1rem !important; }
         }
 
         .notification-item:hover { background: #f8fafc; }
@@ -196,7 +224,7 @@
         .notification-item .time { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; }
 
         .admin-body {
-            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
+            padding: 2.5rem; padding-bottom: 0.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         /* Stats Cards */
@@ -277,7 +305,6 @@
             border: 1px solid var(--border); 
             padding: 1.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); 
-            height: 100%; 
             box-sizing: border-box;
         }
 
@@ -442,7 +469,7 @@
                     <div class="admin-profile-menu" id="adminProfileMenu">
                         <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="admin-logout-btn">Logout</button>
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
                         </form>
                     </div>
                 </div>

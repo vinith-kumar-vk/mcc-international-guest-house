@@ -23,7 +23,16 @@
         </div>
         <div class="footer-column">
             <h4>Address</h4>
-            <p><i class="ph-fill ph-map-pin" style="margin-top: 0.3rem;"></i> <span class="footer-address-text">MCC MRF Innovation Park,<br>Madras Christian College,<br>East Tambaram,<br>Chennai - 600059,<br>Tamil Nadu, India</span></p>
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <i class="ph-fill ph-map-pin" style="color: var(--primary-color); font-size: 1.2rem; margin-top: 2px;"></i>
+                <p style="margin: 0; line-height: 1.6; color: #475569; font-size: 0.95rem;">
+                    MCC MRF Innovation Park,<br>
+                    Madras Christian College,<br>
+                    East Tambaram,<br>
+                    Chennai - 600059,<br>
+                    Tamil Nadu, India
+                </p>
+            </div>
         </div>
     </div>
     <div class="footer-bottom">

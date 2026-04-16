@@ -546,11 +546,11 @@
                 'name' => 'Glass Room',
                 'price' => '₹2000',
                 'time' => 'for 4 hours',
-                'capacity' => '15 Members',
+                'capacity' => '20 Members',
                 'size' => '450 sq.ft',
                 'location' => 'East Wing, Ground Floor',
                 'img' => asset('assets/standard/glass.JPG'),
-                'desc' => 'Inspire creativity in our modern Glass Room, a unique transparent facility designed for collaborative brainstorming and focused team sessions for up to 15 members. Flooded with natural light and equipped with the latest presentation technology, this space fosters an atmosphere of transparency and professional innovation.',
+                'desc' => 'Inspire creativity in our modern Glass Room, a unique transparent facility designed for collaborative brainstorming and focused team sessions for up to 20 members. Flooded with natural light and equipped with the latest presentation technology, this space fosters an atmosphere of transparency and professional innovation.',
                 'amenities' => [
                     ['name' => 'Modern Furniture', 'icon' => 'ph-armchair'],
                     ['name' => 'High Speed WiFi', 'icon' => 'ph-wifi-high'],
@@ -566,9 +566,9 @@
                     ['text' => 'Privacy blinds available', 'icon' => 'ph ph-eye-slash'],
                 ],
                 'capacity_breakdown' => [
-                    ['title' => 'Standing', 'value' => '20'],
-                    ['title' => 'Boardroom', 'value' => '12'],
-                    ['title' => 'Informal', 'value' => '15'],
+                    ['title' => 'Standing', 'value' => '25'],
+                    ['title' => 'Boardroom', 'value' => '15'],
+                    ['title' => 'Informal', 'value' => '20'],
                 ],
                 'tips' => [
                     'Ideal for brainstorming sessions',
@@ -967,7 +967,7 @@
                         </h4>
                         <div class="capacity-grid" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;">
                             <i class="ph ph-users-three" style="font-size: 32px; color: #cbd5e0; margin-bottom: 4px;"></i>
-                            <div style="font-size: 32px; font-weight: 800; color: #1a202c; line-height: 1;">4</div>
+                            <div style="font-size: 32px; font-weight: 800; color: #1a202c; line-height: 1;">{{ explode(' ', $room['capacity'])[0] }}</div>
                             <div style="font-size: 16px; font-weight: 700; color: #4a5568;">Members</div>
                             <div style="font-size: 11px; font-weight: 800; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">{{ $room['category'] }}</div>
                         </div>

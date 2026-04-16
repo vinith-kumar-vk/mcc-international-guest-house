@@ -116,22 +116,15 @@
         }
 
         .top-navbar {
-            height: 68px;
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .admin-body {
-            padding: 2rem 2.5rem;
-            flex: 1;
+            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; 
+            margin: 0 auto; box-sizing: border-box; flex: 1;
         }
 
         @media (max-width: 768px) {
@@ -367,42 +360,56 @@
 
         /* Pagination */
         .pagination-container {
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             border-top: 1px solid var(--border);
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 0.75rem;
         }
 
         .pagination-info {
             font-size: 0.875rem;
             color: var(--text-light);
+            white-space: nowrap;
         }
 
         .pagination-links {
             display: flex;
-            gap: 0.5rem;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
-        .pagination-btn {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            text-decoration: none;
-            color: #64748b;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+        /* Pagination Styling */
+        .pagination { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 4px; }
+        .page-item .page-link {
+            display: flex; align-items: center; justify-content: center;
+            min-width: 36px; height: 36px; padding: 0 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            color: #64748b; font-size: 0.875rem; font-weight: 500;
+            text-decoration: none; transition: all 0.2s;
+            background: white;
+        }
+        .page-item.active .page-link {
+            background: var(--primary-color); border-color: var(--primary-color); color: white;
+            box-shadow: 0 4px 10px rgba(255, 122, 0, 0.25);
+        }
+        .page-item.disabled .page-link { opacity: 0.5; cursor: not-allowed; background: #f8fafc; }
+        .page-item:not(.active):not(.disabled) .page-link:hover {
+            background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color);
         }
 
-        .pagination-btn:hover {
-            background: #f8fafc;
-            color: var(--primary-color);
-        }
-
-        .pagination-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+        @media (max-width: 640px) {
+            .pagination-container {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 1rem !important;
+                gap: 0.75rem !important;
+            }
+            .pagination-links { width: 100% !important; }
+            .pagination { flex-wrap: wrap !important; gap: 4px !important; }
+            .page-item .page-link { min-width: 32px !important; height: 32px !important; font-size: 0.8rem !important; }
         }
 
         /* Confirmation Modal */
@@ -453,32 +460,43 @@
             .filter-section { grid-template-columns: 1fr !important; }
             .top-navbar div:last-child a { padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; }
         }
-        /* Refined Admin Profile Dropdown - Text Only Logout */
+        /* Refined Admin Profile Dropdown - Polished Card Style */
         .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
         .admin-profile-btn {
-            width: 34px; height: 34px;
-            background: none; border: none;
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: #64748b; cursor: pointer; font-size: 1.15rem;
-            transition: color 0.15s;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
         }
-        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
         .admin-profile-menu {
-            position: absolute; top: 100%; right: 0;
+            position: absolute; top: calc(100% + 8px); right: 0;
             display: none; z-index: 2000;
-            background: transparent; border: none;
-            padding: 4px 0 0 0;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
         }
-        .admin-profile-menu.open { display: block; }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-logout-form { margin: 0; padding: 0; }
         .admin-logout-btn {
-            display: block; width: 100%; padding: 8px 12px;
-            background: none; border: none; text-align: right;
-            font-size: 0.9rem; color: #1e293b; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
             cursor: pointer; font-family: 'Inter', sans-serif;
-            white-space: nowrap; transition: color 0.15s, background 0.15s;
+            transition: all 0.2s;
         }
-        .admin-logout-btn:hover { background: #f5f5f5; color: var(--primary-color); border-radius: 4px; }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -543,7 +561,7 @@
                     <div class="admin-profile-menu" id="adminProfileMenu">
                         <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="admin-logout-btn">Logout</button>
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
                         </form>
                     </div>
                 </div>
@@ -668,7 +686,7 @@
                                     <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view" title="View Details">
                                         <i class="ph ph-eye"></i>
                                     </a>
-                                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');" style="display: inline;">
+                                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('delete', this);" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-delete">
@@ -696,7 +714,7 @@
                     Showing {{ $bookings->firstItem() }} to {{ $bookings->lastItem() }} of {{ $bookings->total() }} entries
                 </div>
                 <div class="pagination-links">
-                    {{ $bookings->appends(request()->query())->links('pagination::simple-bootstrap-4') }}
+                    {{ $bookings->appends(request()->query())->links('pagination::bootstrap-4') }}
                 </div>
             </div>
             @endif
@@ -730,10 +748,15 @@
                 msg.innerText = 'Are you sure you want to approve this booking?';
                 confirmBtn.innerText = 'Yes, Approve';
                 confirmBtn.className = 'confirm-btn-confirm';
-            } else {
+            } else if (type === 'reject') {
                 title.innerText = 'Reject Booking';
                 msg.innerText = 'Are you sure you want to reject this booking?';
                 confirmBtn.innerText = 'Yes, Reject';
+                confirmBtn.className = 'confirm-btn-confirm is-reject';
+            } else if (type === 'delete') {
+                title.innerText = 'Delete Booking';
+                msg.innerText = 'Are you sure you want to delete this booking permanently? This action cannot be undone.';
+                confirmBtn.innerText = 'Yes, Delete';
                 confirmBtn.className = 'confirm-btn-confirm is-reject';
             }
             modal.style.display = 'flex';

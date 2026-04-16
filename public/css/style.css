@@ -428,29 +428,47 @@ header {
 }
 
 /* Footer */
+/* Footer */
 .main-footer {
-    background: linear-gradient(180deg, #fff7f0 0%, #f3f4f6 100%) !important;
-    border-top: 3px solid var(--primary-color) !important;
+    background: #fdfbf9 !important; /* Clean professional light beige/cream */
+    border-top: 1px solid #e2e8f0 !important;
     color: #444 !important;
-    margin-top: 2rem;
+    width: 100%;
+    margin-top: 3rem; /* Space from content */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .main-footer .footer-content {
     max-width: 1280px;
     margin: 0 auto;
     display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    padding: 2rem 2rem 1.5rem !important;
+    gap: 3rem;
+    grid-template-columns: repeat(3, 1fr); /* Explicit 3-column layout */
+    padding: 3rem 2rem 2rem !important; /* Restored generous padding */
+}
+
+/* Cleanup body padding */
+body {
+    padding-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 0px; 
+    }
+    .main-footer {
+        position: relative; /* On mobile, fixed footer covers too much screen */
+    }
 }
 
 .main-footer .footer-column h4 {
-    color: #222 !important;
+    color: #1e293b !important;
     font-weight: 700 !important;
     margin-bottom: 0.8rem !important;
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.4rem !important;
     position: relative;
     display: inline-block;
+    font-size: 1.1rem;
 }
 
 .main-footer .footer-column h4::after {
@@ -458,7 +476,7 @@ header {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 30px;
+    width: 24px;
     height: 2px;
     background: var(--primary-color);
     border-radius: 2px;
@@ -471,28 +489,29 @@ header {
 }
 
 .main-footer .footer-column ul li {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    font-size: 0.95rem;
 }
 
 .main-footer .footer-column ul li a {
-    color: #555 !important;
+    color: #475569 !important;
     text-decoration: none;
-    transition: color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .main-footer .footer-column ul li a:hover {
     color: var(--primary-color) !important;
-    transform: translateX(2px);
+    transform: translateX(3px);
 }
 
 .main-footer .footer-contact-link {
-    color: #555 !important;
+    color: #475569 !important;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -503,36 +522,39 @@ header {
 
 .footer-social-icons {
     display: flex;
-    gap: 10px;
-    margin-top: 1rem;
+    gap: 12px;
+    margin-top: 1.25rem;
 }
 
 .footer-social-icons a {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.06);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #f1f5f9;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #888;
-    font-size: 1rem;
+    color: #64748b;
+    font-size: 1.1rem;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .footer-social-icons a:hover {
     background: var(--primary-color) !important;
     color: #fff !important;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 122, 0, 0.3);
 }
 
 .main-footer .footer-bottom {
-    border-top: 1px solid rgba(0,0,0,0.06) !important;
-    padding: 1rem 2rem !important;
-    background: rgba(0,0,0,0.03) !important;
-    text-align: center; /* ONLY copyright is centered as per request */
-    color: #888 !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+    padding: 1.25rem 2rem !important;
+    background: transparent !important; /* Transparent as requested */
+    text-align: center;
+    color: #64748b !important;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* Footer Mobile Alignment Fix */

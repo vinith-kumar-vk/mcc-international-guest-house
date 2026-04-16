@@ -471,6 +471,46 @@
         .file-text-group { flex: 1; min-width: 0; }
         .file-main-text { display: block; font-weight: 700; font-size: 0.9rem; color: #1e293b; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .file-sub-text { display: block; font-size: 0.75rem; color: #64748b; font-weight: 500; }
+        /* GST Badge Styling */
+        .gst-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #F5E6E6;
+            color: #8B3A3A;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid #D4A5A5;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            box-shadow: 0 1px 2px rgba(139, 58, 58, 0.05);
+        }
+
+        .section-header-flex {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 122, 0, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-header-flex .form-section-title {
+            margin: 0;
+            padding: 0;
+            border-bottom: none;
+        }
+
+        @media (max-width: 640px) {
+            .section-header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+        }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -660,10 +700,12 @@
 
                         <!-- SECTION: STAY DETAILS -->
                         <div class="section-divider"></div>
-                        <div class="form-section-title full-width" style="margin-top: 0.75rem;"><i
-                                class="ph-bold ph-calendar-check" style="color: var(--primary-color);"></i> Booking
-                            Details</div>
-                        <p class="gst-text" style="margin-bottom: 0.75rem;">+ {{ $gstRate }}% GST applicable on all room rates</p>
+                        <div class="section-header-flex">
+                            <div class="form-section-title">
+                                <i class="ph-bold ph-calendar-check"></i> Booking Details
+                            </div>
+                            <span class="gst-badge"><i class="ph-bold ph-info" style="margin-right: 5px;"></i> + {{ $gstRate }}% GST applicable on all room rates</span>
+                        </div>
 
                         <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
                         <div class="paired-row">

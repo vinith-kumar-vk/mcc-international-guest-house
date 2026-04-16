@@ -106,7 +106,8 @@ header, .main-header, .header-container {
     header, .main-header, .header-container { padding: 0.5rem 1rem !important; min-height: 56px !important; gap: 0.5rem !important; }
     .header-logo { height: 28px !important; max-width: 120px !important; }
     .header-center { display: none !important; }
-    .help-btn { font-size: 0.7rem !important; padding: 4px 5px !important; }
+    .help-btn { font-size: 0.75rem !important; padding: 6px 12px !important; background: #f1f5f9 !important; border: 1px solid #e2e8f0 !important; border-radius: 999px !important; display: flex !important; align-items: center !important; gap: 4px !important; }
+    .help-btn span { display: inline !important; }
     .header-right { gap: 6px !important; flex: 1.5 !important; }
     .header-left { flex: 2 !important; gap: 4px !important; }
     .header-right .btn-outline { padding: 0.45rem 0.6rem !important; font-size: 0.7rem !important; border-width: 1.5px !important; }
@@ -114,8 +115,9 @@ header, .main-header, .header-container {
     .rooms-grid, .dashboard-rooms-grid { 
         grid-template-columns: 1fr !important; 
         gap: 1.25rem !important; 
-        padding-bottom: 2rem !important;
-        margin-top: 1.5rem !important;
+        padding-bottom: 1rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1.5rem !important;
     }
     .slider-card, .room-card { 
         width: 100% !important; 
@@ -151,7 +153,7 @@ header, .main-header, .header-container {
     .help-input-group label { font-size: 0.75rem !important; }
     .help-input-group input, .help-input-group select, .help-input-group textarea { padding: 12px !important; font-size: 0.9rem !important; }
     
-    .premium-facility-card { padding: 2.25rem 1.25rem !important; margin: 2rem 0 !important; border-radius: 16px !important; }
+    .premium-facility-card { padding: 2rem 1.25rem !important; margin: 1.5rem 0 !important; border-radius: 16px !important; }
     .facility-title { font-size: 1.5rem !important; }
     .feature-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
     .feature-item { padding: 1rem !important; border-radius: 12px !important; }
@@ -169,6 +171,11 @@ header, .main-header, .header-container {
     /* Summary banner responsive */
     .summary-banner { flex-direction: column !important; gap: 0.5rem !important; text-align: left !important; align-items: flex-start !important; }
     .summary-banner h3 { font-size: 1rem !important; }
+    
+    /* Segment spacing optimization for index page */
+    .explore-rooms-section { padding: 0.5rem 0 1rem 0 !important; }
+    .title-section { margin-bottom: 1.25rem !important; }
+    .description-section { margin-top: 0 !important; }
 }
 
 /* ── BREAKPOINT: 768px – 1279px (TABLET) ── */
@@ -186,6 +193,11 @@ header, .main-header, .header-container {
     .slider-card { flex: 0 0 270px !important; }
     .premium-facility-card { padding: 2.5rem 1.75rem !important; }
     .facility-title { font-size: 1.9rem !important; }
+    
+    /* Tablet Spacing Fixes */
+    .rooms-grid, .dashboard-rooms-grid { gap: 1.5rem !important; margin-top: 1.5rem !important; }
+    .premium-facility-card { padding: 2rem !important; margin: 2rem auto !important; }
+    .explore-rooms-section { padding-bottom: 1.5rem !important; }
 }
 
 /* ── BREAKPOINT: 1280px – 1440px (DESKTOP) ── */

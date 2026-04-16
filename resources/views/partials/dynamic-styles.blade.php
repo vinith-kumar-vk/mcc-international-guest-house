@@ -64,24 +64,23 @@
         }
 
         .main-footer {
-            border-top: 4px solid var(--secondary-color) !important;
-            background: var(--secondary-color) !important;
-            color: #fff !important;
+            border-top: 2px solid var(--secondary-color) !important;
+            background: #fdfbf9 !important; /* Keep professional beige as requested */
+            color: #444 !important;
         }
 
         .main-footer .footer-column h4,
-        .main-footer .footer-column h4::after,
         .main-footer .footer-column ul li,
         .main-footer .footer-column ul li a,
         .main-footer .footer-contact-link,
         .main-footer .footer-column p {
-            color: #f1f5f9 !important;
+            color: #475569 !important;
         }
 
         .main-footer .footer-bottom {
-            background: rgba(0, 0, 0, 0.15) !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
-            color: #cbd5e1 !important;
+            background: transparent !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+            color: #64748b !important;
         }
 
         .sidebar,
@@ -283,13 +282,16 @@
         }
 
         .help-btn {
-            padding: 0.35rem 0.65rem !important;
+            padding: 0.4rem 0.8rem !important;
             font-size: 0.75rem !important;
             letter-spacing: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
         }
 
         .help-btn span {
-            display: none !important;
+            display: inline !important;
         }
 
         .header-left,
@@ -663,14 +665,12 @@
 
     /* 7. Footer Spacing */
     .main-footer {
-        padding-top: 40px !important;
-        padding-bottom: 24px !important;
         margin-top: 0 !important;
     }
 
     .main-footer .footer-content {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+        padding-top: 3rem !important;
+        padding-bottom: 2rem !important;
     }
 
     /* 8. Removal of Random Large Spacing */

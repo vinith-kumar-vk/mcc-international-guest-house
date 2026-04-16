@@ -18,7 +18,7 @@
             --text-main: #1e293b;
             --text-muted: #64748b;
             --success: #22c55e;
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -27,7 +27,6 @@
             background-color: var(--bg-color);
             margin: 0;
             font-family: 'Inter', sans-serif;
-            display: flex;
         }
 
         .sidebar {
@@ -49,14 +48,14 @@
 
         .sidebar-logo {
             font-weight: 800;
-            color: var(--text-main);
-            font-size: 1.15rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .sidebar-logo span { color: var(--primary-color); }
+        .sidebar-logo span { color: #1e293b; }
 
         .sidebar-menu {
             flex: 1;
@@ -73,16 +72,89 @@
 
         .main-content {
             margin-left: var(--sidebar-width);
-            flex: 1;
-            padding: 2.5rem;
+            width: calc(100% - var(--sidebar-width));
+            display: flex;
+            flex-direction: column;
             box-sizing: border-box;
             min-width: 0;
         }
 
+        .topbar-nav {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            box-sizing: border-box;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .topbar-date {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            .topbar-nav { padding: 0 1rem !important; }
+            .topbar-date { display: none !important; }
+        }
+
+        #sidebarToggle { display: none; }
+
+        .page-body-inner {
+            padding: 2rem 2.5rem;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+            .topbar-nav { padding: 0 1rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .page-body-inner { padding: 1.25rem !important; }
+            .settings-card { max-width: 100% !important; }
+            .guide-box { max-width: 100% !important; }
+        }
+
         .settings-card {
             background: white;
-            border-radius: 16px;
-            padding: 2rem;
+            border-radius: 20px;
+            padding: 2.5rem;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
             max-width: 800px;
@@ -187,36 +259,47 @@
         /* Refined Admin Profile Dropdown - Text Only Logout */
         .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
         .admin-profile-btn {
-            width: 34px; height: 34px;
-            background: none; border: none;
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: #64748b; cursor: pointer; font-size: 1.15rem;
-            transition: color 0.15s;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
         }
-        .admin-profile-btn:hover { color: var(--primary-color); }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
         .admin-profile-menu {
-            position: absolute; top: 100%; right: 0;
+            position: absolute; top: calc(100% + 8px); right: 0;
             display: none; z-index: 2000;
-            background: transparent; border: none;
-            padding: 4px 0 0 0;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
         }
-        .admin-profile-menu.open { display: block; }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-logout-form { margin: 0; padding: 0; }
         .admin-logout-btn {
-            display: block; width: 100%; padding: 8px 12px;
-            background: none; border: none; text-align: right;
-            font-size: 0.9rem; color: #1e293b; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
             cursor: pointer; font-family: 'Inter', sans-serif;
-            white-space: nowrap; transition: color 0.15s, background 0.15s;
+            transition: all 0.2s;
         }
-        .admin-logout-btn:hover { background: #f5f5f5; color: var(--primary-color); border-radius: 4px; }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> <span>Space</span>Admin</div>
         </div>
         <div class="sidebar-menu">
             <a href="{{ route('superadmin.dashboard') }}" class="{{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
@@ -244,26 +327,17 @@
     </div>
 
     <main class="main-content">
-        <div class="topbar-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; background: white; padding: 1rem 2rem; border-bottom: 1px solid var(--border); margin: 0 -2.5rem 2.5rem -2.5rem; position: sticky; top: 0; z-index: 90;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 42px; height: 42px; padding: 0; align-items: center; justify-content: center; transform: none !important; border: 1px solid var(--border) !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem;"></i>
+        <div class="topbar-nav">
+            <div class="topbar-left">
+                <button id="sidebarToggle" style="background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 38px; height: 38px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.2rem; flex-shrink: 0;">
+                    <i class="ph ph-list"></i>
                 </button>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <i class="ph ph-gear-six" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                    <h1 style="font-size: 1.25rem; margin: 0; color: #1e293b; font-weight: 700;">System Configuration</h1>
-                </div>
+                <i class="ph ph-gear-six" style="font-size: 1.35rem; color: var(--primary-color); flex-shrink: 0;"></i>
+                <span class="topbar-title">System Configuration</span>
             </div>
-            <div class="topbar-right" style="display: flex; align-items: center; gap: 1rem;">
-                <div title="Current Theme Color" style="
-                    width: 14px; height: 14px;
-                    border-radius: 50%;
-                    background: var(--primary-color);
-                    border: 2px solid rgba(255,255,255,0.4);
-                    box-shadow: 0 0 0 2px var(--primary-color);
-                    flex-shrink: 0;
-                "></div>
-                <div style="font-size: 0.82rem; color: #64748b; font-weight: 500;">{{ now()->format('d M Y, H:i') }}</div>
+            <div class="topbar-right">
+                <div title="Current Theme Color" style="width: 12px; height: 12px; border-radius: 50%; background: var(--primary-color); box-shadow: 0 0 0 2px var(--primary-color); flex-shrink: 0;"></div>
+                <span class="topbar-date">{{ now()->format('d M Y') }}</span>
                 <div class="admin-profile-wrap">
                     <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
                         <i class="ph-fill ph-user"></i>
@@ -277,6 +351,8 @@
                 </div>
             </div>
         </div>
+
+        <div class="page-body-inner">
 
         @if(session('success'))
             <div class="alert-success">{{ session('success') }}</div>
@@ -408,6 +484,7 @@
                 <li><em>Note: Do not include spaces when pasting; the system will handle it.</em></li>
             </ol>
         </div>
+        </div><!-- /.page-body-inner -->
     </main>
     <script>
         // Sidebar Toggle

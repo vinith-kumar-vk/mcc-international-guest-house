@@ -53,30 +53,31 @@
             margin-bottom: 20px;
         }
         .section-title {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 800;
             color: {{ $primaryColor }};
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0 0 10px 0;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 2px solid #f1f5f9;
             padding-bottom: 4px;
         }
         .info-table { width: 100%; border-collapse: collapse; }
         .info-table th { 
             text-align: left; 
             padding: 8px 0; 
-            color: #64748b; 
-            font-size: 11px; 
+            color: #000; 
+            font-size: 15px; 
             text-transform: uppercase;
             width: 35%;
+            font-weight: 800;
         }
         .info-table td { 
             text-align: left; 
             padding: 4px 0; 
-            color: #1e293b; 
-            font-weight: 600; 
-            font-size: 12px;
+            color: #000; 
+            font-weight: 800; 
+            font-size: 16px;
         }
         .price-table { 
             width: 100%; 
@@ -116,17 +117,17 @@
         .status-badge {
             background: #dcfce7;
             color: #166534;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 999px;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
         }
         .unpaid-badge {
             background: #fee2e2;
             color: #991b1b;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 999px;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
         }
     </style>
@@ -150,7 +151,7 @@
                     </tr>
                     <tr>
                         <th>ID / Email</th>
-                        <td style="font-size: 11px;">{{ $booking->email }}</td>
+                        <td style="font-size: 13px;">{{ $booking->email }}</td>
                     </tr>
                     <tr>
                         <th>Phone</th>

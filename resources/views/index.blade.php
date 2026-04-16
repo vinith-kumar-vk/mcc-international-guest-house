@@ -112,42 +112,58 @@
         }
 
         /* Visibility Improvements for Room Categories */
+        /* Slider Card Consistency */
         .slider-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            min-height: 480px !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
             border: 1px solid #edf2f7 !important;
+            transition: all 0.3s ease !important;
+        }
+        .slider-card .card-content {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 1.5rem !important;
         }
         .slider-card h2 {
-            color: #0f172a !important; /* Darker navy for titles */
+            color: #0f172a !important;
             font-weight: 800 !important;
             letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
         }
         .slider-card .description {
-            color: #334155 !important; /* High contrast slate for descriptions */
+            color: #334155 !important;
             font-weight: 500 !important;
             line-height: 1.6 !important;
+            min-height: 90px !important;
             margin-bottom: 1.5rem !important;
         }
-        .slider-card .gst-text {
-            color: #64748b !important; /* Darker gray for GST */
-            font-weight: 600 !important;
-            margin-bottom: 1.25rem !important;
+        .slider-card .card-btn-wrapper {
+            margin-top: auto !important;
         }
-        .slider-card .btn-outline {
-            border-width: 2px !important;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            background: #fff;
-            color: var(--primary-color);
+
+        /* Category Card Alignment */
+        .premium-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            min-height: 520px !important;
         }
-        .slider-card .btn-outline:hover {
-            background: var(--primary-color) !important;
-            color: #fff !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.3) !important;
+        .premium-card .card-content {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
-        .slider-card:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
-            border-color: var(--primary-color) !important;
+        .premium-card .description {
+            min-height: 80px !important;
         }
+        .premium-card .card-btn-wrapper {
+            margin-top: auto !important;
+        }
+
         .feature-item i { font-size: 1.8rem; color: var(--primary-color); flex-shrink: 0; }
         .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
         .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }

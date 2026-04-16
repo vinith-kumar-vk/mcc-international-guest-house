@@ -121,7 +121,7 @@
                 </tr>
                 <tr>
                     <th>Workspace</th>
-                    <td><strong>{{ $booking->room_name }}</strong></td>
+                    <td>{{ $booking->room_name }}</td>
                 </tr>
                 <tr>
                     <th>Check-in</th>

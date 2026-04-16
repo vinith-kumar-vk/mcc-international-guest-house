@@ -42,17 +42,20 @@
         }
         .booking-details th {
             text-align: left;
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             color: #666;
             width: 40%;
             font-weight: 600;
+            font-size: 15px;
         }
         .booking-details td {
             text-align: left;
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             color: #333;
+            font-size: 15px;
+            font-weight: 500;
         }
         .actions {
             display: flex;
@@ -125,7 +128,7 @@
                 </tr>
                 <tr>
                     <th>Workspace</th>
-                    <td><strong>{{ $booking->room_name }}</strong></td>
+                    <td>{{ ucwords(str_replace('-', ' ', $booking->room_name)) }}</td>
                 </tr>
                 <tr>
                     <th>Clock In</th>
