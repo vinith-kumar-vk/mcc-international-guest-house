@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
-            --sidebar-width: 260px;
+            --sidebar-width: 240px;
             --bg-color: #f8fafc;
             --primary-color: #ff7a00; /* Fallback */
             --border: #e2e8f0;
@@ -473,6 +473,29 @@
                 }
             }
         });
+        // ── Layout Fix: force admin-main to never exceed viewport minus sidebar ──
+        (function fixAdminLayout() {
+            const SIDEBAR_W = 240;
+            const adminMain = document.querySelector('.admin-main');
+            if (!adminMain) return;
+
+            function applyWidth() {
+                const vw = window.innerWidth;
+                if (vw > 1024) {
+                    adminMain.style.setProperty('width', (vw - SIDEBAR_W) + 'px', 'important');
+                    adminMain.style.setProperty('max-width', (vw - SIDEBAR_W) + 'px', 'important');
+                    adminMain.style.setProperty('margin-left', SIDEBAR_W + 'px', 'important');
+                    adminMain.style.setProperty('overflow-x', 'hidden', 'important');
+                } else {
+                    adminMain.style.setProperty('width', '100%', 'important');
+                    adminMain.style.setProperty('max-width', 'none', 'important');
+                    adminMain.style.setProperty('margin-left', '0', 'important');
+                }
+            }
+
+            applyWidth();
+            window.addEventListener('resize', applyWidth);
+        })();
     </script>
 </body>
 </html>

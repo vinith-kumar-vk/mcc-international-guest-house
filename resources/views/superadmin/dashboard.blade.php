@@ -371,6 +371,15 @@
             <a href="{{ route('superadmin.admins') }}" class="menu-item {{ Route::is('superadmin.admins') ? 'active' : '' }}">
                 <i class="ph ph-users"></i> Manage Admins
             </a>
+            <a href="{{ route('superadmin.payments') }}" class="menu-item {{ Route::is('superadmin.payments') ? 'active' : '' }}">
+                <i class="ph ph-wallet"></i> Payment Details
+            </a>
+            <a href="{{ route('superadmin.webhooks') }}" class="menu-item {{ Route::is('superadmin.webhooks') ? 'active' : '' }}">
+                <i class="ph-bold ph-plugs-connected"></i> Webhooks
+            </a>
+            <a href="{{ route('superadmin.webhooks.logs') }}" class="menu-item {{ Route::is('superadmin.webhooks.logs') ? 'active' : '' }}">
+                <i class="ph-bold ph-article"></i> Webhook Logs
+            </a>
             <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
@@ -573,7 +582,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <i class="ph-bold ph-chart-pie" style="color: var(--primary);"></i>
+                            <i class="ph-bold ph-plugs-connected" style="color: var(--primary-color)"></i>
                             Payment Status Breakdown
                         </div>
                     </div>

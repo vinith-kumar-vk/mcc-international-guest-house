@@ -233,7 +233,16 @@
             <a href="{{ route('superadmin.admins') }}" class="menu-item active">
                 <i class="ph ph-users"></i> Manage Admins
             </a>
-            <a href="{{ route('superadmin.settings') }}" class="menu-item">
+            <a href="{{ route('superadmin.payments') }}" class="menu-item {{ Route::is('superadmin.payments') ? 'active' : '' }}">
+                <i class="ph ph-wallet"></i> Payment Details
+            </a>
+            <a href="{{ route('superadmin.webhooks') }}" class="menu-item {{ Route::is('superadmin.webhooks') ? 'active' : '' }}">
+                <i class="ph-bold ph-plugs-connected"></i> Webhooks
+            </a>
+            <a href="{{ route('superadmin.webhooks.logs') }}" class="menu-item {{ Route::is('superadmin.webhooks.logs') ? 'active' : '' }}">
+                <i class="ph-bold ph-article"></i> Webhook Logs
+            </a>
+            <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
             <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">

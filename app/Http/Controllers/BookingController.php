@@ -109,6 +109,9 @@ class BookingController extends Controller
             'referral_attachment' => $attachmentPath
         ]));
 
+        // Trigger Webhook
+        app(\App\Services\WebhookService::class)->trigger('booking.created', $booking);
+
         // 3. Send notification email to the Principal
         try {
             // Get dynamic settings

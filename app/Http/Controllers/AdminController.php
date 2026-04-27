@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminNotification;
 use App\Mail\BookingApproved;
+use App\Models\PaymentLink;
+use App\Mail\PaymentLinkMail;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -229,46 +232,93 @@ class AdminController extends Controller
     {
         $booking = Booking::findOrFail($id);
         
-        if ($booking->approval_status !== 'Principal Approved') {
+        if ($booking->approval_status !== 'Principal Approved' && $booking->approval_status !== 'Approved') {
             return back()->with('error', 'Strict Enforced: This booking must be approved by the Principal first.');
         }
 
-        $booking->update(['approval_status' => 'Approved']);
+        if ($booking->approval_status !== 'Approved') {
+            $booking->update(['approval_status' => 'Approved']);
+            app(\App\Services\WebhookService::class)->trigger('booking.confirmed', $booking);
+        }
         
-        // Notify Guest (Testing with unfortunately2909@gmail.com)
+        // Generate Secure Payment Token
+        $token = Str::random(32);
+        $paymentLink = PaymentLink::create([
+            'booking_id' => $id,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours(24),
+            'is_used' => false
+        ]);
+
+        // Notify Guest
         try {
-            $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
-            $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
-            $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
-            $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
-            $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
-            $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+            // Apply Dynamic Mail Config
+            $this->applyMailConfig();
 
-            config([
-                'mail.default' => $mailMailer,
-                'mail.mailers.smtp.host' => $mailHost,
-                'mail.mailers.smtp.port' => $mailPort,
-                'mail.mailers.smtp.encryption' => $mailEncryption,
-                'mail.mailers.smtp.username' => $senderEmail,
-                'mail.mailers.smtp.password' => $mailPassword,
-                'mail.from.address' => $senderEmail,
-                'mail.from.name' => 'MCC IGH System'
-            ]);
-
-            \Illuminate\Support\Facades\Mail::purge('smtp');
-
-            Mail::to('unfortunately2909@gmail.com')->send(new BookingApproved($booking));
+            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
         } catch (\Exception $e) {
-            \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
+            \Log::error('Failed to send guest payment link: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Booking approved. Guest has been notified.');
+        return back()->with('success', 'Booking approved. Payment link has been sent to the guest.');
+    }
+
+    public function resendPaymentLink($id)
+    {
+        $booking = Booking::findOrFail($id);
+        
+        if ($booking->payment_status === 'Paid') {
+            return back()->with('error', 'This booking is already paid.');
+        }
+
+        // Generate New Secure Payment Token (invalidates previous if we want, but typically we just send a fresh one)
+        $token = Str::random(32);
+        $paymentLink = PaymentLink::create([
+            'booking_id' => $id,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours(24),
+            'is_used' => false
+        ]);
+
+        try {
+            $this->applyMailConfig();
+            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
+        } catch (\Exception $e) {
+            \Log::error('Failed to resend guest payment link: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send email. Check logs.');
+        }
+
+        return back()->with('success', 'A new payment link has been sent to the guest.');
+    }
+
+    private function applyMailConfig()
+    {
+        $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
+        $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
+        $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
+        $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
+        $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
+        $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+
+        config([
+            'mail.default' => $mailMailer,
+            'mail.mailers.smtp.host' => $mailHost,
+            'mail.mailers.smtp.port' => $mailPort,
+            'mail.mailers.smtp.encryption' => $mailEncryption,
+            'mail.mailers.smtp.username' => $senderEmail,
+            'mail.mailers.smtp.password' => $mailPassword,
+            'mail.from.address' => $senderEmail,
+            'mail.from.name' => 'MCC IGH System'
+        ]);
+
+        \Illuminate\Support\Facades\Mail::purge('smtp');
     }
 
     public function reject($id, Request $request)
     {
         $booking = Booking::findOrFail($id);
         $booking->update(['approval_status' => 'Rejected']);
+        app(\App\Services\WebhookService::class)->trigger('booking.cancelled', $booking);
         
         if ($request->isMethod('post')) {
             return back()->with('error', 'Booking has been rejected.');

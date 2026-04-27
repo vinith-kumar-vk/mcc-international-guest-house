@@ -851,8 +851,8 @@
                             <button type="submit" class="btn-approve" 
                                     style="width: 100%;"
                                     {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
-                                <i class="ph-bold ph-check" style="color:#fff !important;"></i>
-                                Confirm & Approve
+                                <i class="ph-bold ph-paper-plane-tilt" style="color:#fff !important;"></i>
+                                Approve & Send Payment Link
                             </button>
                         </form>
                         
@@ -865,18 +865,47 @@
                     @endif
 
                     @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
-                        <div style="background: rgba(59, 130, 246, 0.1); height: 75px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; width: 100%;">
-                            <div style="margin: 0; font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; line-height: 1;">
-                                <i class="ph-fill ph-info" style="font-size: 1.1rem; position: relative; top: -1px;"></i>
-                                <span>Approved — waiting for payment at counter</span>
+                        <div style="background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); padding: 1.25rem;">
+                            <div style="font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                                <i class="ph-fill ph-info" style="font-size: 1.1rem;"></i>
+                                <span>Waiting for Online Payment</span>
+                            </div>
+                            
+                            @php
+                                $lastLink = \App\Models\PaymentLink::where('booking_id', $booking->id)->latest()->first();
+                            @endphp
+
+                            @if($lastLink)
+                                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 1rem; padding: 0.75rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                        <span>Link Status:</span>
+                                        <strong style="color: {{ $lastLink->isValid() ? '#10b981' : '#ef4444' }}">
+                                            {{ $lastLink->is_used ? 'Used' : ($lastLink->isExpired() ? 'Expired' : 'Active') }}
+                                        </strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>Expires:</span>
+                                        <strong>{{ $lastLink->expires_at->format('M d, H:i') }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <form action="{{ route('admin.bookings.resend', $booking->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-approve" style="background: #3b82f6 !important; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3) !important;">
+                                        <i class="ph-bold ph-arrows-clockwise"></i> Resend Payment Link
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-mark-paid" style="background: #64748b !important; box-shadow: 0 4px 14px rgba(100, 116, 139, 0.3) !important;">
+                                        <i class="ph-bold ph-hand-coins"></i> Mark as Paid (Counter)
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                        <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-mark-paid">
-                                <i class="ph-bold ph-hand-coins" style="color:#fff !important;"></i> Mark as Paid (at Counter)
-                            </button>
-                        </form>
                     @endif
 
                     <div style="height: 1px; background: #e2e8f0; margin: 0.25rem 0;"></div>

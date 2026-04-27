@@ -308,7 +308,7 @@
 
                 <!-- Footer Notes -->
                 <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 20px; text-align: center;">
-                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 5px 0;">Payment Status: {{ $booking->payment_status === 'Paid' ? 'PAID' : 'PAY AT COUNTER' }}</p>
+                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 5px 0;">Payment Status: {{ strtoupper($booking->payment_status) }}</p>
                     <p style="font-size: 12px; color: #64748b; margin: 0;">Madras Christian College, East Tambaram, Chennai</p>
                 </div>
             </div>

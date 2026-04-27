@@ -150,14 +150,14 @@
 
     .mcc-text {
         font-weight: 800 !important;
-        color: #7f1d1d !important; /* Maroon */
+        color: var(--primary-color) !important;
         font-size: 1.5rem !important;
         letter-spacing: 1px !important;
     }
 
     .igh-text {
         font-family: 'Inter', sans-serif !important;
-        color: #7f1d1d !important; /* Now also maroon */
+        color: var(--primary-color) !important;
         font-weight: 700 !important;
         font-size: 0.85rem !important;
         letter-spacing: 0.5px !important;

@@ -301,21 +301,29 @@
         <div class="sidebar-header">
             <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> <span>Space</span>Admin</div>
         </div>
-        <div class="sidebar-menu">
-            <a href="{{ route('superadmin.dashboard') }}" class="{{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
+        <nav class="sidebar-menu">
+            <a href="{{ route('superadmin.dashboard') }}" class="menu-item {{ Route::is('superadmin.dashboard') ? 'active' : '' }}">
                 <i class="ph ph-squares-four"></i> Overview
             </a>
-            <a href="{{ route('superadmin.admins') }}" class="{{ Route::is('superadmin.admins') ? 'active' : '' }}">
+            <a href="{{ route('superadmin.admins') }}" class="menu-item {{ Route::is('superadmin.admins') ? 'active' : '' }}">
                 <i class="ph ph-users"></i> Manage Admins
             </a>
-            <a href="{{ route('superadmin.settings') }}" class="{{ Route::is('superadmin.settings') ? 'active' : '' }}">
+            <a href="{{ route('superadmin.payments') }}" class="menu-item {{ Route::is('superadmin.payments') ? 'active' : '' }}">
+                <i class="ph ph-wallet"></i> Payment Details
+            </a>
+            <a href="{{ route('superadmin.webhooks') }}" class="menu-item {{ Route::is('superadmin.webhooks') ? 'active' : '' }}">
+                <i class="ph-bold ph-plugs-connected"></i> Webhooks
+            </a>
+            <a href="{{ route('superadmin.webhooks.logs') }}" class="menu-item {{ Route::is('superadmin.webhooks.logs') ? 'active' : '' }}">
+                <i class="ph-bold ph-article"></i> Webhook Logs
+            </a>
+            <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
-            <div style="padding: 1rem 0; color: #94a3b8; font-size: 0.65rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; margin-top: 1rem;">Resources</div>
-            <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer">
+            <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
                 <i class="ph ph-globe"></i> Visit Site
             </a>
-        </div>
+        </nav>
         <div class="sidebar-footer">
             <form action="{{ route('superadmin.logout') }}" method="POST">
                 @csrf

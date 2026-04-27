@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
-            --sidebar-width: 260px;
+            --sidebar-width: 240px;
             --bg-color: #f8fafc;
             --primary-color: #ff7a00;
             --border: #e2e8f0;
@@ -97,13 +97,14 @@
 
         /* Main Content */
         .admin-main {
-            margin-left: var(--sidebar-width); 
-            padding: 0;
-            display: flex; 
+            margin-left: 240px;
+            width: calc(100vw - 240px - 17px); /* 17px scrollbar */
+            max-width: calc(100vw - 240px);
+            display: flex;
             flex-direction: column;
-            width: calc(100% - var(--sidebar-width));
-            min-width: 0;
-            transition: all 0.3s ease;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         .top-navbar {
@@ -224,16 +225,22 @@
         .notification-item .time { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; }
 
         .admin-body {
-            padding: 2.5rem; padding-bottom: 0.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
+            padding: 1.5rem 2rem 2rem 1.5rem; 
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         /* Stats Cards */
         .stats-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-            gap: 1.25rem; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 1rem; 
             margin-bottom: 2rem;
             width: 100%;
+            max-width: 100%;
         }
 
         .stat-card {
@@ -317,7 +324,23 @@
 
         /* Custom Grids */
         .row-grid {
-            display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; align-items: start;
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 1.25rem; 
+            margin-bottom: 1.25rem; 
+            align-items: start;
+            min-width: 0;
+        }
+
+        /* All direct children of the grid must not overflow their column */
+        .row-grid > * {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .right-box, .right-box > * {
+            min-width: 0;
+            max-width: 100%;
         }
 
         /* Chart Area */
@@ -348,11 +371,48 @@
         .action-btn i { font-size: 1.25rem; }
 
         /* Calendar */
-        .mini-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-top: 0.75rem; }
+        .mini-calendar { 
+            display: grid; 
+            grid-template-columns: repeat(7, minmax(0, 1fr)); 
+            gap: 2px; 
+            text-align: center; 
+            margin-top: 0.5rem;
+            width: 100%;
+        }
 
-        .cal-day-name { font-size: 0.65rem; font-weight: 700; color: #94a3b8; }
-        .cal-day { font-size: 0.75rem; padding: 5px 0; border-radius: 4px; color: #64748b; }
-        .cal-day.active { background: var(--primary-color); color: white; font-weight: 700; }
+        .cal-day-name { 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            color: #94a3b8; 
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-day { 
+            font-size: 0.75rem; 
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px; 
+            color: #64748b; 
+            transition: all 0.2s;
+        }
+
+        .cal-day.active { 
+            background: var(--primary-color); 
+            color: white; 
+            font-weight: 700; 
+            box-shadow: 0 2px 4px rgba(255, 122, 0, 0.3);
+        }
+
+        .cal-month-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+        }
 
         /* Tables */
         .mini-table { width: 100%; border-collapse: collapse; }
@@ -378,7 +438,7 @@
     </style>
     @include('partials.dynamic-styles')
 </head>
-<body>
+<body class="admin-page">
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
@@ -564,11 +624,11 @@
                         </div>
                     </div>
 
-                    <div class="dashboard-section" style="padding: 1rem;">
-                        <div class="section-header" style="margin-bottom: 0.5rem;">
-                            <h3><i class="ph-bold ph-calendar-blank" style="color: var(--primary-color);"></i> Calendar</h3>
+                    <div class="dashboard-section" style="padding: 1.25rem 1rem;">
+                        <div class="section-header" style="margin-bottom: 1rem;">
+                            <h3 style="margin:0;"><i class="ph-bold ph-calendar-blank" style="color: var(--primary-color);"></i> Calendar</h3>
+                            <div class="cal-month-year">{{ \Carbon\Carbon::now()->format('F Y') }}</div>
                         </div>
-                        <div style="font-size: 0.75rem; font-weight: 700; color: #1e293b; margin-bottom: 0.25rem; text-align: center;">{{ \Carbon\Carbon::now()->format('F Y') }}</div>
                         <div class="mini-calendar">
                             <div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div>
                             <div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>
@@ -818,6 +878,29 @@
             }
             revenueChart.update();
         }
+        // ── Layout Fix: force admin-main to never exceed viewport minus sidebar ──
+        (function fixAdminLayout() {
+            const SIDEBAR_W = 240;
+            const adminMain = document.querySelector('.admin-main');
+            if (!adminMain) return;
+
+            function applyWidth() {
+                const vw = window.innerWidth;
+                if (vw > 1024) {
+                    adminMain.style.setProperty('width', (vw - SIDEBAR_W) + 'px', 'important');
+                    adminMain.style.setProperty('max-width', (vw - SIDEBAR_W) + 'px', 'important');
+                    adminMain.style.setProperty('margin-left', SIDEBAR_W + 'px', 'important');
+                    adminMain.style.setProperty('overflow-x', 'hidden', 'important');
+                } else {
+                    adminMain.style.setProperty('width', '100%', 'important');
+                    adminMain.style.setProperty('max-width', 'none', 'important');
+                    adminMain.style.setProperty('margin-left', '0', 'important');
+                }
+            }
+
+            applyWidth();
+            window.addEventListener('resize', applyWidth);
+        })();
     </script>
 </body>
 </html>
