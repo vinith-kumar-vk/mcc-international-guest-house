@@ -16,6 +16,28 @@
             --text-muted: #64748b;
         }
 
+        header.header-container {
+            background: rgba(255, 255, 255, 0.98) !important;
+            height: 100px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 2.5rem !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+        }
+
+        .header-logo {
+            height: 85px !important;
+            width: auto !important;
+            object-fit: contain !important;
+        }
+
         body {
             background-color: var(--bg-color);
             min-height: 100vh;
@@ -188,7 +210,7 @@
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Back to Home']])
 
     <main class="auth-main">
-        <div class="auth-card">
+        <div class="auth-card" style="margin-top: 40px;">
             <div class="auth-header" style="margin-top: 10px;">
                 <div class="sidebar-logo" style="justify-content: center; font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--text-main);">
                     <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i> Member<span style="color: var(--primary-color);">Login</span>
