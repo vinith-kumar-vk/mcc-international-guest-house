@@ -21,7 +21,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .header {
-            background: linear-gradient(135deg, #ff7a00 0%, #ff4d00 100%);
+            background: {{ $primaryColor }};
+            background: linear-gradient(135deg, {{ $primaryColor }} 0%, {{ $primaryColor }} 100%);
             padding: 30px;
             text-align: center;
             color: white;
@@ -74,13 +75,13 @@
         .btn {
             display: inline-block;
             padding: 14px 40px;
-            background-color: #ff7a00;
+            background-color: {{ $primaryColor }};
             color: white;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(255, 122, 0, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .footer {
             background-color: #f9f9f9;
@@ -106,12 +107,13 @@
                 </tr>
             </table>
             
-            <h2 style="color: #1e293b;">Hello {{ $booking->name }},</h2>
+            <h2 style="color: #1e293b; margin-top: 0;">Hello {{ $booking->name }},</h2>
             <p style="color: #64748b; line-height: 1.6; font-size: 16px;">Great news! Your booking request for <strong>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</strong> has been officially approved and confirmed.</p>
+            <p style="color: #64748b; font-size: 14px; margin-top: -10px;">(Please find your official receipt attached to this email as a PDF)</p>
 
-            <div style="background-color: #fff8eb; border-left: 4px solid #ff7a00; padding: 20px; margin: 30px 0; text-align: left; border-radius: 8px;">
-                <p style="margin: 0; color: #b45309; font-weight: 700; font-size: 15px;">Next Steps:</p>
-                <p style="margin: 8px 0 0; color: #d97706; font-size: 14px; line-height: 1.5;">Since this is a <strong>Direct Pay</strong> system, you can come directly to the guest house. Please settle the payment at the reception counter upon arrival.</p>
+            <div style="background-color: {{ $primaryColor }}10; border-left: 4px solid {{ $primaryColor }}; padding: 20px; margin: 30px 0; text-align: left; border-radius: 8px;">
+                <p style="margin: 0; color: {{ $primaryColor }}; font-weight: 700; font-size: 15px;">Next Steps:</p>
+                <p style="margin: 8px 0 0; color: #475569; font-size: 14px; line-height: 1.5;">Since this is a <strong>Direct Pay</strong> system, you can come directly to the guest house. Please settle the payment at the reception counter upon arrival.</p>
             </div>
             
             <table class="booking-details">
@@ -124,17 +126,21 @@
                     <td>{{ str_replace('-', ' ', ucwords($booking->room_name, '- ')) }}</td>
                 </tr>
                 <tr>
-                    <th>Check-in</th>
+                    <th>Clock In</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->format('M d, Y, h:i A') }}</td>
                 </tr>
                 <tr>
+                    <th>Clock Out</th>
+                    <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->end_time)->format('M d, Y, h:i A') }}</td>
+                </tr>
+                <tr>
                     <th>Pay at Counter</th>
-                    <td style="color: #ff7a00; font-weight: 700;">₹{{ number_format($booking->total_price, 2) }}</td>
+                    <td style="color: {{ $primaryColor }}; font-weight: 700;">Rs. {{ number_format($booking->total_price, 2) }}</td>
                 </tr>
             </table>
             
-            <a href="{{ route('checkout.success', $booking->id) }}?download=1" class="btn">
-                Download Confirmation PDF
+            <a href="{{ route('checkout.success', $booking->id) }}?download=1" class="btn" style="color: #ffffff !important; display: inline-block;">
+                View & Download Receipt Online
             </a>
 
             <p style="margin-top: 30px; font-size: 14px; color: #94a3b8;">

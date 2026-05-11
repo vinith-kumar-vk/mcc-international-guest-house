@@ -29,8 +29,15 @@
             display: flex; flex-direction: column; z-index: 100;
         }
         .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); }
-        .sidebar-logo { font-weight: 800; color: var(--text-main); font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
-        .sidebar-logo span { color: var(--primary-color); }
+        .sidebar-logo {
+            font-weight: 800;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sidebar-logo span { color: #1e293b; }
         .sidebar-menu { flex: 1; padding: 1rem 0.75rem; }
         .menu-item {
             display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
@@ -56,12 +63,12 @@
             height: 72px; background: white; border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
             position: sticky; top: 0; z-index: 90;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
-        .page-body { padding: 2.5rem; max-width: 1400px; width: 100%; box-sizing: border-box; }
+        .page-body { padding: 2.5rem; max-width: 1500px; width: 100%; margin: 0 auto; box-sizing: border-box; }
         .topbar-right { display: flex; align-items: center; gap: 1rem; }
 
-        .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card { background: white; border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
         .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
         .card-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
 
@@ -87,11 +94,29 @@
         /* Modal */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;
+            background: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+            padding: 1.25rem;
         }
         .modal.active { display: flex; }
-        .modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 450px; position: relative; }
-        .modal-close { position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); }
+        .modal-content { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 24px; 
+            width: 100%; 
+            max-width: 480px; 
+            position: relative; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; cursor: pointer; font-size: 1.5rem; color: #94a3b8; transition: color 0.2s; }
+        .modal-close:hover { color: var(--text-main); }
+        
+        @media (max-width: 640px) {
+            .modal { padding: 1rem; }
+            .modal-content { padding: 1.75rem; border-radius: 20px; }
+            .modal-content h2 { font-size: 1.25rem !important; }
+        }
         
         .form-group { margin-bottom: 1.25rem; }
         .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
@@ -116,6 +141,82 @@
             .topbar { padding: 0 1rem; height: 68px; }
             .topbar-right { display: none; }
         }
+
+        /* Refined Admin Profile Dropdown - Polished Card Style */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            display: none; z-index: 2000;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
+        }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+        #sidebarToggle { display: none; }
+
+        /* Confirmation Modal */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .confirm-modal-overlay.active { display: flex; }
+        .confirm-modal-content {
+            background: white;
+            padding: 2.25rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            border: 1px solid #f1f5f9;
+        }
+        .confirm-modal-content h3 { margin: 0 0 0.75rem; color: #1e293b; font-size: 1.25rem; font-weight: 700; }
+        .confirm-modal-content p { margin: 0 0 2rem; color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+        .confirm-modal-footer { display: flex; gap: 0.75rem; }
+        .confirm-btn-cancel {
+            flex: 1; padding: 0.85rem; border-radius: 12px; border: 1px solid #e2e8f0;
+            background: #f8fafc; color: #64748b; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .confirm-btn-confirm {
+            flex: 1; padding: 0.85rem; border-radius: 12px; border: none;
+            background: #ef4444; color: white; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .confirm-btn-cancel:hover { background: #f1f5f9; color: #475569; }
+        .confirm-btn-confirm:hover { filter: brightness(0.95); transform: translateY(-1px); }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -123,7 +224,7 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> Space<span>Admin</span></div>
+            <div class="sidebar-logo"><i class="ph-bold ph-rocket-launch"></i> <span>Space</span>Admin</div>
         </div>
         <nav class="sidebar-menu">
             <a href="{{ route('superadmin.dashboard') }}" class="menu-item">
@@ -132,7 +233,16 @@
             <a href="{{ route('superadmin.admins') }}" class="menu-item active">
                 <i class="ph ph-users"></i> Manage Admins
             </a>
-            <a href="{{ route('superadmin.settings') }}" class="menu-item">
+            <a href="{{ route('superadmin.payments') }}" class="menu-item {{ Route::is('superadmin.payments') ? 'active' : '' }}">
+                <i class="ph ph-wallet"></i> Payment Details
+            </a>
+            <a href="{{ route('superadmin.webhooks') }}" class="menu-item {{ Route::is('superadmin.webhooks') ? 'active' : '' }}">
+                <i class="ph-bold ph-plugs-connected"></i> Webhooks
+            </a>
+            <a href="{{ route('superadmin.webhooks.logs') }}" class="menu-item {{ Route::is('superadmin.webhooks.logs') ? 'active' : '' }}">
+                <i class="ph-bold ph-article"></i> Webhook Logs
+            </a>
+            <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
             </a>
             <a href="{{ route('home') }}" class="menu-item" target="_blank" rel="noopener noreferrer">
@@ -150,7 +260,7 @@
     <div class="main-content">
         <div class="topbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
+                <button id="sidebarToggle" style="width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid var(--border); background: white; color: var(--text-main); cursor: pointer; box-shadow: none;">
                     <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
                 </button>
                 <div style="font-weight: 700; font-size: 1.15rem; color: var(--text-main);">Manage Admin Accounts</div>
@@ -165,6 +275,17 @@
                     flex-shrink: 0;
                 "></div>
                 <div style="font-size: 0.82rem; color: var(--muted); font-weight: 500;">{{ now()->format('d M Y, H:i') }}</div>
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                        <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('superadmin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -203,7 +324,7 @@
                                                 onclick="editAdmin({{ $admin->id }}, '{{ $admin->name }}', '{{ $admin->email }}')">
                                             <i class="ph ph-pencil-simple"></i>
                                         </button>
-                                        <form action="{{ route('superadmin.admins.delete', $admin->id) }}" method="POST" onsubmit="return confirm('Remove this admin?')">
+                                        <form action="{{ route('superadmin.admins.delete', $admin->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmDelete(this);">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="ph ph-trash"></i>
@@ -272,6 +393,17 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmDeleteModal" class="confirm-modal-overlay">
+        <div class="confirm-modal-content">
+            <h3>Delete Admin Account</h3>
+            <p>Are you sure you want to remove this admin? This action cannot be undone.</p>
+            <div class="confirm-modal-footer">
+                <button type="button" class="confirm-btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+                <button type="button" class="confirm-btn-confirm" onclick="executeDelete()">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
     <script>
         // Sidebar Toggle
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -285,8 +417,12 @@
         }
 
         document.addEventListener('click', (event) => {
-            if (window.innerWidth <= 1024 && sidebar && !sidebar.contains(event.target)) {
-                sidebar.classList.remove('open');
+            if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('open');
+                }
             }
         });
 
@@ -298,6 +434,33 @@
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_email').value = email;
             openModal('editAdminModal');
+        }
+
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+        document.addEventListener('click', () => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
+        });
+
+        // Delete Confirmation Logic
+        let formToDelete = null;
+        function showConfirmDelete(form) {
+            formToDelete = form;
+            document.getElementById('confirmDeleteModal').classList.add('active');
+        }
+        function closeConfirmModal() {
+            document.getElementById('confirmDeleteModal').classList.remove('active');
+            formToDelete = null;
+        }
+        function executeDelete() {
+            if (formToDelete) formToDelete.submit();
         }
     </script>
 </body>

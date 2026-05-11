@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\Booking;
+use App\Models\WebhookEndpoint;
+use App\Models\WebhookLog;
+use App\Jobs\DispatchWebhookJob;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SuperAdminController extends Controller
 {
@@ -98,7 +102,8 @@ class SuperAdminController extends Controller
             'mail_mailer'         => 'required|string',
             'primary_color'       => 'nullable|string',
             'secondary_color'     => 'nullable|string',
-            'use_secondary_color' => 'nullable'
+            'use_secondary_color' => 'nullable',
+            'gst_rate'            => 'required|numeric|min:0|max:100'
         ]);
 
         Setting::updateOrCreate(['key' => 'principal_email'], ['value' => $request->system_email]);
@@ -113,6 +118,7 @@ class SuperAdminController extends Controller
         Setting::updateOrCreate(['key' => 'primary_color'],   ['value' => $request->primary_color ?? '#ff7a00']);
         Setting::updateOrCreate(['key' => 'secondary_color'], ['value' => $request->secondary_color ?? '#001a33']);
         Setting::updateOrCreate(['key' => 'use_secondary_color'], ['value' => $request->has('use_secondary_color') ? '1' : '0']);
+        Setting::updateOrCreate(['key' => 'gst_rate'],            ['value' => $request->gst_rate ?? '5']);
 
         return redirect()->back()->with('success', 'System settings updated successfully.');
     }
@@ -167,5 +173,146 @@ class SuperAdminController extends Controller
         $admin->delete();
 
         return redirect()->back()->with('success', 'Admin user removed.');
+    }
+
+    public function payments(Request $request)
+    {
+        $query = Booking::with(['payments' => function($q) {
+            $q->orderBy('created_at', 'desc');
+        }]);
+
+        // Filters
+        if ($request->filled('room')) {
+            $query->where('room_name', 'like', '%' . $request->room . '%');
+        }
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+        if ($request->filled('approval_status')) {
+            $query->where('approval_status', $request->approval_status);
+        }
+        if ($request->filled('date_from')) {
+            $query->whereDate('booking_date', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('booking_date', '<=', $request->date_to);
+        }
+
+        $bookings = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('superadmin.payments', compact('bookings'));
+    }
+
+    public function roomHistory($room_name)
+    {
+        // Decode room name if it comes from URL
+        $room_name = str_replace('-', ' ', $room_name);
+        
+        $bookings = Booking::with('payments')
+            ->where('room_name', 'like', $room_name)
+            ->orderBy('booking_date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->get();
+
+        // Calculate current status
+        $isBooked = Booking::where('room_name', 'like', $room_name)
+            ->whereDate('booking_date', Carbon::today())
+            ->where('payment_status', 'Paid')
+            ->exists();
+
+        $roomStatus = $isBooked ? 'ALREADY BOOKED' : 'AVAILABLE';
+
+        return view('superadmin.room_history', compact('bookings', 'room_name', 'roomStatus'));
+    }
+
+    // Webhook Methods
+    public function webhookSettings()
+    {
+        $endpoints = WebhookEndpoint::withCount('logs')->get();
+        $availableEvents = [
+            'booking.created',
+            'booking.confirmed',
+            'booking.cancelled',
+            'payment.initiated',
+            'payment.successful',
+            'payment.failed'
+        ];
+        $settings = \App\Models\Setting::all()->pluck('value', 'key');
+        return view('superadmin.webhooks', compact('endpoints', 'availableEvents', 'settings'));
+    }
+
+    public function storeWebhookEndpoint(Request $request)
+    {
+        $request->validate([
+            'url' => 'required|url',
+            'events' => 'nullable|array',
+            'events.*' => 'string'
+        ]);
+
+        WebhookEndpoint::create([
+            'url' => $request->url,
+            'secret' => Str::random(32),
+            'events' => $request->events ?? [],
+            'is_active' => true
+        ]);
+
+        return redirect()->back()->with('success', 'Webhook endpoint registered successfully.');
+    }
+
+    public function updateWebhookEndpoint(Request $request, $id)
+    {
+        $endpoint = WebhookEndpoint::findOrFail($id);
+        
+        $request->validate([
+            'url' => 'required|url',
+            'events' => 'nullable|array',
+            'is_active' => 'boolean'
+        ]);
+
+        $endpoint->update([
+            'url' => $request->url,
+            'events' => $request->events ?? [],
+            'is_active' => $request->has('is_active')
+        ]);
+
+        return redirect()->back()->with('success', 'Webhook endpoint updated.');
+    }
+
+    public function deleteWebhookEndpoint($id)
+    {
+        WebhookEndpoint::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Webhook endpoint removed.');
+    }
+
+    public function webhookLogs(Request $request)
+    {
+        $query = WebhookLog::with('endpoint');
+
+        if ($request->filled('event')) {
+            $query->where('event', $request->event);
+        }
+        if ($request->filled('status')) {
+            if ($request->status == 'success') {
+                $query->whereBetween('response_status', [200, 299]);
+            } else {
+                $query->where(function($q) {
+                    $q->whereNotBetween('response_status', [200, 299])
+                      ->orWhereNull('response_status');
+                });
+            }
+        }
+
+        $settings = \App\Models\Setting::all()->pluck('value', 'key');
+        $logs = $query->orderBy('created_at', 'desc')->paginate(20);
+        return view('superadmin.webhook_logs', compact('logs', 'settings'));
+    }
+
+    public function retryWebhook($id)
+    {
+        $log = WebhookLog::with('endpoint')->findOrFail($id);
+        
+        DispatchWebhookJob::dispatch($log->endpoint, $log->event, $log->payload);
+
+        return redirect()->back()->with('success', 'Webhook retry queued.');
     }
 }

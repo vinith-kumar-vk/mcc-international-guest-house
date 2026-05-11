@@ -68,35 +68,39 @@
         /*  FACILITY SECTION  */
         .premium-facility-card {
             background: linear-gradient(135deg, #fff, #fbfbfb);
-            border-radius: 24px; padding: 4rem 2rem;
+            border-radius: 24px; padding: 3rem 2.5rem;
             box-shadow: 0 10px 50px rgba(0,0,0,0.04);
             border: 1px solid #f1f1f1;
             transition: all 0.5s cubic-bezier(0.165,0.84,0.44,1);
-            max-width: 900px; margin: 4rem auto;
+            max-width: 900px; margin: 1.5rem auto;
             opacity: 0; transform: translateY(30px);
             text-align: center;
         }
         .premium-facility-card.visible { opacity: 1; transform: translateY(0); }
         .premium-facility-card:hover { transform: translateY(-5px); box-shadow: 0 15px 60px rgba(0,0,0,0.08); }
         .facility-title {
-            font-size: 2.2rem; font-weight: 800; color: #111;
+            font-size: 2rem; font-weight: 800; color: #111;
             margin-bottom: 0.5rem; display: inline-block; letter-spacing: -0.5px;
         }
         .facility-divider {
             width: 50px; height: 3px; background: var(--primary-color);
-            margin: 1.5rem auto; border-radius: 5px; opacity: 0.8;
+            margin: 1.25rem auto; border-radius: 5px; opacity: 0.8;
         }
         .feature-grid {
             display: grid; 
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem; 
-            margin-top: 3rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; 
+            margin-top: 2rem;
             width: 100%;
         }
+        @media (max-width: 900px) {
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .premium-facility-card { padding: 2.5rem 1.5rem; }
+        }
         @media (max-width: 650px) {
-            .feature-grid { grid-template-columns: 1fr; }
-            .premium-facility-card { padding: 3rem 1.5rem; margin: 3rem auto; }
-            .facility-title { font-size: 1.8rem; }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .premium-facility-card { padding: 2rem 1.25rem; margin: 1rem auto; }
+            .facility-title { font-size: 1.6rem; }
         }
         .feature-item {
             display: flex; align-items: center; gap: 15px;
@@ -108,42 +112,71 @@
         }
 
         /* Visibility Improvements for Room Categories */
+        /* Slider Card Consistency */
         .slider-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            min-height: 480px !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
             border: 1px solid #edf2f7 !important;
+            transition: all 0.3s ease !important;
+        }
+        .slider-card .card-content {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 1.5rem !important;
         }
         .slider-card h2 {
-            color: #0f172a !important; /* Darker navy for titles */
+            color: #0f172a !important;
             font-weight: 800 !important;
             letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
         }
         .slider-card .description {
-            color: #334155 !important; /* High contrast slate for descriptions */
+            color: #334155 !important;
             font-weight: 500 !important;
             line-height: 1.6 !important;
+            min-height: 90px !important;
             margin-bottom: 1.5rem !important;
         }
-        .slider-card .gst-text {
-            color: #64748b !important; /* Darker gray for GST */
-            font-weight: 600 !important;
-            margin-bottom: 1.25rem !important;
+        .slider-card .card-btn-wrapper {
+            margin-top: auto !important;
         }
-        .slider-card .btn-outline {
-            border-width: 2px !important;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            background: #fff !important;
+
+        /* Category Card Alignment */
+        .premium-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            min-height: 520px !important;
         }
-        .slider-card .btn-outline:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,122,0,0.2) !important;
+        .premium-card .card-content {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
-        .slider-card:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12) !important;
-            border-color: var(--primary-color) !important;
+        .premium-card .description {
+            min-height: 80px !important;
         }
+        .premium-card .card-btn-wrapper {
+            margin-top: auto !important;
+        }
+
         .feature-item i { font-size: 1.8rem; color: var(--primary-color); flex-shrink: 0; }
         .feature-item span { font-weight: 700; color: #2d3748; font-size: 0.95rem; line-height: 1.2; }
         .feature-item:hover { background: #fff8f3; border-color: rgba(255,122,0,0.2); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,122,0,0.08); }
+        
+        /* Optimization for Slider Lag */
+        .hero-slide {
+            will-change: opacity;
+            transform: translateZ(0);
+        }
+        .slider-card {
+            transform: translateZ(0); 
+            backface-visibility: hidden;
+        }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -155,42 +188,47 @@
     <section class="main-image-slider">
         <!-- Slide 1 -->
         <div class="hero-slide active-slide">
-            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Dashboard" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <img src="{{ asset('assets/standard/banner.JPG') }}" alt="MCC IGH Home" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" loading="eager">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Welcome to MCC IGH</h2>
                 <p class="slide-subtitle">Comfortable and secure guest house booking</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 2 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc1.png') }}" alt="MCC IGH Premium" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Premium Stay Experience</h2>
                 <p class="slide-subtitle">Book rooms easily with modern facilities</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 3 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/mcc2.png') }}" alt="MCC IGH Booking" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Simple &amp; Fast Booking</h2>
                 <p class="slide-subtitle">Plan your stay with ease and convenience</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 4 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner2.jpg') }}" alt="MCC IGH Modern" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Modern Amenities</h2>
                 <p class="slide-subtitle">Experience comfort with state-of-the-art facilities</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Slide 5 -->
         <div class="hero-slide">
             <img src="{{ asset('assets/standard/banner1.JPG') }}" alt="MCC IGH Serene" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
-            <div class="hero-layer" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5%;pointer-events:none;">
+            <div class="hero-layer" style="position:absolute;inset:0;pointer-events:none;">
                 <h2 class="slide-title">Serene Environment</h2>
                 <p class="slide-subtitle">Enjoy a peaceful and quiet stay at the campus</p>
+                <a href="#explore-rooms" class="btn btn-primary banner-cta" style="pointer-events: auto;">BOOK NOW</a>
             </div>
         </div>
         <!-- Nav Arrows -->
@@ -198,11 +236,11 @@
         <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
         <!-- Dots -->
         <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
-            <div class="hero-dot active" style="width:30px;height:3px;background:var(--primary-color);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
-            <div class="hero-dot" style="width:30px;height:3px;background:rgba(255,255,255,0.4);cursor:pointer;transition:0.3s;"></div>
+            <div class="hero-dot active" style="width:30px;height:4px;border-radius:2px;background:var(--primary-color);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
         </div>
     </section>
 
@@ -216,8 +254,8 @@
             const next = document.querySelector('.hero-next');
             let current = 0;
             let timer;
-            let startX = 0;
             let isDragging = false;
+            let isHovered = false;
 
             function renderSlide(index) {
                 slides.forEach(s => s.classList.remove('active-slide'));
@@ -231,26 +269,49 @@
             function nextSlide() { renderSlide((current + 1) % slides.length); }
             function prevSlide() { renderSlide((current - 1 + slides.length) % slides.length); }
 
-            function getTimer() { return setInterval(nextSlide, 4000); } // 4s slightly slower auto-slide
-            function resetTimer() { clearInterval(timer); timer = getTimer(); }
+            function startTimer() {
+                stopTimer();
+                if (!isHovered && !isDragging) {
+                    timer = setInterval(nextSlide, 4000);
+                }
+            }
+
+            function stopTimer() {
+                if (timer) clearInterval(timer);
+            }
 
             // Click Nav
-            next.addEventListener('click', () => { nextSlide(); resetTimer(); });
-            prev.addEventListener('click', () => { prevSlide(); resetTimer(); });
+            next.addEventListener('click', () => { 
+                nextSlide(); 
+                startTimer(); 
+            });
+            prev.addEventListener('click', () => { 
+                prevSlide(); 
+                startTimer(); 
+            });
 
             dots.forEach((dot, i) => {
-                dot.addEventListener('click', () => { renderSlide(i); resetTimer(); });
+                dot.addEventListener('click', () => { 
+                    renderSlide(i); 
+                    startTimer(); 
+                });
             });
 
             // Pause on hover
-            slider.addEventListener('mouseenter', () => clearInterval(timer));
-            slider.addEventListener('mouseleave', () => { if(!isDragging) resetTimer(); });
+            slider.addEventListener('mouseenter', () => {
+                isHovered = true;
+                stopTimer();
+            });
+            slider.addEventListener('mouseleave', () => {
+                isHovered = false;
+                if (!isDragging) startTimer();
+            });
 
             // Drag / Swipe Logic
             function dragStart(e) {
                 isDragging = true;
                 startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-                clearInterval(timer);
+                stopTimer();
                 slider.style.cursor = 'grabbing';
             }
             function dragEnd(e) {
@@ -265,7 +326,7 @@
                     if (diff > 0) nextSlide();
                     else prevSlide();
                 }
-                resetTimer();
+                startTimer();
             }
 
             slider.addEventListener('mousedown', dragStart);
@@ -275,25 +336,18 @@
             slider.addEventListener('touchend', dragEnd);
 
             // Execute boot
-            timer = getTimer();
+            startTimer();
         });
     </script>
 
     <main>
 
-        <!-- HERO SECTION -->
-        <section class="hero-section">
-            <h1 class="welcome-title">Welcome to MCC IGH
-                <span style="position:absolute;width:40%;height:5px;bottom:-8px;left:30%;background-color:#ff7a00;border-radius:4px;"></span>
-            </h1>
-            <p class="welcome-subtitle">Book comfortable guest house rooms effortlessly and manage your professional stay with ease.</p>
-        </section>
-
-        <!-- EXPLORE OUR ROOMS RE-INTEGRATED SLIDER -->
-        <section class="explore-rooms-section">
+        <!-- EXPLORE OUR ROOMS SLIDER -->
+        <section id="explore-rooms" class="explore-rooms-section">
             <div class="slider-master-container">
-                <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                    <h2 style="font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 800; color: var(--text-color); letter-spacing: -1px;">Room Categories</h2>
+                <div class="title-section" style="text-align: center; margin-bottom: 1.75rem; padding: 0 1rem;">
+                    <h2 style="font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.4rem;">Room Categories</h2>
+                    <p style="color: #64748b; font-size: 0.95rem; font-weight: 400;">Choose from our range of professionally equipped rooms and halls</p>
                 </div>
 
                 <div class="slider-outer-frame">
@@ -306,23 +360,24 @@
                                 ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => asset('assets/room1.JPG'), 'title' => 'Advance Rooms', 'desc' => 'Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
                                 ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/conference.JPG'), 'title' => 'Conference Hall', 'desc' => 'A versatile venue designed for large-scale gatherings and corporate events with high-definition projection and professional acoustics.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
                                 ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/glass.JPG'), 'title' => 'Glass Room', 'desc' => 'Inspire creativity in our modern Glass Room, designed for collaborative brainstorming and focused team sessions with ample natural light.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
-                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE SUITE'],
+                                ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE SUITE'],
                             ];
                         @endphp
 
                         @for ($i = 0; $i < 2; $i++)
                             @foreach ($roomCards as $card)
-                                <div class="card slider-card">
-                                    <div class="card-image-wrapper" style="height: 160px;">
+                                <div class="card slider-card" style="display: flex; flex-direction: column; height: 100%; min-width: 320px;">
+                                    <div class="card-image-wrapper" style="height: 160px; flex-shrink: 0;">
                                         <span class="badge {{ $card['badgeClass'] }}" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">{{ $card['badge'] }}</span>
                                         <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}">
                                     </div>
-                                    <div class="card-content">
-                                        <h2>{{ $card['title'] }}</h2>
-                                        <p class="description">{!! $card['desc'] !!}</p>
-                                        <p class="gst-text">+ 5% GST applicable</p>
-                                        <div class="card-btn-wrapper">
-                                            <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center;">{{ $card['btnText'] }}</a>
+                                    <div class="card-content" style="flex: 1; display: flex; flex-direction: column; padding: 1.25rem;">
+                                        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a;">{{ $card['title'] }}</h2>
+                                        <p class="description" style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 1rem; flex: none; min-height: 90px;">{!! $card['desc'] !!}</p>
+                                        @php $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5; @endphp
+                                        <p class="gst-text" style="font-size: 0.8rem; color: #94a3b8; margin-top: auto; margin-bottom: 1rem;">+ {{ $gstRate }}% GST applicable</p>
+                                        <div class="card-btn-wrapper" style="margin-top: 0;">
+                                            <a href="{{ route($card['route']) }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center; text-transform: uppercase; font-weight: 700;">{{ $card['btnText'] }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -341,12 +396,14 @@
                 const leftArrow = document.getElementById('roomPrevBtn');
                 const rightArrow = document.getElementById('roomNextBtn');
                 
-                let speed = 0.65; // Consistent speed
+                let speed = 1.0; // 1px per frame (perfectly smooth on 60fps)
                 let isHovered = false;
-                let scrollPos = 0;
+                let isManualPaused = false;
+                let scrollPos = container.scrollLeft;
+                let manualPauseTimer = null;
 
                 function autoScroll() {
-                    if (!isHovered) {
+                    if (!isHovered && !isManualPaused) {
                         scrollPos += speed;
                         if (scrollPos >= container.scrollWidth / 2) {
                             scrollPos = 0;
@@ -358,47 +415,59 @@
 
                 autoScroll();
 
-                let manualPauseTimer = null;
-
-                function manualPause() {
-                    isHovered = true;
+                function triggerManualPause() {
+                    isManualPaused = true;
                     if (manualPauseTimer) clearTimeout(manualPauseTimer);
                     manualPauseTimer = setTimeout(() => {
-                        isHovered = false;
+                        isManualPaused = false;
+                        // Synchronize scrollPos with actual scrollLeft when resuming
                         scrollPos = container.scrollLeft;
-                    }, 2500); // 2.5s manual override
+                    }, 4000); // 4s manual override after interaction
                 }
 
                 leftArrow.onclick = (e) => {
                     e.preventDefault();
-                    manualPause();
+                    triggerManualPause();
                     container.scrollBy({ left: -320, behavior: 'smooth' });
                 };
 
                 rightArrow.onclick = (e) => {
                     e.preventDefault();
-                    manualPause();
+                    triggerManualPause();
                     container.scrollBy({ left: 320, behavior: 'smooth' });
                 };
 
-                container.addEventListener('mouseenter', () => isHovered = true);
+                // Track hover state
+                container.addEventListener('mouseenter', () => {
+                    isHovered = true;
+                });
+                
                 container.addEventListener('mouseleave', () => {
                     isHovered = false;
+                    // Sync position on leave to ensure smooth pickup
                     scrollPos = container.scrollLeft;
+                });
+
+                // Periodic sync to handle manual browser scrolling or touch
+                container.addEventListener('scroll', () => {
+                    if (isHovered || isManualPaused) {
+                        scrollPos = container.scrollLeft;
+                    }
                 });
             });
         </script>
-        <!-- ROOM CATEGORIES COMPARISON -->
-        <section style="max-width: 1250px; margin: 0 auto 3rem; padding: 0 1rem;">
-            <div class="title-section" style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: var(--text-color);">Room Categories</h2>
+        <!-- ROOM CATEGORIES QUICK REFERENCE -->
+        <section style="max-width: 1100px;">
+            <div class="title-section" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Pricing Overview</h2>
+                <p style="color: #64748b; font-size: 0.9rem;">Quick reference for room rates and availability</p>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: stretch;">
                 <!-- Standard Rooms Info -->
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">STANDARD ROOMS</h3>
                     <ul style="list-style: none; padding: 0; color: var(--text-light); font-size: 0.95rem; line-height: 1.8;">
-                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹1400 / 12 hrs</strong></li>
+                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹1400 / 12 hrs</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ {{ $gstRate }}% GST)</span></li>
                         <li><i class="ph-fill ph-clock" style="color: var(--primary-color); margin-right: 8px;"></i> Ideal for short stay</li>
                         <li><i class="ph-fill ph-check-circle" style="color: var(--primary-color); margin-right: 8px;"></i> Basic amenities (AC, WiFi, Work Desk)</li>
                         <li><i class="ph-fill ph-door" style="color: var(--primary-color); margin-right: 8px;"></i> Rooms 1 – 8</li>
@@ -408,7 +477,7 @@
                 <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                     <h3 style="color: var(--primary-color); font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700;">ADVANCE ROOMS</h3>
                     <ul style="list-style: none; padding: 0; color: var(--text-light); font-size: 0.95rem; line-height: 1.8;">
-                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹2500 / day</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ 5% GST)</span></li>
+                        <li><i class="ph-fill ph-tag" style="color: var(--primary-color); margin-right: 8px;"></i> <strong>₹2500 / day</strong> <span class="gst-text" style="display: inline; font-size: 0.75rem;">(+ {{ $gstRate }}% GST)</span></li>
                         <li><i class="ph-fill ph-shield-star" style="color: var(--primary-color); margin-right: 8px;"></i> Premium stay experience</li>
                         <li><i class="ph-fill ph-star" style="color: var(--primary-color); margin-right: 8px;"></i> Better interiors + privacy</li>
                         <li><i class="ph-fill ph-door" style="color: var(--primary-color); margin-right: 8px;"></i> Rooms 101–104, 201–207</li>
@@ -417,9 +486,14 @@
             </div>
         </section>
 
-        <!-- CATEGORY SELECTION (TIGHTER BALANCED) -->
-        <section style="max-width: 1350px; margin: 0 auto 5rem; padding: 0 1.25rem;">
+        <!-- CATEGORY SELECTION -->
+        <section style="max-width: 1350px;">
+            <div class="title-section" style="text-align: center; margin-bottom: 1.75rem;">
+                <h2 style="font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; color: var(--text-color); letter-spacing: -0.5px; margin-bottom: 0.3rem;">Browse All Rooms</h2>
+                <p style="color: #64748b; font-size: 0.9rem;">Select a category to explore availability and book your stay</p>
+            </div>
             <div class="dashboard-rooms-grid" style="align-items: stretch;">
+
                 <!-- Standard Rooms -->
                 <div class="card premium-card">
                     <div class="card-image-wrapper" style="height: 160px;">
@@ -429,7 +503,7 @@
                     <div class="card-content">
                         <h2>Standard Rooms</h2>
                         <p class="description">Thoughtfully designed for efficiency and comfort, our Standard Rooms provide a restful haven for short-term visitors with essential modern amenities.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -445,7 +519,7 @@
                     <div class="card-content">
                         <h2>Advance Rooms</h2>
                         <p class="description">Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -461,7 +535,7 @@
                     <div class="card-content">
                         <h2>Conference / Glass Rooms</h2>
                         <p class="description">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">
                             <a href="{{ route('conference.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
                         </div>
@@ -470,13 +544,13 @@
             </div>
         </section>
 
-        <!-- GUEST HOUSE DESCRIPTION (PREMIUM ENHANCED) -->
-        <section class="description-section" style="padding: 0 20px;">
+        <!-- ABOUT FACILITIES -->
+        <section class="description-section">
             <div class="premium-facility-card" id="facilityCard">
                 <h2 class="facility-title">About Our Facilities</h2>
                 <div class="facility-divider"></div>
                 <div class="desc-content">
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Experience a refined stay tailored to the needs of modern professionals and distinguished guests. At MCC IGH, we combine traditional hospitality with premium modern amenities—from high-speed connectivity to climate-controlled comfort—ensuring every moment of your visit is both relaxing and highly productive.</p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: #555; max-width: 750px; margin: 0 auto;">Experience a refined stay tailored to the needs of modern professionals and distinguished guests. At MCC IGH, we combine traditional hospitality with premium modern amenities, ensuring every moment of your visit is both relaxing and highly productive.</p>
                 </div>
 
                 <div class="feature-grid">
@@ -531,7 +605,7 @@
                     <p><strong>Date:</strong> <span id="modalDate"></span></p>
                     <p><strong>Time:</strong> <span id="modalTime"></span></p>
                     <p><strong>Rate:</strong> ₹<span id="modalPrice"></span> / hr</p>
-                    <p class="gst-text">+ 5% GST applicable</p>
+                    <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                 </div>
                 <div class="modal-warning" id="modalWarning" style="display:none;"></div>
                 <p>Are you sure you want to proceed to the details page with this schedule?</p>
@@ -559,99 +633,14 @@
     <!-- Alert Toast (View Details dummy action) -->
     <div class="toast" id="toast"></div>
 
-    <!-- Help Modal -->
-    <div class="help-modal-overlay" id="helpModal">
-        <div class="help-modal-card">
-            <button class="help-modal-close" onclick="closeHelpModal()">
-                <i class="ph ph-x"></i>
-            </button>
-            <div class="help-modal-content">
-                <h2 class="help-modal-title">Contact Us</h2>
-                <form class="help-form" onsubmit="event.preventDefault(); return false;">
-                    <div class="help-form-row">
-                        <div class="help-input-group">
-                            <label>Name</label>
-                            <input type="text" placeholder="Your name">
-                        </div>
-                        <div class="help-input-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="Your email">
-                        </div>
-                    </div>
-                    
-                    <div class="help-input-group full-width">
-                        <label>Subject</label>
-                        <div class="custom-dropdown" id="helpSubjectDropdown">
-                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
-                                <span id="selectedSubject">Choose subject…</span>
-                                <i class="ph ph-caret-down"></i>
-                            </div>
-                            <div class="dropdown-options" id="helpDropdownOptions">
-                                <div class="dropdown-option" onclick="selectHelpOption('Are you a property owner who needs help?')">Are you a property owner who needs help?</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('I did not stay at the hotel')">I did not stay at the hotel</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Check prices and availability')">Check prices and availability</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for business clients)')">Group booking (for business clients)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Group booking (for travel agencies)')">Group booking (for travel agencies)</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Request my personal data')">Request my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Remove my personal data')">Remove my personal data</div>
-                                <div class="dropdown-option" onclick="selectHelpOption('Legal and law-related matters')">Legal and law-related matters</div>
-                            </div>
-                        </div>
-                    </div>
+    @include('partials.help-modal')
 
-                    <div class="help-input-group full-width">
-                        <label>Message</label>
-                        <textarea placeholder="How can we help you?" rows="5"></textarea>
-                    </div>
-
-                    <div class="help-form-footer">
-                        <button type="submit" class="help-send-btn">SEND</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', initIndexPage);
 
-        function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-        }
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.remove('active');
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        function toggleHelpDropdown(event) {
-            event.stopPropagation();
-            document.getElementById('helpDropdownOptions').classList.toggle('active');
-        }
-
-        function selectHelpOption(val) {
-            document.getElementById('selectedSubject').innerText = val;
-            document.getElementById('helpDropdownOptions').classList.remove('active');
-        }
-
-        window.onclick = function(event) {
-            const helpModal = document.getElementById('helpModal');
-            if (event.target == helpModal) {
-                closeHelpModal();
-            }
-
-            const dropdownOptions = document.getElementById('helpDropdownOptions');
-            const dropdownSelected = document.querySelector('.dropdown-selected');
-            if (dropdownOptions && dropdownSelected && !dropdownSelected.contains(event.target)) {
-                dropdownOptions.classList.remove('active');
-            }
-        }
 
         function slideLeft() {
             const slider = document.getElementById('roomSlider');

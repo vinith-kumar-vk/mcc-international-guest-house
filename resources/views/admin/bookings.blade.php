@@ -46,15 +46,6 @@
             transition: transform 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-        }
-
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--border);
@@ -91,9 +82,17 @@
             margin-bottom: 0.25rem;
         }
 
-        .menu-item:hover, .menu-item.active {
+        .menu-item:hover {
             background: rgba(255, 122, 0, 0.08);
             color: var(--primary-color);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 122, 0, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+            padding-left: calc(1rem - 3px);
         }
 
         .menu-item i {
@@ -117,22 +116,15 @@
         }
 
         .top-navbar {
-            height: 68px;
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .admin-body {
-            padding: 2rem 2.5rem;
-            flex: 1;
+            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; 
+            margin: 0 auto; box-sizing: border-box; flex: 1;
         }
 
         @media (max-width: 768px) {
@@ -160,19 +152,32 @@
 
         /* Filter Section */
         .filter-section {
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             background: #fff;
             border-bottom: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            align-items: end;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .filter-section .filter-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filter-section .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
         }
 
         @media (max-width: 640px) {
             .filter-section {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
+            .filter-section .filter-group,
+            .filter-section .filter-actions { width: 100%; flex: unset; }
         }
 
         .filter-group {
@@ -208,22 +213,18 @@
         }
 
         .data-table th, .data-table td {
-            padding: 1.1rem 1.5rem;
+            padding: 0.9rem 1.1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
             vertical-align: middle;
         }
 
-        /* Give the last (ACTION) column extra right padding */
+        /* Action column: fixed width, never wrap */
         .data-table th:last-child,
         .data-table td:last-child {
-            padding-right: 2rem;
-        }
-
-        /* Action cell: ensure minimum height with vertical centering */
-        .data-table td:last-child {
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            white-space: nowrap;
+            min-width: 120px;
+            padding-right: 1.5rem;
         }
 
         .data-table th {
@@ -359,42 +360,56 @@
 
         /* Pagination */
         .pagination-container {
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             border-top: 1px solid var(--border);
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 0.75rem;
         }
 
         .pagination-info {
             font-size: 0.875rem;
             color: var(--text-light);
+            white-space: nowrap;
         }
 
         .pagination-links {
             display: flex;
-            gap: 0.5rem;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
-        .pagination-btn {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            text-decoration: none;
-            color: #64748b;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+        /* Pagination Styling */
+        .pagination { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 4px; }
+        .page-item .page-link {
+            display: flex; align-items: center; justify-content: center;
+            min-width: 36px; height: 36px; padding: 0 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            color: #64748b; font-size: 0.875rem; font-weight: 500;
+            text-decoration: none; transition: all 0.2s;
+            background: white;
+        }
+        .page-item.active .page-link {
+            background: var(--primary-color); border-color: var(--primary-color); color: white;
+            box-shadow: 0 4px 10px rgba(255, 122, 0, 0.25);
+        }
+        .page-item.disabled .page-link { opacity: 0.5; cursor: not-allowed; background: #f8fafc; }
+        .page-item:not(.active):not(.disabled) .page-link:hover {
+            background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color);
         }
 
-        .pagination-btn:hover {
-            background: #f8fafc;
-            color: var(--primary-color);
-        }
-
-        .pagination-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+        @media (max-width: 640px) {
+            .pagination-container {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 1rem !important;
+                gap: 0.75rem !important;
+            }
+            .pagination-links { width: 100% !important; }
+            .pagination { flex-wrap: wrap !important; gap: 4px !important; }
+            .page-item .page-link { min-width: 32px !important; height: 32px !important; font-size: 0.8rem !important; }
         }
 
         /* Confirmation Modal */
@@ -432,6 +447,56 @@
         .confirm-btn-confirm.is-reject { background: #ef4444; }
         .confirm-btn-cancel:hover { background: #f1f5f9; color: #475569; }
         .confirm-btn-confirm:hover { filter: brightness(0.95); transform: translateY(-1px); }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; }
+            .sidebar.open { transform: translateX(0); }
+            .admin-main { margin-left: 0 !important; width: 100% !important; }
+            .top-navbar { padding: 0 1rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .top-navbar div:first-child { font-size: 1rem !important; }
+            .filter-section { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 640px) {
+            .filter-section { grid-template-columns: 1fr !important; }
+            .top-navbar div:last-child a { padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; }
+        }
+        /* Refined Admin Profile Dropdown - Polished Card Style */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            display: none; z-index: 2000;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
+        }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -467,9 +532,14 @@
     <main class="admin-main">
         <!-- Sticky Top Navbar -->
         <div class="top-navbar">
-            <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">
-                <i class="ph-bold ph-calendar-check" style="color: var(--primary-color); margin-right: 0.4rem;"></i>
-                Booking Management
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div style="font-weight: 700; font-size: 1.15rem; color: #1e293b;">
+                    <i class="ph-bold ph-calendar-check" style="color: var(--primary-color); margin-right: 0.4rem;"></i>
+                    Bookings
+                </div>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <a href="{{ route('admin.bookings.export', request()->only(['search','date','status','workspace'])) }}"
@@ -484,6 +554,17 @@
                     <i class="ph-bold ph-file-arrow-down" style="font-size: 1rem; color:#fff !important;"></i>
                     Export CSV
                 </a>
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                        <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -491,8 +572,16 @@
         <div class="admin-body">
 
         @if(session('success'))
-            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
+            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c3e6cb; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-check-circle"></i>
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #fecaca; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-warning-circle"></i>
+                {{ session('error') }}
             </div>
         @endif
 
@@ -524,9 +613,9 @@
                         <option value="Failed" {{ request('status') == 'Failed' ? 'selected' : '' }}>Failed</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button type="submit" class="btn" style="width: auto; height: 42px; padding: 0 1.25rem;"><i class="ph ph-magnifying-glass"></i></button>
-                    <a href="{{ route('admin.bookings') }}" class="btn btn-outline" style="width: auto; height: 42px; padding: 0 1.25rem; display: flex; align-items: center;"><i class="ph ph-arrows-clockwise"></i></a>
+                <div class="filter-actions">
+                    <button type="submit" class="btn" style="height: 42px; padding: 0 1.1rem;"><i class="ph ph-magnifying-glass"></i></button>
+                    <a href="{{ route('admin.bookings') }}" class="btn btn-outline" style="height: 42px; padding: 0 1.1rem; display: flex; align-items: center;"><i class="ph ph-arrows-clockwise"></i></a>
                 </div>
             </form>
 
@@ -562,7 +651,10 @@
                             <td style="white-space: nowrap;">
                                 <div style="font-weight: 600; color: #1e293b;">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}</div>
                                 <div style="font-size: 0.75rem; color: #64748b;">
-                                    {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}
+                                    <span style="font-weight: 700; color: var(--primary-color);">IN:</span> {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}
+                                </div>
+                                <div style="font-size: 0.75rem; color: #64748b;">
+                                    <span style="font-weight: 700; color: #ef4444;">OUT:</span> {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}
                                 </div>
                             </td>
                             <td>
@@ -594,7 +686,7 @@
                                     <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn-view" title="View Details">
                                         <i class="ph ph-eye"></i>
                                     </a>
-                                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');" style="display: inline;">
+                                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('delete', this);" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-delete">
@@ -622,7 +714,7 @@
                     Showing {{ $bookings->firstItem() }} to {{ $bookings->lastItem() }} of {{ $bookings->total() }} entries
                 </div>
                 <div class="pagination-links">
-                    {{ $bookings->appends(request()->query())->links('pagination::simple-bootstrap-4') }}
+                    {{ $bookings->appends(request()->query())->links('pagination::bootstrap-4') }}
                 </div>
             </div>
             @endif
@@ -656,10 +748,15 @@
                 msg.innerText = 'Are you sure you want to approve this booking?';
                 confirmBtn.innerText = 'Yes, Approve';
                 confirmBtn.className = 'confirm-btn-confirm';
-            } else {
+            } else if (type === 'reject') {
                 title.innerText = 'Reject Booking';
                 msg.innerText = 'Are you sure you want to reject this booking?';
                 confirmBtn.innerText = 'Yes, Reject';
+                confirmBtn.className = 'confirm-btn-confirm is-reject';
+            } else if (type === 'delete') {
+                title.innerText = 'Delete Booking';
+                msg.innerText = 'Are you sure you want to delete this booking permanently? This action cannot be undone.';
+                confirmBtn.innerText = 'Yes, Delete';
                 confirmBtn.className = 'confirm-btn-confirm is-reject';
             }
             modal.style.display = 'flex';
@@ -673,12 +770,34 @@
             if (pendingForm) pendingForm.submit();
         });
 
+        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
+
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+
+        // Sidebar Toggle
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
         document.addEventListener('click', (event) => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                
-                if (!isClickInsideSidebar) {
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
                     sidebar.classList.remove('open');
                 }
             }

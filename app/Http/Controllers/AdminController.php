@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminNotification;
 use App\Mail\BookingApproved;
+use App\Models\PaymentLink;
+use App\Mail\PaymentLinkMail;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -28,8 +31,9 @@ class AdminController extends Controller
         $pendingPayments = Booking::where('payment_status', 'Pending')->count();
         $cancelledBookings = Booking::where('payment_status', 'Failed')->count();
 
-        // Feed for the Notification Center
+        // Feed for the Notification Center (Only Unread)
         $notificationBookings = Booking::whereIn('approval_status', ['Pending', 'Principal Approved'])
+            ->where('is_admin_read', false)
             ->orderBy('updated_at', 'desc')
             ->limit(10)
             ->get();
@@ -203,6 +207,12 @@ class AdminController extends Controller
     public function show($id)
     {
         $booking = Booking::findOrFail($id);
+        
+        // Mark as read when admin views details
+        if (!$booking->is_admin_read) {
+            $booking->update(['is_admin_read' => true]);
+        }
+        
         return view('admin.booking_details', compact('booking'));
     }
 
@@ -222,48 +232,99 @@ class AdminController extends Controller
     {
         $booking = Booking::findOrFail($id);
         
-        if ($booking->approval_status !== 'Principal Approved') {
+        if ($booking->approval_status !== 'Principal Approved' && $booking->approval_status !== 'Approved') {
             return back()->with('error', 'Strict Enforced: This booking must be approved by the Principal first.');
         }
 
-        $booking->update(['approval_status' => 'Approved']);
+        if ($booking->approval_status !== 'Approved') {
+            $booking->update(['approval_status' => 'Approved']);
+            app(\App\Services\WebhookService::class)->trigger('booking.confirmed', $booking);
+        }
         
-        // Notify Guest (Testing with unfortunately2909@gmail.com)
+        // Generate Secure Payment Token
+        $token = Str::random(32);
+        $paymentLink = PaymentLink::create([
+            'booking_id' => $id,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours(24),
+            'is_used' => false
+        ]);
+
+        // Notify Guest
         try {
-            $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
-            $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
-            $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
-            $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
-            $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
-            $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+            // Apply Dynamic Mail Config
+            $this->applyMailConfig();
 
-            config([
-                'mail.default' => $mailMailer,
-                'mail.mailers.smtp.host' => $mailHost,
-                'mail.mailers.smtp.port' => $mailPort,
-                'mail.mailers.smtp.encryption' => $mailEncryption,
-                'mail.mailers.smtp.username' => $senderEmail,
-                'mail.mailers.smtp.password' => $mailPassword,
-                'mail.from.address' => $senderEmail,
-                'mail.from.name' => 'MCC IGH System'
-            ]);
-
-            \Illuminate\Support\Facades\Mail::purge('smtp');
-
-            Mail::to('unfortunately2909@gmail.com')->send(new BookingApproved($booking));
+            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
         } catch (\Exception $e) {
-            \Log::error('Failed to send guest approval notification: ' . $e->getMessage());
+            \Log::error('Failed to send guest payment link: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Booking fully approved. Guest has been notified.');
+        return back()->with('success', 'Booking approved. Payment link has been sent to the guest.');
     }
 
-    public function reject($id)
+    public function resendPaymentLink($id)
+    {
+        $booking = Booking::findOrFail($id);
+        
+        if ($booking->payment_status === 'Paid') {
+            return back()->with('error', 'This booking is already paid.');
+        }
+
+        // Generate New Secure Payment Token (invalidates previous if we want, but typically we just send a fresh one)
+        $token = Str::random(32);
+        $paymentLink = PaymentLink::create([
+            'booking_id' => $id,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours(24),
+            'is_used' => false
+        ]);
+
+        try {
+            $this->applyMailConfig();
+            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
+        } catch (\Exception $e) {
+            \Log::error('Failed to resend guest payment link: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send email. Check logs.');
+        }
+
+        return back()->with('success', 'A new payment link has been sent to the guest.');
+    }
+
+    private function applyMailConfig()
+    {
+        $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
+        $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
+        $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
+        $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
+        $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
+        $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+
+        config([
+            'mail.default' => $mailMailer,
+            'mail.mailers.smtp.host' => $mailHost,
+            'mail.mailers.smtp.port' => $mailPort,
+            'mail.mailers.smtp.encryption' => $mailEncryption,
+            'mail.mailers.smtp.username' => $senderEmail,
+            'mail.mailers.smtp.password' => $mailPassword,
+            'mail.from.address' => $senderEmail,
+            'mail.from.name' => 'MCC IGH System'
+        ]);
+
+        \Illuminate\Support\Facades\Mail::purge('smtp');
+    }
+
+    public function reject($id, Request $request)
     {
         $booking = Booking::findOrFail($id);
         $booking->update(['approval_status' => 'Rejected']);
+        app(\App\Services\WebhookService::class)->trigger('booking.cancelled', $booking);
         
-        return redirect()->route('approval.status')->with('success', 'Booking has been rejected.');
+        if ($request->isMethod('post')) {
+            return back()->with('error', 'Booking has been rejected.');
+        }
+        
+        return redirect()->route('approval.status')->with('error', 'Booking has been rejected.');
     }
 
     public function markAsPaid($id)
@@ -298,7 +359,25 @@ class AdminController extends Controller
         }
 
         $bookings = $query->orderBy('booking_date', 'desc')->get();
-        return view('admin.reports', compact('bookings'));
+        
+        // Calculate dynamic totals for the report summary
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $gstFactor = 1 + ($gstRate / 100);
+        
+        $totalRevenue = $bookings->sum('total_price');
+        $netRevenue = $totalRevenue / $gstFactor;
+        $totalGst = $totalRevenue - $netRevenue;
+        
+        return view('admin.reports', compact('bookings', 'totalRevenue', 'netRevenue', 'totalGst', 'gstRate'));
+    }
+
+    public function markNotificationsRead()
+    {
+        Booking::whereIn('approval_status', ['Pending', 'Principal Approved'])
+            ->where('is_admin_read', false)
+            ->update(['is_admin_read' => true]);
+            
+        return back()->with('success', 'All notifications marked as read.');
     }
 
     public function downloadReport(Request $request)
@@ -314,26 +393,21 @@ class AdminController extends Controller
 
         $bookings = $query->orderBy('booking_date', 'desc')->get();
         
-        $content = "MCC IGH - BOOKING REPORT\n";
-        $content .= "Generated on: " . now()->format('d M Y, H:i') . "\n";
-        $content .= "Period: " . ($request->start_date ?? 'All Time') . " to " . ($request->end_date ?? 'Present') . "\n";
-        $content .= "================================================================================\n\n";
+        // Calculate dynamic totals for the PDF report
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $gstFactor = 1 + ($gstRate / 100);
         
-        foreach ($bookings as $b) {
-            $content .= "BOOKING ID: BK-" . str_pad($b->id, 6, '0', STR_PAD_LEFT) . "\n";
-            $content .= "GUEST: " . $b->name . " <" . $b->email . ">\n";
-            $content .= "ROOM: " . str_replace('-', ' ', ucwords($b->room_name, '- ')) . "\n";
-            $content .= "DATE: " . \Carbon\Carbon::parse($b->booking_date)->format('d M Y') . "\n";
-            $content .= "TIME: " . \Carbon\Carbon::parse($b->start_time)->format('h:i A') . " - " . \Carbon\Carbon::parse($b->end_time)->format('h:i A') . "\n";
-            $content .= "STATUS: " . strtoupper($b->approval_status) . " (" . strtoupper($b->payment_status) . ")\n";
-            $content .= "PRICE: ₹" . number_format($b->total_price, 2) . "\n";
-            $content .= "--------------------------------------------------------------------------------\n";
-        }
+        $totalRevenue = $bookings->sum('total_price');
+        $netRevenue = $totalRevenue / $gstFactor;
+        $totalGst = $totalRevenue - $netRevenue;
+        
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#ff7a00';
 
-        $filename = 'booking_report_' . now()->format('Ymd_His') . '.txt';
-
-        return response($content)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+        // Using the global 'Pdf' alias which is auto-discovered
+        $pdf = \Pdf::loadView('admin.report_pdf', compact('bookings', 'startDate', 'endDate', 'primaryColor', 'totalRevenue', 'netRevenue', 'totalGst', 'gstRate'));
+        
+        return $pdf->download('Revenue_Report_'.now()->format('dM_Y').'.pdf');
     }
 }

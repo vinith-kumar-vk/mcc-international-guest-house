@@ -7,6 +7,7 @@ use App\Models\Booking;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingNotification;
+use App\Mail\SupportMail;
 
 class BookingController extends Controller
 {
@@ -45,10 +46,34 @@ class BookingController extends Controller
         $clockIn = \Carbon\Carbon::parse($validated['clock_in']);
         $clockOut = \Carbon\Carbon::parse($validated['clock_out']);
         
-        // Calculate hours and price
+        // Calculate duration in hours
         $durationHours = $clockIn->diffInHours($clockOut);
         if ($durationHours == 0) $durationHours = 1;
-        $totalPrice = $durationHours > 4 ? 5000 : 2000;
+        
+        $basePrice = 0;
+        $roomName = $validated['room_name'];
+        
+        // Dynamic Pricing Logic based on Category
+        if (str_contains(strtolower($roomName), 'standard')) {
+            // Standard Rooms: ₹1400 per 12-hour block (or fraction)
+            $twelveHourBlocks = ceil($durationHours / 12);
+            $basePrice = $twelveHourBlocks * 1400;
+        } elseif (is_numeric($roomName) || (is_numeric(substr($roomName, 0, 1)) && strlen($roomName) <= 4)) {
+            // Advance Rooms (Numbered 101, 201 etc): ₹2500 per 24-hour day
+            $days = ceil($durationHours / 24);
+            $basePrice = $days * 2500;
+        } elseif (in_array(strtolower($roomName), ['conference-hall', 'glass-room', 'suite-room'])) {
+            // Special Facility Rooms: ₹500 per hour (Minimum 4 hours = ₹2000)
+            $billableHours = max(4, $durationHours);
+            $basePrice = $billableHours * 500;
+        } else {
+            // Default Fallback (Previous logic)
+            $basePrice = $durationHours > 4 ? 5000 : 2000;
+        }
+        
+        // Apply Dynamic GST Rate from Settings
+        $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+        $totalPrice = $basePrice * (1 + ($gstRate / 100));
 
         // Double booking check
         $exists = Booking::where('room_name', $validated['room_name'])
@@ -84,6 +109,9 @@ class BookingController extends Controller
             'referral_attachment' => $attachmentPath
         ]));
 
+        // Trigger Webhook
+        app(\App\Services\WebhookService::class)->trigger('booking.created', $booking);
+
         // 3. Send notification email to the Principal
         try {
             // Get dynamic settings
@@ -117,5 +145,59 @@ class BookingController extends Controller
 
         // 4. Redirect directly to the success page
         return redirect()->route('checkout.success', ['id' => $booking->id])->with('success', 'Booking submitted. Your request has been sent for approval.');
+    }
+
+    public function sendSupportMail(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        try {
+            // Get dynamic settings (same as storeBooking)
+            $supportEmail   = 'prasathragul75@gmail.com'; // Hardcoded as per request
+            $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
+            $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
+            $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';
+            $mailPort       = \App\Models\Setting::where('key', 'mail_port')->value('value')       ?? '587';
+            $mailEncryption = \App\Models\Setting::where('key', 'mail_encryption')->value('value') ?? 'tls';
+            $mailMailer     = \App\Models\Setting::where('key', 'mail_mailer')->value('value')     ?? 'smtp';
+
+            config([
+                'mail.default' => $mailMailer,
+                'mail.mailers.smtp.host' => $mailHost,
+                'mail.mailers.smtp.port' => $mailPort,
+                'mail.mailers.smtp.encryption' => $mailEncryption,
+                'mail.mailers.smtp.username' => $senderEmail,
+                'mail.mailers.smtp.password' => $mailPassword,
+                'mail.from.address' => $senderEmail,
+                'mail.from.name' => 'MCC IGH Support System'
+            ]);
+
+            \Illuminate\Support\Facades\Mail::purge('smtp');
+
+            Mail::to($supportEmail)->send(new SupportMail($validated));
+            Log::info('Support email sent to ' . $supportEmail . ' from ' . $validated['email']);
+
+            return response()->json(['success' => true, 'message' => 'Message delivered successfully to the Support Desk!']);
+        } catch (\Exception $e) {
+            Log::error('Support Request Failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Mail Server Failure: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function downloadReceipt($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $primaryColor = \App\Models\Setting::where('key', 'primary_color')->value('value') ?? '#7f1d1d';
+        
+        // Set paper to A4
+        $pdf = \Pdf::loadView('emails.receipt_pdf', compact('booking', 'primaryColor'))
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->download('MCC_Receipt_#'.str_pad($booking->id, 8, '0', STR_PAD_LEFT).'.pdf');
     }
 }

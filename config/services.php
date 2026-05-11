@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'payu' => [
+        'key' => env('PAYU_MERCHANT_KEY'),
+        'salt' => env('PAYU_MERCHANT_SALT'),
+        'mode' => env('PAYU_MODE', 'test'),
+        'test_url' => env('PAYU_TEST_URL', 'https://test.payu.in/_payment'),
+        'production_url' => env('PAYU_PRODUCTION_URL', 'https://secure.payu.in/_payment'),
+    ],
+
 ];

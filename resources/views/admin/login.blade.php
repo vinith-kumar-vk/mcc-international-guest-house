@@ -15,66 +15,73 @@
 
         body {
             background-color: var(--bg-color);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Inter', sans-serif;
             margin: 0;
+            padding: 1.5rem;
+            box-sizing: border-box;
         }
 
         .login-card {
             background: white;
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             border-radius: 20px;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             border: 1px solid var(--border);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             color: var(--primary-color);
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             justify-content: center;
             margin-bottom: 2rem;
         }
 
         .form-title {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             color: #1e293b;
+            font-weight: 700;
+            font-size: 1.15rem;
         }
 
         .form-group {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #475569;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.65rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1.15rem;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             box-sizing: border-box;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            background: #fcfdfe;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
         }
 
         .btn-login {
@@ -82,28 +89,37 @@
             background: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.85rem;
-            border-radius: 10px;
+            padding: 1rem;
+            border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
             font-size: 1rem;
             margin-top: 1rem;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
         }
 
         .btn-login:hover {
-            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3);
         }
 
         .alert-error {
             background: #fef2f2;
             color: #991b1b;
-            padding: 0.75rem;
-            border-radius: 8px;
+            padding: 0.85rem;
+            border-radius: 10px;
             margin-bottom: 1.5rem;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             text-align: center;
             border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 1rem; }
+            .login-card { padding: 2rem 1.5rem; border-radius: 16px; background: white; }
+            .logo { font-size: 1.5rem; }
+            .form-title { font-size: 1rem; }
         }
     </style>
     @include('partials.dynamic-styles')

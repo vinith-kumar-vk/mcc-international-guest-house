@@ -59,12 +59,18 @@
             width: 100%;
             height: 500px;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .main-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .main-img-wrapper:hover img {
+            transform: scale(1.03);
         }
 
         .thumbnail-grid {
@@ -113,32 +119,7 @@
         .spec-card .val { display: block; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .spec-card .lbl { font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; font-weight: 600; }
 
-        .gallery-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            margin-bottom: 24px;
-            width: 100%;
-            gap: 12px;
-        }
 
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-medium);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .action-btn:hover { color: var(--primary-color); }
-        .action-btn i { font-size: 1.1rem; }
 
         /* Main Content Typography */
         .room-title {
@@ -327,19 +308,22 @@
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; transition: opacity 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
             background: white; border-radius: 20px; padding: 30px;
             width: 90%; max-width: 400px; position: relative;
-            transform: translateY(20px); transition: transform 0.3s ease;
+            transform: scale(0.98); transition: transform 0.3s ease;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-close {
             position: absolute; top: 20px; right: 20px;
-            font-size: 1.5rem; cursor: pointer; color: var(--text-light);
+            font-size: 1.25rem; cursor: pointer; color: var(--text-light);
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.05); transition: all 0.3s ease;
         }
 
         /* Share Modal */
@@ -361,7 +345,9 @@
             justify-content: center;
             width: auto;
             height: auto;
+            transform: scale(0.98); transition: transform 0.3s ease;
         }
+        .modal-overlay.active .lightbox-content { transform: scale(1); }
         .lightbox-img { 
             max-width: 95vw; 
             max-height: 90vh; 
@@ -410,7 +396,7 @@
         /* ===== RESPONSIVE: MOBILE (≤ 768px) ===== */
         @media (max-width: 768px) {
             .details-container {
-                padding: 0 12px !important;
+                padding: 0 1.25rem !important;
                 margin: 0.5rem auto 2rem !important;
                 gap: 1.25rem !important;
             }
@@ -449,13 +435,7 @@
             }
             .spec-card .lbl { font-size: 0.72rem !important; }
 
-            /* Gallery Actions */
-            .gallery-actions {
-                padding: 10px 14px !important;
-                gap: 10px !important;
-                margin-bottom: 18px !important;
-                flex-wrap: wrap !important;
-            }
+
 
             /* Room header */
             .room-title { font-size: 1.5rem !important; line-height: 1.2 !important; }
@@ -496,7 +476,7 @@
 
         /* ===== RESPONSIVE: SMALL PHONE (≤ 480px) ===== */
         @media (max-width: 480px) {
-            .details-container { padding: 0 10px !important; }
+            .details-container { padding: 0 1.25rem !important; }
             .main-img-wrapper { height: 210px !important; }
             .thumbnail-grid { grid-template-columns: repeat(3, 1fr) !important; }
             .thumb-item { height: 60px !important; }
@@ -566,11 +546,11 @@
                 'name' => 'Glass Room',
                 'price' => '₹2000',
                 'time' => 'for 4 hours',
-                'capacity' => '15 Members',
+                'capacity' => '20 Members',
                 'size' => '450 sq.ft',
                 'location' => 'East Wing, Ground Floor',
                 'img' => asset('assets/standard/glass.JPG'),
-                'desc' => 'Inspire creativity in our modern Glass Room, a unique transparent facility designed for collaborative brainstorming and focused team sessions for up to 15 members. Flooded with natural light and equipped with the latest presentation technology, this space fosters an atmosphere of transparency and professional innovation.',
+                'desc' => 'Inspire creativity in our modern Glass Room, a unique transparent facility designed for collaborative brainstorming and focused team sessions for up to 20 members. Flooded with natural light and equipped with the latest presentation technology, this space fosters an atmosphere of transparency and professional innovation.',
                 'amenities' => [
                     ['name' => 'Modern Furniture', 'icon' => 'ph-armchair'],
                     ['name' => 'High Speed WiFi', 'icon' => 'ph-wifi-high'],
@@ -586,9 +566,9 @@
                     ['text' => 'Privacy blinds available', 'icon' => 'ph ph-eye-slash'],
                 ],
                 'capacity_breakdown' => [
-                    ['title' => 'Standing', 'value' => '20'],
-                    ['title' => 'Boardroom', 'value' => '12'],
-                    ['title' => 'Informal', 'value' => '15'],
+                    ['title' => 'Standing', 'value' => '25'],
+                    ['title' => 'Boardroom', 'value' => '15'],
+                    ['title' => 'Informal', 'value' => '20'],
                 ],
                 'tips' => [
                     'Ideal for brainstorming sessions',
@@ -691,7 +671,7 @@
                 </nav>
 
                 <div class="gallery-section">
-                    <div class="main-img-wrapper">
+                    <div class="main-img-wrapper" onclick="openLightbox()">
                         <img id="mainImage" src="{{ $room['img'] }}" alt="{{ $room['name'] }}" onerror="this.src='https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=90'">
                     </div>
                     <div class="thumbnail-grid">
@@ -776,15 +756,7 @@
                     </div>
                 </div>
 
-                <div class="gallery-actions">
-                    <div style="display: flex; gap: 24px;">
-                        <span class="action-btn" onclick="openLightbox()"><i class="ph ph-corners-out"></i> Full Screen</span>
-                    </div>
-                    <div style="display: flex; gap: 16px;">
-                        <span id="likeBtn" class="action-btn" onclick="toggleLike()"><i class="ph ph-heart"></i></span>
-                        <span class="action-btn" onclick="openShareModal()"><i class="ph ph-share-network"></i></span>
-                    </div>
-                </div>
+
 
                 <div class="room-info-header">
                     <h1 class="room-title">{{ $room['name'] }}</h1>
@@ -815,7 +787,7 @@
                     </div>
 
                     <h2 class="section-title"><i class="ph-fill ph-map-pin"></i> Getting There</h2>
-                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, Tambaram East, Chennai, Tamil Nadu, India</p>
+                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, East Tambaram, Chennai, Tamil Nadu, India</p>
                     <div style="height: 300px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 30px;">
                         <iframe 
                             width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
@@ -836,7 +808,7 @@
                             <p style="color: var(--text-medium); font-style: italic; font-size: 0.85rem; line-height: 1.5; margin: 0;">"{{ $review['text'] }}"</p>
                         </div>
                         @endforeach
-                        <a href="javascript:void(0)" onclick="switchTab('reviews', document.querySelector('.tab-btn:last-child'))" style="color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View all reviews →</a>
+                        <a href="javascript:void(0)" onclick="switchTab('reviews', document.querySelectorAll('.tab-btn')[3])" style="color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View all reviews →</a>
                     </div>
                 </div>
 
@@ -909,7 +881,7 @@
 
                 <div id="location" class="tab-pane">
                     <h2 class="section-title"><i class="ph-fill ph-map-pin"></i> Getting There</h2>
-                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, Tambaram East, Chennai, Tamil Nadu, India</p>
+                    <p class="description-text" style="margin-bottom: 20px;">Madras Christian College, East Tambaram, Chennai, Tamil Nadu, India</p>
                     <div style="height: 450px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-light); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
                         <iframe 
                             width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
@@ -936,7 +908,7 @@
                 </div>
 
                 <div id="faq" class="tab-pane">
-                    <h2 class="section-title"><i class="ph-fill ph-question"></i> Frequently Asked Questions</h2>
+                    <h2 class="section-title"><i class="ph-fill ph-chats-circle"></i> Frequently Asked Questions</h2>
                     <div class="faq-accordion" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
                         @php
                             $faqs = [
@@ -951,7 +923,7 @@
                         @foreach($faqs as $faq)
                         <div class="faq-item-compact" style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; transition: all 0.3s ease;">
                             <h4 style="font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: start; gap: 10px;">
-                                <i class="ph-fill ph-circle-wavy-question" style="color: var(--primary-color); margin-top: 2px;"></i>
+                                <i class="ph-fill ph-chats-teardrop" style="color: var(--primary-color); margin-top: 2px;"></i>
                                 {{ $faq['q'] }}
                             </h4>
                             <p style="font-size: 14px; color: var(--text-medium); line-height: 1.6; margin: 0; padding-left: 28px;">{{ $faq['a'] }}</p>
@@ -963,54 +935,61 @@
 
             <!-- Right Column (Sidebar) -->
             <aside class="sidebar-section">
-                <div class="sidebar-card">
-                    <div class="price-box" style="padding: 16px; margin-bottom: 16px;">
-                        <span class="price-val" style="font-size: 24px;">{{ $room['price'] }}</span>
-                        <span class="price-unit" style="font-size: 14px;">{{ $room['time'] }}</span>
-                        <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-light); font-weight: 500;">+ 5% GST applicable</p>
+                <div class="sidebar-card" style="padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #eef2f6; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                    <div class="price-box" style="padding: 24px 16px; margin-bottom: 20px; background: #fff8f3; border: 1px solid rgba(255,122,0,0.15); border-radius: 16px; text-align: center;">
+                        <span class="price-val" style="font-size: 28px; font-weight: 800; color: var(--primary-color);">{{ $room['price'] }}</span>
+                        <span class="price-unit" style="font-size: 16px; color: #475569; font-weight: 600;">{{ $room['time'] }}</span>
+                        <p style="margin: 8px 0 0 0; font-size: 13px; color: #64748b; font-weight: 500;">+ {{ $gstRate }}% GST applicable</p>
                     </div>
 
-                    <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn" style="width: 100%; padding: 14px 16px !important; border-radius: 6px !important; font-size: 14px !important; margin-bottom: 16px; font-weight: 700;">
+                    <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn" style="width: 100%; padding: 16px !important; border-radius: 12px !important; font-size: 15px !important; margin-bottom: 24px; font-weight: 800; background: var(--primary-color); color: #fff; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(255,122,0,0.2);">
                         Book Now <i class="ph-bold ph-arrow-right"></i>
                     </a>
 
                     <!-- Sidebar Content with Improved Typography -->
-                    <div class="sidebar-section-box" style="background: #fff8f3; border-color: rgba(255, 122, 0, 0.2); margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-sketch-logo"></i> Key Highlights</h4>
-                        <div class="highlights-list" style="gap: 8px;">
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-sketch-logo" style="color: var(--primary-color);"></i> Key Highlights
+                        </h4>
+                        <div class="highlights-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             @foreach($room['highlights'] ?? [['text' => 'Clean & Modern', 'icon' => 'ph ph-sparkles'], ['text' => 'Prime Campus Spot', 'icon' => 'ph ph-map-pin']] as $highlight)
-                                <div class="highlight-item" style="font-size: 12px;">
-                                    <i class="ph-bold ph-check" style="color: #16a34a; font-size: 0.8rem;"></i>
-                                    <span>{{ $highlight['text'] }}</span>
+                                <div class="highlight-item" style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #4a5568;">
+                                    <i class="ph-bold ph-check" style="color: #2f855a; font-size: 14px;"></i>
+                                    <span style="font-weight: 500;">{{ $highlight['text'] }}</span>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="sidebar-section-box" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-users"></i> Room Capacity</h4>
-                        <div class="capacity-grid" style="background: none; border: none;">
-                            @foreach(array_slice($room['capacity_breakdown'] ?? [['title' => 'Standard', 'value' => $room['capacity']]], 0, 3) as $cap)
-                                <div class="capacity-item" style="background: none; border: none; padding: 0;">
-                                    <i class="ph ph-users" style="font-size: 24px; color: var(--text-light);"></i>
-                                    <span class="cap-val" style="font-size: 18px;">{{ $cap['value'] }}</span>
-                                    <span class="cap-label" style="font-size: 10px;">{{ $cap['title'] }}</span>
-                                </div>
-                            @endforeach
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-users" style="color: var(--primary-color);"></i> Room Capacity
+                        </h4>
+                        <div class="capacity-grid" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;">
+                            <i class="ph ph-users-three" style="font-size: 32px; color: #cbd5e0; margin-bottom: 4px;"></i>
+                            <div style="font-size: 32px; font-weight: 800; color: #1a202c; line-height: 1;">{{ explode(' ', $room['capacity'])[0] }}</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #4a5568;">Members</div>
+                            <div style="font-size: 11px; font-weight: 800; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">{{ $room['category'] }}</div>
                         </div>
                     </div>
 
-                    <div class="sidebar-section-box" style="margin-bottom: 14px;">
-                        <h4 class="sidebar-section-title" style="font-size: 13px; margin-bottom: 12px;"><i class="ph-fill ph-grid-four"></i> Performance</h4>
-                        <div class="amenity-mini-grid" style="gap: 12px;">
-                            @foreach(array_slice($room['amenities'], 0, 4) as $amenity)
-                                <div class="amenity-mini-icon" style="flex-direction: column; height: auto; padding: 8px; text-align: center; gap: 4px;">
-                                    <i class="ph {{ $amenity['icon'] }}" style="font-size: 24px; width: 50px; height: 50px;"></i>
-                                    <div class="amenity-mini-label" style="font-size: 11px;">{{ $amenity['name'] }}</div>
+                    <div class="sidebar-section-box" style="background: #fff; border: 1px solid #edf2f7; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 class="sidebar-section-title" style="font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="ph-fill ph-grid-four" style="color: var(--primary-color);"></i> Performance
+                        </h4>
+                        <div class="amenity-mini-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            @foreach(array_slice($room['amenities'], 0, 2) as $amenity)
+                                <div class="amenity-mini-icon" style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+                                    <div style="background: #fff8f3; border-radius: 8px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="ph {{ $amenity['icon'] }}" style="font-size: 20px; color: var(--primary-color);"></i>
+                                    </div>
+                                    <div class="amenity-mini-label" style="font-size: 12px; font-weight: 700; color: #4a5568;">{{ $amenity['name'] }}</div>
                                 </div>
                             @endforeach
                         </div>
-                        <a href="javascript:void(0)" onclick="scrollToAmenities()" style="font-size: 12px; color: var(--primary-color); font-weight: 700; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 10px;">More Amenities <i class="ph ph-arrow-right"></i></a>
+                        <a href="javascript:void(0)" onclick="scrollToAmenities()" style="font-size: 12px; color: var(--primary-color); font-weight: 800; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #edf2f7;">
+                            View More Services <i class="ph ph-arrow-right"></i>
+                        </a>
                     </div>
 
                     <div class="sidebar-section-box footer-section" style="background: #f8fafc; border: 1px solid var(--border-light); padding: 12px; margin-bottom: 0;">
@@ -1033,56 +1012,77 @@
         </div>
 
         <!-- Related Rooms -->
-        <div class="related-section">
-            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem;">Related Rooms</h2>
-            <div class="rooms-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-                <!-- Dummy related items reusing card styles -->
-                <div class="card">
-                    <div class="card-image-wrapper" style="height: 200px;">
-                        <img src="{{ asset('assets/room1.JPG') }}" alt="Related Room">
-                        <span class="badge" style="top: 1rem; right: 1rem; background: var(--primary-color); color: white; position: absolute;">Available</span>
+        <section class="related-section" style="border-top: 1px solid var(--border-light); margin-top: 40px !important;">
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem; color: var(--text-dark);">Related Rooms</h2>
+            
+            @php 
+                $gstRate = \App\Models\Setting::where('key', 'gst_rate')->value('value') ?? 5;
+            @endphp
+            
+            <div class="rooms-grid dashboard-rooms-grid">
+                <!-- Related Standard Room -->
+                @if(!str_contains($roomId, 'standard'))
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge standard-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Standard</span>
+                        <img src="{{ asset('assets/standard/standardroom.JPG') }}" alt="Standard Room">
                     </div>
-                    <div class="card-content" style="padding: 1.25rem;">
-                        <h2 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Standard Guest Room</h2>
-                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">₹1400 / 12h</div>
-                        <a href="#" class="btn btn-outline" style="width: 100%;">View Details</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image-wrapper" style="height: 200px;">
-                        <img src="{{ asset('assets/suite.JPG') }}" alt="Related Room">
-                        <span class="badge" style="top: 1rem; right: 1rem; background: var(--primary-color); color: white; position: absolute;">Available</span>
-                    </div>
-                    <div class="card-content" style="padding: 1.25rem;">
-                        <h2 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Advance Executive Room</h2>
-                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">₹2500 / day</div>
-                        <a href="#" class="btn btn-outline" style="width: 100%;">View Details</a>
+                    <div class="card-content">
+                        <h2>Standard Guest Room</h2>
+                        <p class="description">Thoughtfully designed for efficiency and comfort, providing a restful haven for short-term visitors with essential modern amenities.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('standard.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
                     </div>
                 </div>
+                @endif
+                
+                <!-- Related Advance Room -->
+                @if(!str_contains($roomId, 'advance'))
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge premium-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Premium</span>
+                        <img src="{{ asset('assets/room1.JPG') }}" alt="Advance Room">
+                    </div>
+                    <div class="card-content">
+                        <h2>Advance Executive Room</h2>
+                        <p class="description">Experience elevated hospitality curated for guests seeking enhanced privacy and premium comfort during longer stays.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('advance.rooms') }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Related Suite Room -->
+                @if($roomId !== 'suite-room')
+                <div class="card premium-card">
+                    <div class="card-image-wrapper">
+                        <span class="badge suite-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Luxury</span>
+                        <img src="{{ asset('assets/suite.JPG') }}" alt="Suite Room">
+                    </div>
+                    <div class="card-content">
+                        <h2>Luxury Suite Room</h2>
+                        <p class="description">Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.</p>
+                        <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        <div class="card-btn-wrapper">
+                            <a href="{{ route('room.details', ['id' => 'suite-room']) }}" class="btn btn-outline view-details-btn" style="width: 100%; text-align: center; justify-content: center;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Interactive Modals -->
-    <div id="shareModal" class="modal-overlay" onclick="closeModal(event, 'shareModal')">
-        <div class="modal-content">
-            <span class="modal-close" onclick="document.getElementById('shareModal').classList.remove('active')">✕</span>
-            <h3 style="margin-bottom: 10px; color: var(--text-dark);">Share this Room</h3>
-            <p style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 20px;">Help others discover this amazing space!</p>
-            <div class="share-grid">
-                <a href="javascript:void(0)" onclick="shareWhatsApp()" class="share-option"><i class="ph ph-whatsapp-logo" style="color: #25D366;"></i> WhatsApp</a>
-                <a href="javascript:void(0)" onclick="shareFacebook()" class="share-option"><i class="ph ph-facebook-logo" style="color: #1877F2;"></i> Facebook</a>
-                <a href="javascript:void(0)" onclick="shareTwitter()" class="share-option"><i class="ph ph-x-logo" style="color: #000000;"></i> Twitter</a>
-                <a href="javascript:void(0)" onclick="shareEmail()" class="share-option"><i class="ph ph-envelope" style="color: #EA4335;"></i> Email</a>
-                <a href="javascript:void(0)" onclick="copyToClipboard()" class="share-option" style="grid-column: span 2;"><i class="ph ph-link"></i> Copy Room Link</a>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Lightbox Modal -->
     <div id="lightboxModal" class="modal-overlay" onclick="closeModal(event, 'lightboxModal')">
         <div class="lightbox-content">
-            <span class="modal-close" style="color: white; top: 20px; right: 20px;" onclick="document.getElementById('lightboxModal').classList.remove('active')">✕</span>
+            <span class="modal-close" style="color: white; background: rgba(0,0,0,0.5);" onclick="document.getElementById('lightboxModal').classList.remove('active')"><i class="ph ph-x"></i></span>
             <img id="lightboxImg" src="" class="lightbox-img">
             <div class="lightbox-nav">
                 <div class="lightbox-btn" onclick="prevImage(event)"><i class="ph ph-caret-left"></i></div>
@@ -1166,67 +1166,13 @@
             const targetPane = document.getElementById(tabId);
             if(targetPane) {
                 targetPane.classList.add('active');
+            }
+            if(btn) {
                 btn.classList.add('active');
             }
         }
 
-        // Like Functionality
-        const roomId = "{{ $roomId }}";
-        function initLike() {
-            const liked = localStorage.getItem('liked_' + roomId);
-            if (liked === 'true') {
-                document.getElementById('likeBtn').classList.add('liked');
-            }
-        }
 
-        function toggleLike() {
-            const btn = document.getElementById('likeBtn');
-            const isLiked = btn.classList.toggle('liked');
-            localStorage.setItem('liked_' + roomId, isLiked);
-            
-            if (isLiked) {
-                showToast("Added to your favorites!", "ph ph-heart");
-                btn.style.transform = "scale(1.3)";
-                setTimeout(() => btn.style.transform = "scale(1.1)", 200);
-            } else {
-                showToast("Removed from favorites");
-            }
-        }
-
-        // Share Functionality
-        function openShareModal() {
-            document.getElementById('shareModal').classList.add('active');
-        }
-
-        function shareWhatsApp() {
-            const text = encodeURIComponent("Check out this " + "{{ $room['name'] }}" + " at MCC International Guest House! Book now: " + window.location.href);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-        }
-
-        function shareFacebook() {
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, 'facebook-share-dialog', 'width=800,height=600');
-        }
-
-        function shareTwitter() {
-            const text = encodeURIComponent("Amazing " + "{{ $room['name'] }}" + " at @MCCInnovation Park. Book now: ");
-            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
-        }
-
-        function shareEmail() {
-            const subject = encodeURIComponent("Inquiry about " + "{{ $room['name'] }}");
-            const body = encodeURIComponent("I found this room at MCC International Guest House and thought you might like it: " + window.location.href);
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-        }
-
-        async function copyToClipboard() {
-            try {
-                await navigator.clipboard.writeText(window.location.href);
-                showToast("Link copied to clipboard!");
-                document.getElementById('shareModal').classList.remove('active');
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-            }
-        }
 
         // Lightbox
         function openLightbox() {
@@ -1270,7 +1216,7 @@
         }
 
         function scrollToReviews() {
-            const btn = document.querySelector('.tab-btn:last-child');
+            const btn = document.querySelectorAll('.tab-btn')[3];
             switchTab('reviews', btn);
             document.getElementById('reviews').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -1286,8 +1232,35 @@
             }
         });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', initLike);
+
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        function toggleHelpDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('helpDropdownOptions').classList.toggle('active');
+        }
+
+        function selectHelpOption(val) {
+            document.getElementById('selectedSubject').innerText = val;
+            document.getElementById('helpDropdownOptions').classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            const helpModal = document.getElementById('helpModal');
+            if (event.target == helpModal) {
+                closeHelpModal();
+            }
+        };
     </script>
+    @include('partials.help-modal')
+
 </body>
 </html>

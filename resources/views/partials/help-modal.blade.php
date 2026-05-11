@@ -1,0 +1,149 @@
+<div class="help-modal-overlay" id="helpModal">
+    <div class="help-modal-card">
+        <button class="help-modal-close" onclick="closeHelpModal()">
+            <i class="ph ph-x"></i>
+        </button>
+        <div class="help-modal-content" id="helpModalContent">
+            <!-- Form State -->
+            <div id="contactFormState">
+                <h2 class="help-modal-title">Contact Us</h2>
+                <form class="help-form" id="supportForm" onsubmit="handleSupportSubmit(event); return false;">
+                    @csrf
+                    <div class="help-form-row">
+                        <div class="help-input-group">
+                            <label>Name</label>
+                            <input type="text" name="name" id="supportName" placeholder="Your name" required>
+                        </div>
+                        <div class="help-input-group">
+                            <label>Email</label>
+                            <input type="email" name="email" id="supportEmail" placeholder="Your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="help-input-group full-width">
+                        <label>Subject</label>
+                        <div class="custom-dropdown" id="helpSubjectDropdown">
+                            <div class="dropdown-selected" onclick="toggleHelpDropdown(event)">
+                                <span id="selectedSubject">Choose subject...</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                            <input type="hidden" name="subject" id="supportSubjectInput" value="Other">
+                            <div class="dropdown-options" id="helpDropdownOptions">
+                                <div class="dropdown-option" onclick="selectHelpOption('General Inquiry')">General Inquiry</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Change booking')">Change booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Cancel booking')">Cancel booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Hotel info')">Hotel info</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Partnership')">Partnership</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Group booking')">Group booking</div>
+                                <div class="dropdown-option" onclick="selectHelpOption('Other')">Other</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-input-group full-width">
+                        <label>Message</label>
+                        <textarea name="message" id="supportMessage" placeholder="How can we help you?" rows="5" required></textarea>
+                    </div>
+
+                    <div class="help-form-footer">
+                        <button type="submit" class="help-send-btn" id="supportSendBtn" style="width: 100%; font-weight: 700; transition: all 0.3s ease;">SEND</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success State -->
+            <div id="contactSuccessState" style="display: none; text-align: center; padding: 40px 20px;">
+                <div style="width: 80px; height: 80px; background: #f0fdf4; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; box-shadow: 0 10px 25px rgba(22, 163, 74, 0.15);">
+                    <i class="ph-bold ph-check"></i>
+                </div>
+                <h2 style="color: #1e293b; font-size: 1.75rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px;">Message Sent!</h2>
+                <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px;">Thank you for reaching out. Our support team has received your message and will get back to you shortly.</p>
+                <button class="help-send-btn" onclick="closeHelpModal()" style="width: auto; padding: 12px 40px;">Done</button>
+            </div>
+
+            <!-- Error State -->
+            <div id="contactErrorState" style="display: none; text-align: center; padding: 40px 20px;">
+                <div style="width: 80px; height: 80px; background: #fef2f2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.15);">
+                    <i class="ph-bold ph-warning-circle"></i>
+                </div>
+                <h2 style="color: #991b1b; font-size: 1.5rem; font-weight: 800; margin-bottom: 10px;">Submission Failed</h2>
+                <p id="errorDescription" style="color: #991b1b; font-size: 0.95rem; margin-bottom: 30px;">Something went wrong. Please try again or contact us directly.</p>
+                <button class="help-send-btn" onclick="retryForm()" style="width: auto; padding: 12px 40px; background: #1e293b;">Try Again</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.openHelpModal = function() {
+        const modal = document.getElementById('helpModal');
+        const formState = document.getElementById('contactFormState');
+        const successState = document.getElementById('contactSuccessState');
+        const errorState = document.getElementById('contactErrorState');
+        
+        if(modal) modal.classList.add('active');
+        if(formState) formState.style.display = 'block';
+        if(successState) successState.style.display = 'none';
+        if(errorState) errorState.style.display = 'none';
+    };
+
+    window.closeHelpModal = function() {
+        document.getElementById('helpModal').classList.remove('active');
+    };
+
+    window.retryForm = function() {
+        document.getElementById('contactFormState').style.display = 'block';
+        document.getElementById('contactErrorState').style.display = 'none';
+        document.getElementById('contactSuccessState').style.display = 'none';
+    };
+
+    window.toggleHelpDropdown = function(event) {
+        if(event) event.stopPropagation();
+        document.getElementById('helpDropdownOptions').classList.toggle('active');
+    };
+
+    window.selectHelpOption = function(val) {
+        document.getElementById('selectedSubject').innerText = val;
+        document.getElementById('supportSubjectInput').value = val;
+        document.getElementById('helpDropdownOptions').classList.remove('active');
+    };
+
+    window.handleSupportSubmit = async function(event) {
+        event.preventDefault();
+        const btn = document.getElementById('supportSendBtn');
+        const originalText = btn.innerText;
+        btn.innerText = 'SENDING...';
+        btn.disabled = true;
+
+        const formData = new FormData(document.getElementById('supportForm'));
+        
+        try {
+            const response = await fetch("{{ route('contact.send') }}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                document.getElementById('contactFormState').style.display = 'none';
+                document.getElementById('contactSuccessState').style.display = 'block';
+                document.getElementById('supportForm').reset();
+            } else {
+                throw new Error(result.message || 'Server error');
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            document.getElementById('contactFormState').style.display = 'none';
+            document.getElementById('contactErrorState').style.display = 'block';
+            document.getElementById('errorDescription').innerText = error.message;
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    }
+</script>

@@ -335,42 +335,180 @@
         }
 
         /* ── RESPONSIVE FIXES ── */
+        @media (max-width: 1024px) {
+            main { padding: 0 1.5rem 3rem !important; }
+            .form-container { padding: 1.5rem 2rem !important; }
+        }
+
         @media (max-width: 768px) {
+            main { padding: 0 1rem 2rem !important; }
             .form-grid, .paired-row {
                 grid-template-columns: 1fr !important;
-                gap: 20px !important;
+                gap: 1.25rem !important;
                 align-items: start !important;
             }
             .form-group {
                 margin-top: 0 !important;
             }
-            .dynamic-field {
-                margin-top: 0 !important;
-            }
-            #otherDepartmentWrapper {
-                margin-top: 5px !important;
-            }
             .form-container {
-                padding: 1.5rem 1.25rem !important;
+                padding: 1.25rem 1rem !important;
+                border-radius: 12px !important;
+                box-shadow: 0 2px 12px rgba(0,0,0,0.04) !important;
             }
             .form-section-title {
                 font-size: 1.1rem !important;
                 margin-top: 1.5rem !important;
+                margin-bottom: 1rem !important;
+                padding-bottom: 0.5rem !important;
             }
             .submit-btn {
                 padding: 1rem !important;
                 font-size: 0.95rem !important;
+                margin-top: 2rem !important;
             }
             .form-radio-group {
                 gap: 1rem !important;
                 flex-wrap: wrap;
+                padding-top: 0.25rem !important;
             }
             .form-label {
-                font-size: 0.85rem !important;
+                font-size: 0.88rem !important;
+                margin-bottom: 0.4rem !important;
+                min-height: 0 !important;
             }
             .form-helper {
-                font-size: 0.75rem !important;
-                line-height: 1.3 !important;
+                font-size: 0.78rem !important;
+                line-height: 1.4 !important;
+                margin-top: 0.35rem !important;
+                min-height: 0 !important;
+            }
+            .form-input, .form-select {
+                height: 44px !important;
+                font-size: 0.95rem !important;
+            }
+            .breadcrumb {
+                font-size: 0.8rem !important;
+                margin-bottom: 0.75rem !important;
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .breadcrumb::-webkit-scrollbar { display: none; }
+
+            h2[style*="font-size: 2rem"] {
+                font-size: 1.75rem !important;
+                letter-spacing: -0.8px !important;
+                margin-bottom: 0.25rem !important;
+            }
+            p[style*="font-size: 0.95rem"] {
+                font-size: 0.9rem !important;
+                line-height: 1.4 !important;
+            }
+            .summary-banner {
+                padding: 1rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            .summary-banner h3 {
+                font-size: 1.05rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main { padding: 0 0.5rem 2rem !important; }
+            .form-container { padding: 1rem 0.75rem !important; }
+            h2[style*="font-size: 2rem"] {
+                font-size: 1.4rem !important;
+            }
+            .form-section-title {
+                font-size: 1rem !important;
+            }
+            .custom-file-zone { 
+                padding: 10px !important;
+                gap: 8px !important;
+            }
+            .file-icon-box { width: 36px !important; height: 36px !important; }
+            .file-icon-box i { font-size: 1.2rem !important; }
+            .file-main-text { font-size: 0.8rem !important; }
+            .file-sub-text { font-size: 0.65rem !important; }
+            .browse-btn-mobile { display: none !important; } /* Hide browse button on tiny screens to save space */
+            
+            .paired-row { gap: 1rem !important; }
+        }
+
+        /* Standardized File Upload Zone CSS */
+        .custom-file-zone {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .custom-file-zone:hover {
+            border-color: var(--primary-color);
+            background: #fff8f3;
+        }
+        .file-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            flex-shrink: 0;
+        }
+        .file-icon-box i { font-size: 1.5rem; color: var(--primary-color); }
+        .file-text-group { flex: 1; min-width: 0; }
+        .file-main-text { display: block; font-weight: 700; font-size: 0.9rem; color: #1e293b; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-sub-text { display: block; font-size: 0.75rem; color: #64748b; font-weight: 500; }
+        /* GST Badge Styling */
+        .gst-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #F5E6E6;
+            color: #8B3A3A;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid #D4A5A5;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            box-shadow: 0 1px 2px rgba(139, 58, 58, 0.05);
+        }
+
+        .section-header-flex {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 122, 0, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-header-flex .form-section-title {
+            margin: 0;
+            padding: 0;
+            border-bottom: none;
+        }
+
+        @media (max-width: 640px) {
+            .section-header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
             }
         }
     </style>
@@ -378,14 +516,14 @@
 </head>
 
 <body style="background: var(--bg-color);">
-    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard']])
+    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Home']])
 
     <main>
-        <div style="max-width: 820px; margin: 1rem auto;">
+        <div style="max-width: 820px; margin: 1rem auto; padding: 0 1.25rem;">
 
             <!-- Breadcrumbs ALIGNED EXACTLY WITH HEADER & FORM -->
             <div class="breadcrumb">
-                <a href="{{ route('home') }}">Dashboard</a> &gt;
+                <a href="{{ route('home') }}">Home</a> &gt;
                 <a href="{{ route('standard.rooms') }}">Rooms</a> &gt;
                 <span style="color: var(--text-color);">Booking Form</span>
             </div>
@@ -562,10 +700,12 @@
 
                         <!-- SECTION: STAY DETAILS -->
                         <div class="section-divider"></div>
-                        <div class="form-section-title full-width" style="margin-top: 0.75rem;"><i
-                                class="ph-bold ph-calendar-check" style="color: var(--primary-color);"></i> Booking
-                            Details</div>
-                        <p class="gst-text" style="margin-bottom: 0.75rem;">+ 5% GST applicable on all room rates</p>
+                        <div class="section-header-flex">
+                            <div class="form-section-title">
+                                <i class="ph-bold ph-calendar-check"></i> Booking Details
+                            </div>
+                            <span class="gst-badge"><i class="ph-bold ph-info" style="margin-right: 5px;"></i> + {{ $gstRate }}% GST applicable on all room rates</span>
+                        </div>
 
                         <!-- ISOLATED ROW 5: Clock In (Left) | Clock Out (Right) -->
                         <div class="paired-row">
@@ -584,10 +724,32 @@
 
                         <!-- Referral Attachment -->
                         <div class="form-group full-width" style="margin-top: 0.5rem;">
-                            <label class="form-label">Referral Attachment</label>
-                            <input type="file" name="referral_attachment" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <div class="form-helper">Upload a referral document if applicable (PDF, Image, etc.)</div>
+                            <label class="form-label">Referral Attachment <span style="font-weight: 400; color: #94a3b8; font-size: 0.8rem;">(Optional)</span></label>
+                            <div id="fileUploadZone" class="custom-file-zone" onclick="document.getElementById('referralFileInput').click()">
+                                <div class="file-icon-box">
+                                    <i class="ph-bold ph-paperclip"></i>
+                                </div>
+                                <div class="file-text-group">
+                                    <div id="fileNameDisplay" class="file-main-text">Click to attach a referral document</div>
+                                    <div class="file-sub-text">PDF, DOC, JPG, PNG supported</div>
+                                </div>
+                                <div class="browse-btn-mobile" style="flex-shrink: 0; background: var(--primary-color); color: #fff; padding: 7px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3px;">Browse</div>
+                            </div>
+                            <input type="file" id="referralFileInput" name="referral_attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;" onchange="updateFileName(this)">
+                            <div class="form-helper" style="margin-top: 6px;">Upload a referral document if applicable (PDF, Image, etc.)</div>
                         </div>
+                        <script>
+                            function updateFileName(input) {
+                                const display = document.getElementById('fileNameDisplay');
+                                if (input.files && input.files[0]) {
+                                    display.textContent = input.files[0].name;
+                                    display.style.color = 'var(--primary-color)';
+                                } else {
+                                    display.textContent = 'Click to attach a referral document';
+                                    display.style.color = '#475569';
+                                }
+                            }
+                        </script>
 
                         <!-- Submit -->
                         <div class="form-group full-width" style="margin-top: 1rem;">

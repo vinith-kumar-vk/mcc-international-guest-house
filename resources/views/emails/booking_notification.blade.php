@@ -21,7 +21,8 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .header {
-            background: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);
+            background: {{ $primaryColor }};
+            background: linear-gradient(135deg, {{ $primaryColor }} 0%, {{ $primaryColor }} 100%);
             padding: 30px;
             text-align: center;
             color: white;
@@ -41,17 +42,20 @@
         }
         .booking-details th {
             text-align: left;
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             color: #666;
             width: 40%;
             font-weight: 600;
+            font-size: 15px;
         }
         .booking-details td {
             text-align: left;
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             color: #333;
+            font-size: 15px;
+            font-weight: 500;
         }
         .actions {
             display: flex;
@@ -71,14 +75,14 @@
         }
         .btn-approve {
             background-color: #28a745;
-            color: white;
+            color: #ffffff !important;
         }
         .btn-approve:hover {
             background-color: #218838;
         }
         .btn-reject {
             background-color: #dc3545;
-            color: white;
+            color: #ffffff !important;
         }
         .btn-reject:hover {
             background-color: #c82333;
@@ -124,14 +128,14 @@
                 </tr>
                 <tr>
                     <th>Workspace</th>
-                    <td><strong>{{ $booking->room_name }}</strong></td>
+                    <td>{{ ucwords(str_replace('-', ' ', $booking->room_name)) }}</td>
                 </tr>
                 <tr>
-                    <th>Check-in</th>
+                    <th>Clock In</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->format('d M Y, h:i A') }}</td>
                 </tr>
                 <tr>
-                    <th>Check-out</th>
+                    <th>Clock Out</th>
                     <td>{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->end_time)->format('d M Y, h:i A') }}</td>
                 </tr>
                 <tr>
@@ -158,17 +162,15 @@
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="center">
-                            <a href="{{ route('admin.bookings.approve.get', $booking->id) }}" class="btn btn-approve">APPROVE</a>
+                            <a href="{{ route('admin.bookings.approve.get', $booking->id) }}" class="btn btn-approve" style="color: #ffffff !important;">APPROVE</a>
                             &nbsp;&nbsp;
-                            <a href="{{ route('admin.bookings.reject.get', $booking->id) }}" class="btn btn-reject">REJECT</a>
+                            <a href="{{ route('admin.bookings.reject.get', $booking->id) }}" class="btn btn-reject" style="color: #ffffff !important;">REJECT</a>
                         </td>
                     </tr>
                 </table>
             </div>
             
-            <p style="text-align: center; margin-top: 30px;">
-                <a href="{{ route('admin.bookings.show', $booking->id) }}" style="color: #ff4500; font-size: 14px;">View full details in Dashboard</a>
-            </p>
+
         </div>
         <div class="footer">
             <p>&copy; {{ date('Y') }} MCC IGH. All rights reserved.</p>

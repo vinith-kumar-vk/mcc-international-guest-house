@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    @include('partials.dynamic-styles')
     <style>
         /* Fix ONLY for Proceed to Payment / Confirm Booking button */
         #proceedBtn:not(:disabled) {
@@ -62,7 +63,7 @@
 <body>
     <header>
         <div class="header-left">
-            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; height: 50px;">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
         </div>
         <div class="header-center">
             <h1>MCC International Guest House</h1>

@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            '/payment/callback',
+            '/payment/webhook',
+        ]);
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminAuth::class,
             'superadmin.auth' => \App\Http\Middleware\SuperAdminAuth::class,

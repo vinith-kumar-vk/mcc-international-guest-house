@@ -8,6 +8,9 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     @include('partials.dynamic-styles')
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
@@ -16,25 +19,28 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 1rem;
+            padding: 2rem 1.25rem;
         }
         .container {
             background: white;
-            padding: 3rem;
-            border-radius: 20px;
+            padding: 3.5rem 2.5rem;
+            border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             text-align: center;
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
+            border: 1px solid #e2e8f0;
         }
         .icon {
-            font-size: 4rem;
+            font-size: 4.5rem;
             margin-bottom: 2rem;
         }
         .icon-success { color: #22c55e; }
         .icon-info { color: #3b82f6; }
+        .icon-error { color: #ef4444; }
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            font-weight: 800;
             color: #1e293b;
             margin-bottom: 1rem;
         }
@@ -42,22 +48,42 @@
             color: #64748b;
             line-height: 1.6;
             margin-bottom: 2rem;
+            font-size: 1.05rem;
         }
         .btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
+            padding: 1rem 2.5rem;
             background: var(--primary-color);
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: opacity 0.2s;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(255, 122, 0, 0.3);
+            opacity: 0.95;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 1.5rem 1rem; }
+            .container { padding: 2.5rem 1.5rem; border-radius: 20px; }
+            .icon { font-size: 3.5rem; }
+            h1 { font-size: 1.4rem; }
+            p { font-size: 0.95rem; }
+            .btn { width: 100%; padding: 0.85rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        @if(session('success'))
+        @if(session('error'))
+            <div class="icon icon-error" style="color: #ef4444;"><i class="ph-fill ph-x-circle"></i></div>
+            <h1>Action Completed</h1>
+            <p>{{ session('error') }}</p>
+        @elseif(session('success'))
             <div class="icon icon-success"><i class="ph-fill ph-check-circle"></i></div>
             <h1>Action Successful!</h1>
             <p>{{ session('success') }}</p>

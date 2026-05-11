@@ -10,11 +10,32 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <style>
         :root {
-            --primary-color: #ff7a00;
             --bg-color: #f8fafc;
             --border: #e2e8f0;
             --text-main: #1e293b;
             --text-muted: #64748b;
+        }
+
+        header.header-container {
+            background: rgba(255, 255, 255, 0.98) !important;
+            height: 100px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 2.5rem !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+        }
+
+        .header-logo {
+            height: 85px !important;
+            width: auto !important;
+            object-fit: contain !important;
         }
 
         body {
@@ -29,9 +50,9 @@
         .auth-main {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             flex: 1;
-            padding: 2rem;
+            padding: 40px 2rem;
         }
 
         .auth-card {
@@ -100,7 +121,7 @@
         .input-wrapper input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+            box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
         }
 
         .auth-utils {
@@ -145,7 +166,7 @@
         .btn-auth:hover {
             transform: translateY(-1px);
             filter: brightness(1.1);
-            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
         }
 
         .auth-footer {
@@ -189,12 +210,12 @@
     @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Back to Home']])
 
     <main class="auth-main">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="sidebar-logo" style="justify-content: center; font-size: 2rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
-                    <i class="ph-bold ph-rocket-launch"></i> Space<span style="color: var(--primary-color);">Admin</span>
+        <div class="auth-card" style="margin-top: 40px;">
+            <div class="auth-header" style="margin-top: 10px;">
+                <div class="sidebar-logo" style="justify-content: center; font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--text-main);">
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color);"></i> Member<span style="color: var(--primary-color);">Login</span>
                 </div>
-                <p>Login to manage your bookings</p>
+                <p>Access your guest portal</p>
             </div>
 
             @if ($errors->any())

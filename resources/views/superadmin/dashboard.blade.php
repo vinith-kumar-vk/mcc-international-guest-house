@@ -30,8 +30,6 @@
             background: var(--bg-color);
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            display: flex;
         }
 
         /* ── Sidebar ── */
@@ -53,14 +51,14 @@
 
         .sidebar-logo {
             font-weight: 800;
-            color: var(--text-main);
-            font-size: 1.15rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .sidebar-logo span { color: var(--primary-color); }
+        .sidebar-logo span { color: #1e293b; }
 
         .sidebar-menu {
             flex: 1;
@@ -115,25 +113,17 @@
         /* ── Main ── */
         .main-content {
             margin-left: var(--sidebar-width);
-            flex: 1;
+            width: calc(100% - var(--sidebar-width));
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
             background: var(--bg);
         }
 
         .topbar {
-            height: 72px;
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .topbar-title {
@@ -149,7 +139,7 @@
         }
 
 
-        .page-body { padding: 2rem; max-width: 1400px; }
+        .page-body { padding: 2.5rem; padding-bottom: 1rem; max-width: 1500px; width: 100%; margin: 0 auto; box-sizing: border-box; }
 
         /* ── Welcome Banner ── */
         .welcome-banner {
@@ -189,12 +179,12 @@
         .stat-card {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 20px;
             padding: 1.25rem 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
         }
 
         .stat-card-header {
@@ -230,9 +220,9 @@
         .card {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 20px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
         }
 
         .card-header {
@@ -294,6 +284,72 @@
         .progress-bg   { height: 6px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 4px; }
         .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; }
 
+        #sidebarToggle { display: none; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+            .topbar { padding: 0 1rem !important; }
+            .page-body { padding: 1.25rem !important; }
+            #sidebarToggle { display: flex !important; margin-right: 0.5rem; }
+            .stat-card { padding: 1rem !important; }
+            .stat-value { font-size: 1.4rem !important; }
+            .topbar-title { font-size: 1rem !important; }
+            .welcome-banner { padding: 1.5rem !important; flex-direction: column; text-align: center; gap: 1.5rem; }
+            .welcome-stats { gap: 1rem; width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr 1fr !important; }
+            .row-2, .row-2-equal { grid-template-columns: 1fr !important; }
+            .welcome-stats { flex-wrap: wrap; }
+            .welcome-banner h1 { font-size: 1.4rem !important; }
+            .topbar-right { display: none !important; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr !important; }
+        }
+
+        /* Refined Admin Profile Dropdown - Polished Card Style */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            display: none; z-index: 2000;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
+        }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -304,7 +360,7 @@
         <div class="sidebar-header">
             <div class="sidebar-logo">
                 <i class="ph-bold ph-rocket-launch"></i>
-                Space<span>Admin</span>
+                <span>Space</span>Admin
             </div>
             <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px; font-weight: 600;">SUPERADMIN PANEL</div>
         </div>
@@ -314,6 +370,15 @@
             </a>
             <a href="{{ route('superadmin.admins') }}" class="menu-item {{ Route::is('superadmin.admins') ? 'active' : '' }}">
                 <i class="ph ph-users"></i> Manage Admins
+            </a>
+            <a href="{{ route('superadmin.payments') }}" class="menu-item {{ Route::is('superadmin.payments') ? 'active' : '' }}">
+                <i class="ph ph-wallet"></i> Payment Details
+            </a>
+            <a href="{{ route('superadmin.webhooks') }}" class="menu-item {{ Route::is('superadmin.webhooks') ? 'active' : '' }}">
+                <i class="ph-bold ph-plugs-connected"></i> Webhooks
+            </a>
+            <a href="{{ route('superadmin.webhooks.logs') }}" class="menu-item {{ Route::is('superadmin.webhooks.logs') ? 'active' : '' }}">
+                <i class="ph-bold ph-article"></i> Webhook Logs
             </a>
             <a href="{{ route('superadmin.settings') }}" class="menu-item {{ Route::is('superadmin.settings') ? 'active' : '' }}">
                 <i class="ph ph-gear"></i> System Settings
@@ -337,8 +402,8 @@
         <!-- Topbar -->
         <div class="topbar">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <button id="sidebarToggle" class="btn btn-outline" style="display: none; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid var(--primary) !important; background: white !important; color: var(--primary) !important; box-shadow: none !important;">
-                    <i class="ph ph-list" style="font-size: 1.5rem; font-weight: 800;"></i>
+                <button id="sidebarToggle" style="width: 40px; height: 40px; padding: 0; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border); background: white; color: var(--text-main); cursor: pointer; box-shadow: none; flex-shrink: 0;">
+                    <i class="ph ph-list" style="font-size: 1.35rem;"></i>
                 </button>
                 <div class="topbar-title">System Overview</div>
             </div>
@@ -352,6 +417,17 @@
                     flex-shrink: 0;
                 "></div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">{{ now()->format('d M Y, H:i') }}</div>
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                        <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('superadmin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -506,7 +582,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <i class="ph-bold ph-chart-pie" style="color: var(--primary);"></i>
+                            <i class="ph-bold ph-plugs-connected" style="color: var(--primary-color)"></i>
                             Payment Status Breakdown
                         </div>
                     </div>
@@ -579,6 +655,16 @@
     </div>
 
     <script>
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+
         // Sidebar Toggle
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
@@ -592,6 +678,7 @@
         }
 
         document.addEventListener('click', (event) => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
                 const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);

@@ -5,6 +5,7 @@ use App\Http\Controllers\BookingController;
 use App\Models\Booking;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
@@ -57,11 +58,14 @@ Route::get('/room-details/{id}', function ($id) {
 
 Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
 Route::post('/booking', [BookingController::class, 'storeBooking'])->name('booking.store');
+Route::post('/contact', [BookingController::class, 'sendSupportMail'])->name('contact.send');
 
 Route::get('/success/{id}', function ($id) {
     $booking = Booking::findOrFail($id);
     return view('success', compact('booking'));
 })->name('checkout.success');
+
+Route::get('/receipt/{id}/download', [BookingController::class, 'downloadReceipt'])->name('receipt.download');
 
 Route::get('/failure/{id?}', function ($id = null) {
     return view('failure', compact('id'));
@@ -85,6 +89,8 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::post('/bookings/{id}/approve', [AdminController::class, 'adminApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class, 'reject'])->name('admin.bookings.reject');
     Route::post('/bookings/{id}/pay', [AdminController::class, 'markAsPaid'])->name('admin.bookings.pay');
+    Route::post('/bookings/{id}/resend-link', [AdminController::class, 'resendPaymentLink'])->name('admin.bookings.resend');
+    Route::post('/notifications/mark-read', [AdminController::class, 'markNotificationsRead'])->name('admin.notifications.read');
     Route::delete('/bookings/{id}', [AdminController::class, 'destroy'])->name('admin.bookings.destroy');
 });
 
@@ -116,6 +122,18 @@ Route::prefix('superadmin')->middleware('superadmin.auth')->group(function () {
     Route::post('/admins', [SuperAdminController::class, 'storeAdmin'])->name('superadmin.admins.store');
     Route::post('/admins/{id}', [SuperAdminController::class, 'updateAdmin'])->name('superadmin.admins.update');
     Route::delete('/admins/{id}', [SuperAdminController::class, 'deleteAdmin'])->name('superadmin.admins.delete');
+
+    // Payment & Booking Details
+    Route::get('/payments', [SuperAdminController::class, 'payments'])->name('superadmin.payments');
+    Route::get('/room-history/{room_name}', [SuperAdminController::class, 'roomHistory'])->name('superadmin.room.history');
+
+    // Webhook Management
+    Route::get('/webhooks', [SuperAdminController::class, 'webhookSettings'])->name('superadmin.webhooks');
+    Route::post('/webhooks', [SuperAdminController::class, 'storeWebhookEndpoint'])->name('superadmin.webhooks.store');
+    Route::post('/webhooks/{id}', [SuperAdminController::class, 'updateWebhookEndpoint'])->name('superadmin.webhooks.update');
+    Route::delete('/webhooks/{id}', [SuperAdminController::class, 'deleteWebhookEndpoint'])->name('superadmin.webhooks.delete');
+    Route::get('/webhooks/logs', [SuperAdminController::class, 'webhookLogs'])->name('superadmin.webhooks.logs');
+    Route::post('/webhooks/logs/{id}/retry', [SuperAdminController::class, 'retryWebhook'])->name('superadmin.webhooks.retry');
 });
 
 Route::get('/approval-status', function () {
@@ -137,3 +155,9 @@ Route::get('/mail-preview', function () {
     ]);
     return new App\Mail\BookingNotification($booking);
 });
+
+// PayU Payment Routes
+Route::get('/pay/{token}', [PaymentController::class, 'show'])->name('payment.show');
+Route::post('/pay/{token}/process', [PaymentController::class, 'process'])->name('payment.process');
+Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');

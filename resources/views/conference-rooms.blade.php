@@ -159,16 +159,132 @@
             border-color: var(--primary-color) !important;
             filter: brightness(80%) !important;
         }
-        /* Compact Card Fixes */
-        .card { height: auto !important; min-height: 0 !important; }
-        .card-content { padding: 1.25rem !important; gap: 0.25rem !important; }
-        .card-content h2 { min-height: 0 !important; margin-bottom: 0.25rem !important; line-height: 1.2 !important; }
-        .card-content .description { min-height: 0 !important; margin-bottom: 0.5rem !important; }
-        .price-highlight { margin-bottom: 0 !important; }
-        .gst-text { margin-bottom: 0.5rem !important; }
-        .facility-features, .luxury-features { margin: 0.5rem 0 !important; padding: 0.75rem !important; }
-        .next-available { margin-top: 0.5rem !important; padding: 0.5rem !important; }
-        .card-actions { margin-top: 0.75rem !important; }
+
+        /* Card Alignment Fixes */
+        .card { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            height: 100% !important; 
+            background: #fff !important;
+            border-radius: 16px !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.3s ease !important;
+            padding: 0 !important; /* Padding moved to content */
+        }
+        .card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1) !important;
+        }
+        .card-content { 
+            flex: 1 !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            padding: 1.5rem !important;
+        }
+        .card-header { 
+            min-height: 52px !important; 
+            display: flex !important; 
+            flex-direction: column !important; 
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .card h2 { 
+            color: #0f172a !important; 
+            font-weight: 800 !important; 
+            margin-bottom: 0 !important; 
+            font-size: 1.3rem !important;
+        }
+        .card-header .rating {
+            margin-bottom: 0.2rem !important;
+            font-size: 0.8rem !important;
+            color: #64748b !important;
+        }
+        .card .description { 
+            color: #475569 !important; 
+            font-weight: 500 !important; 
+            min-height: 85px !important; 
+            margin-bottom: 0.75rem !important;
+            line-height: 1.4 !important;
+            font-size: 0.9rem !important;
+        }
+        .price-section {
+            min-height: 60px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-bottom: 1rem !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+        }
+        .price-highlight { 
+            display: flex !important; 
+            align-items: baseline !important; 
+            gap: 5px !important;
+            margin-bottom: 0 !important;
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            color: var(--primary-color) !important;
+        }
+        .card .gst-text { 
+            color: #64748b !important; 
+            font-weight: 600 !important; 
+            margin-bottom: 0 !important;
+            font-size: 0.8rem !important;
+            min-height: 18px !important;
+        }
+        .room-features-box {
+            margin-bottom: 0.5rem !important;
+            padding: 0.75rem !important;
+            background: #f8fafc !important;
+            border-radius: 12px !important;
+            border: 1px dashed #cbd5e1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            min-height: 140px !important;
+        }
+        .features-title {
+            font-size: 0.7rem !important;
+            font-weight: 700 !important;
+            color: #64748b !important;
+            margin-bottom: 0.6rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.8px !important;
+        }
+        .features-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+            font-size: 0.75rem !important;
+            color: #475569 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .features-footer-text {
+            font-size: 0.7rem !important;
+            color: #94a3b8 !important;
+            font-style: italic !important;
+            border-top: 1px solid rgba(0,0,0,0.05) !important;
+            padding-top: 0.4rem !important;
+            margin-bottom: 1.5rem !important; /* Breathing room before buttons */
+        }
+        .card-actions { 
+            margin-top: auto !important; /* Pushes buttons to the absolute bottom */
+            display: flex !important; 
+            gap: 10px !important; 
+            width: 100% !important;
+            padding-top: 1rem !important;
+        }
+        .btn-outline { border-width: 2px !important; font-weight: 700 !important; }
+
+        .card .description { 
+            color: #475569 !important; 
+            font-weight: 500 !important; 
+            margin-bottom: 0.5rem !important;
+            line-height: 1.4 !important;
+            font-size: 0.95rem !important;
+            min-height: 48px !important;
+        }
+
         /* Header Centering */
         .header-container { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
         .header-title {
@@ -186,13 +302,13 @@
     @include('partials.dynamic-styles')
 </head>
 <body style="background: #fbfbfb;">
-    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Dashboard'], 'showHelpBtn' => true])
+    @include('partials.header', ['headerBackBtn' => ['url' => route('home'), 'label' => 'Home'], 'showHelpBtn' => true])
 
     <main>
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.25rem;">
             <!-- Breadcrumbs -->
             <div class="breadcrumb" style="font-size: 1rem; margin-bottom: 1.5rem;">
-                <a href="{{ route('home') }}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Dashboard</a> 
+                <a href="{{ route('home') }}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Home</a> 
                 <span style="color: #333; margin: 0 8px;">></span> 
                 <span style="color: var(--text-color); font-weight: 500;">Conference / Glass Rooms</span>
             </div>
@@ -237,7 +353,7 @@
                         'name' => 'Suite Room', 
                         'capacity' => 2, 
                         'img' => asset('assets/suite.JPG'), 
-                        'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation. <br><strong>Room No: 202</strong>',
+                        'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation. <br><span style="display:inline-flex; align-items:center; gap:5px; margin-top:6px; background: var(--primary-color); color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px; letter-spacing:0.5px;"><i class=\"ph-bold ph-door\"></i> Room No: 202</span>',
                         'amenities' => [
                             ['name' => 'King Size Bed', 'icon' => 'ph-bed'],
                             ['name' => 'Smart TV', 'icon' => 'ph-television'],
@@ -269,16 +385,24 @@
                             <h2>{{ $room['name'] }}</h2>
                             <div class="rating"><i class="ph-fill ph-users"></i> {{ $room['capacity'] }} Members</div>
                         </div>
-                        <p class="description">{!! $room['desc'] !!}</p>
                         
-                        <div class="price-highlight">
-                            <span id="price-{{ $roomId }}">₹2000</span> <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">for </span><span id="time-text-{{ $roomId }}" style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">4 hours</span></div>
-                        <p class="gst-text">+ 5% GST applicable</p>
+                        <!-- 1. Description -->
+                        <p class="description" style="margin-top: 0 !important; margin-bottom: 2px !important; line-height: 1.4 !important;">{!! $room['desc'] !!}</p>
                         
-                        <!-- Room Features -->
-                        <div class="room-features-box" style="margin: 1rem 0; padding: 0.8rem; background: {{ $room['theme']['bg'] }}; border-radius: 12px; border: 1px dashed {{ $room['theme']['border'] }};">
-                            <h3 style="font-size: 0.75rem; font-weight: 700; color: #555; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.8px;">{{ $room['theme']['title'] }}</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; color: #666;">
+                        <!-- 2. Pricing Section (Zero Gap) -->
+                        <div class="price-section">
+                            <div class="price-highlight">
+                                <span id="price-{{ $roomId }}">₹2000</span> 
+                                <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">for </span>
+                                <span id="time-text-{{ $roomId }}" style="font-size: 0.85rem; font-weight: 500; color: var(--text-light);">4 hours</span>
+                            </div>
+                            <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
+                        </div>
+                        
+                        <!-- 3. Room Features (Tight Spacing) -->
+                        <div class="room-features-box" style="background: {{ $room['theme']['bg'] }}; border-color: {{ $room['theme']['border'] }};">
+                            <h3 class="features-title">{{ $room['theme']['title'] }}</h3>
+                            <div class="features-grid">
                                 @foreach($room['amenities'] as $amenity)
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <i class="ph {{ $amenity['icon'] }}" style="color: {{ $room['theme']['icon'] }};"></i> 
@@ -286,7 +410,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            <p style="font-size: 0.7rem; color: #999; margin-top: 0.6rem; font-style: italic;">
+                            <p class="features-footer-text">
                                 {{ $room['name'] === 'Suite Room' ? 'Luxury stay with maximum comfort' : ($room['name'] === 'Glass Room' ? 'Designed for transparency and innovation' : 'Perfect for meetings and collaboration') }}
                             </p>
                         </div>
@@ -295,21 +419,20 @@
                             $bookedInfo = $bookedRooms[$room['name']] ?? $bookedRooms[$roomId] ?? null;
                         @endphp
                         @if($bookedInfo)
-                            <div class="next-available" style="margin-top: 0.5rem; padding: 0.6rem; background: #fff1f2; border-radius: 10px; border: 1px solid #fee2e2; text-align: center;">
-                                <p style="font-size: 0.75rem; font-weight: 700; color: #991b1b; margin: 0;">
-                                    <i class="ph-bold ph-clock-countdown"></i> Next Available:<br>
-                                    {{ date('d M, Y', strtotime($bookedInfo['date'])) }} at {{ date('h:i A', strtotime($bookedInfo['time'])) }}
+                            <div class="next-available" style="margin-bottom: 0.5rem; padding: 0.5rem; background: #fff1f2; border-radius: 8px; border: 1px solid #fee2e2; text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                                <p style="font-size: 0.7rem; font-weight: 700; color: #991b1b; margin: 0;">
+                                    <i class="ph-bold ph-clock-countdown"></i> Booked - Next: {{ date('d M, Y', strtotime($bookedInfo['date'])) }}
                                 </p>
                             </div>
+                        @else
+                            <div class="next-available-placeholder" style="margin-bottom: 0.5rem; height: 60px;"></div> <!-- Spacer for breathing room if not booked -->
                         @endif
 
-                        <div class="card-actions" style="margin-top: 1rem;">
-                            <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1;">View Details</a>
-                            @if($bookedInfo)
-                                <a href="javascript:void(0)" class="btn" style="background: #9ca3af; border-color: #9ca3af; cursor: not-allowed; opacity: 0.5; pointer-events: none;">Booked</a>
-                            @else
-                                <a href="{{ route('booking.form.full', ['room' => $roomId]) }}" class="btn">Book Now</a>
-                            @endif
+                        <div class="card-actions" style="margin-top: auto;">
+                            <a href="{{ route('room.details', ['id' => $roomId]) }}" class="btn btn-outline" style="flex: 1; justify-content: center; text-align: center; text-transform: uppercase;">View Details</a>
+                            <a href="{{ route('booking.form.full', ['room' => $room['name']]) }}" class="btn" style="flex: 1; justify-content: center; text-transform: uppercase; {{ $bookedInfo ? 'opacity: 0.7; pointer-events: none; background: #bc8e8e; border-color: #bc8e8e;' : '' }}">
+                                {{ $bookedInfo ? 'Booked' : 'Book Now' }}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -332,7 +455,7 @@
                 <div class="modal-price-line">
                     <span id="modalRoomPrice">₹0</span> 
                     <span style="font-size: 0.95rem; color: #666; font-weight: 600;" id="modalRoomTime">/ period</span>
-                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ 5% GST</span>
+                    <span style="font-size: 0.85rem; color: #999; font-weight: 500;">+ {{ $gstRate }}% GST</span>
                 </div>
 
                 <p style="color: #666; line-height: 1.4; font-size: 0.85rem; margin: 0.25rem 0;" id="modalRoomDesc"></p>
@@ -356,57 +479,8 @@
     </div>
 
     <!-- Help Modal -->
-    <div class="help-modal-overlay" id="helpModal">
-        <div class="help-modal-card">
-            <button class="help-modal-close" onclick="closeHelpModal()">
-                <i class="ph ph-x"></i>
-            </button>
-            <div class="help-modal-content">
-                <h2 class="help-modal-title">Contact Us</h2>
-                <form class="help-form" onsubmit="event.preventDefault(); return false;">
-                    <div class="help-form-row">
-                        <div class="help-input-group">
-                            <label>Name</label>
-                            <input type="text" placeholder="Your name">
-                        </div>
-                        <div class="help-input-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="Your email">
-                        </div>
-                    </div>
-                    
-                    <div class="help-input-group full-width">
-                        <label>Subject</label>
-                        <select class="form-input" style="background: #fafafa !important;">
-                            <option value="" disabled selected>Choose subject…</option>
-                            <option>Are you a property owner who needs help?</option>
-                            <option>Change booking</option>
-                            <option>Cancel booking</option>
-                            <option>I did not stay at the hotel</option>
-                            <option>Hotel info</option>
-                            <option>Partnership</option>
-                            <option>Other</option>
-                            <option>Check prices and availability</option>
-                            <option>Group booking (for business clients)</option>
-                            <option>Group booking (for travel agencies)</option>
-                            <option>Request my personal data</option>
-                            <option>Remove my personal data</option>
-                            <option>Legal and law-related matters</option>
-                        </select>
-                    </div>
+    @include('partials.help-modal')
 
-                    <div class="help-input-group full-width">
-                        <label>Message</label>
-                        <textarea placeholder="How can we help you?" rows="5"></textarea>
-                    </div>
-
-                    <div class="help-form-footer">
-                        <button type="submit" class="help-send-btn">SEND</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script>
         function calcSpecialPrice(id) {
@@ -463,13 +537,7 @@
             document.getElementById(id).classList.remove('active');
         }
 
-        function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-        }
 
-        function closeHelpModal() {
-            document.getElementById('helpModal').classList.remove('active');
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
             const detailsModal = document.getElementById('detailsModal');

@@ -46,13 +46,14 @@
             transition: transform 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .admin-main { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
+            .top-navbar { padding: 0 1rem !important; }
+            #sidebarToggle { display: flex !important; }
+            .admin-header h1 { font-size: 1.15rem !important; }
+            .btn-download-pdf { display: none !important; }
         }
 
         .sidebar-header {
@@ -146,17 +147,22 @@
         .admin-main {
             margin-left: var(--sidebar-width);
             flex: 1;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
             width: calc(100% - var(--sidebar-width));
+            min-width: 0;
             transition: all 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .admin-main {
-                margin-left: 0;
-                width: 100%;
-                padding: 1rem;
-            }
+        .top-navbar {
+            height: 72px; background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 90;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .admin-body {
+            padding: 2.5rem; padding-bottom: 1.5rem; max-width: 1600px; width: 100%; margin: 0 auto; box-sizing: border-box;
         }
 
         .admin-header {
@@ -333,11 +339,10 @@
             color: #ffffff !important;
             transform: none !important;
             width: 100% !important;
-            padding: 1.1rem 2rem !important;
         }
 
         .btn-approve {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #ff7a00 !important;
             color: #ffffff !important;
             border: none !important;
@@ -371,7 +376,7 @@
         }
 
         .btn-reject {
-            padding: 1.1rem 2rem !important;
+            padding: 1rem 2rem !important;
             background: #e11d48 !important;
             color: #ffffff !important;
             border: none !important;
@@ -537,6 +542,43 @@
             margin-top: 0.25rem;
         }
 
+        /* Refined Admin Profile Dropdown - Polished Card Style */
+        .admin-profile-wrap { position: relative; display: inline-flex; align-items: center; }
+        .admin-profile-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: #475569; cursor: pointer; font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        .admin-profile-btn:hover { background: #f1f5f9; color: var(--primary-color); border-color: var(--primary-color); }
+        .admin-profile-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            display: none; z-index: 2000;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            min-width: 140px;
+            padding: 6px;
+        }
+        .admin-profile-menu.open { display: block; animation: dropdownIn 0.2s ease-out; }
+        @keyframes dropdownIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-logout-form { margin: 0; padding: 0; }
+        .admin-logout-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 10px;
+            background: #fff1f2; border: 1px solid #fecdd3;
+            color: #ef4444; font-weight: 700;
+            font-size: 0.85rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .admin-logout-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
     </style>
     @include('partials.dynamic-styles')
 </head>
@@ -562,17 +604,32 @@
     </div>
 
     <main class="admin-main">
-        <div class="admin-header">
-            <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
-            <div>
-                <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.25rem;">Back to list</div>
-                <h1 id="pdf-header">Booking Details #{{ $booking->id }}</h1>
+        <div class="top-navbar">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button id="sidebarToggle" class="menu-toggle" style="display: none; background: #fff; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 1.25rem;">
+                    <i class="ph ph-list"></i>
+                </button>
+                <a href="{{ route('admin.bookings') }}" class="btn-back"><i class="ph ph-arrow-left"></i></a>
             </div>
-            <button onclick="downloadBookingPDF()" class="btn-download-pdf">
-                <i class="ph-bold ph-file-pdf" style="color: #ef4444; font-size: 1.1rem;"></i>
-                Download PDF
-            </button>
+            <div>
+                <h1 id="pdf-header" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0;">Booking Details</h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: auto;">
+                <div class="admin-profile-wrap">
+                    <button class="admin-profile-btn" id="adminProfileBtn" aria-label="Account menu">
+                        <i class="ph-fill ph-user"></i>
+                    </button>
+                    <div class="admin-profile-menu" id="adminProfileMenu">
+                        <form class="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="admin-logout-btn"><i class="ph-bold ph-sign-out"></i> Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="admin-body">
 
         @if(session('success'))
             <div style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bbf7d0; display: flex; align-items: center; gap: 0.5rem;">
@@ -677,11 +734,15 @@
                             <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('F d, Y') }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Time Slot</span>
-                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</span>
+                            <span class="info-label">Clock In</span>
+                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->start_time)->format('h:i A') }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Duration</span>
+                            <span class="info-label">Clock Out</span>
+                            <span class="info-value">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($booking->end_time)->format('h:i A') }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total Duration</span>
                             <span class="info-value">
                                 @php
                                     $start = \Carbon\Carbon::parse($booking->start_time);
@@ -733,13 +794,19 @@
                     </div>
 
                     <div class="payment-summary">
+                        @php
+                            // $gstRate is shared globally via AppServiceProvider
+                            $gstFactor = 1 + ($gstRate / 100);
+                            $subtotal = $booking->total_price / $gstFactor;
+                            $gstAmount = $booking->total_price - $subtotal;
+                        @endphp
                         <div class="summary-row">
                             <span>Subtotal</span>
-                            <span>₹{{ number_format($booking->total_price / 1.18, 2) }}</span>
+                            <span>₹{{ number_format($subtotal, 2) }}</span>
                         </div>
                         <div class="summary-row">
-                            <span>GST (18%)</span>
-                            <span>₹{{ number_format($booking->total_price - ($booking->total_price / 1.18), 2) }}</span>
+                            <span>GST ({{ $gstRate }}%)</span>
+                            <span>₹{{ number_format($gstAmount, 2) }}</span>
                         </div>
                         <div class="summary-row total">
                             <span>{{ $booking->payment_status === 'Paid' ? 'Amount Paid' : 'Amount to be Paid' }}</span>
@@ -768,13 +835,14 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; padding: 0 1.5rem 2rem 1.5rem;">
                     @if($booking->approval_status === 'Pending' || $booking->approval_status === 'Principal Approved')
                         @if($booking->approval_status === 'Pending')
-                            <div class="pulse-status" style="background: rgba(245, 158, 11, 0.1); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center; margin-bottom: 1rem;">
-                            <p style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif;">
-                                    <i class="ph-fill ph-hourglass"></i> Waiting for Principal Approval
-                                </p>
+                            <div class="pulse-status" style="background: rgba(245, 158, 11, 0.1); height: 75px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); display: flex; align-items: center; justify-content: center; width: 100%;">
+                                <div style="margin: 0; font-size: 0.875rem; color: #b45309; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; line-height: 1;">
+                                    <i class="ph-fill ph-hourglass" style="font-size: 1.1rem; position: relative; top: -1px;"></i>
+                                    <span>Waiting for Principal Approval</span>
+                                </div>
                             </div>
                         @endif
 
@@ -783,8 +851,8 @@
                             <button type="submit" class="btn-approve" 
                                     style="width: 100%;"
                                     {{ $booking->approval_status === 'Pending' ? 'disabled' : '' }}>
-                                <i class="ph-bold ph-check" style="color:#fff !important;"></i>
-                                Final Approve
+                                <i class="ph-bold ph-paper-plane-tilt" style="color:#fff !important;"></i>
+                                Approve & Send Payment Link
                             </button>
                         </form>
                         
@@ -797,22 +865,52 @@
                     @endif
 
                     @if($booking->approval_status === 'Approved' && $booking->payment_status == 'Pending')
-                        <div style="background: rgba(59, 130, 246, 0.08); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); text-align: center; margin-bottom: 0.5rem;">
-                            <p style="margin: 0; font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif;">
-                                <i class="ph-fill ph-info"></i> Approved — waiting for payment at counter
-                            </p>
+                        <div style="background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); padding: 1.25rem;">
+                            <div style="font-size: 0.875rem; color: #1d4ed8; font-weight: 600; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                                <i class="ph-fill ph-info" style="font-size: 1.1rem;"></i>
+                                <span>Waiting for Online Payment</span>
+                            </div>
+                            
+                            @php
+                                $lastLink = \App\Models\PaymentLink::where('booking_id', $booking->id)->latest()->first();
+                            @endphp
+
+                            @if($lastLink)
+                                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 1rem; padding: 0.75rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                        <span>Link Status:</span>
+                                        <strong style="color: {{ $lastLink->isValid() ? '#10b981' : '#ef4444' }}">
+                                            {{ $lastLink->is_used ? 'Used' : ($lastLink->isExpired() ? 'Expired' : 'Active') }}
+                                        </strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>Expires:</span>
+                                        <strong>{{ $lastLink->expires_at->format('M d, H:i') }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <form action="{{ route('admin.bookings.resend', $booking->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-approve" style="background: #3b82f6 !important; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3) !important;">
+                                        <i class="ph-bold ph-arrows-clockwise"></i> Resend Payment Link
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-mark-paid" style="background: #64748b !important; box-shadow: 0 4px 14px rgba(100, 116, 139, 0.3) !important;">
+                                        <i class="ph-bold ph-hand-coins"></i> Mark as Paid (Counter)
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <form action="{{ route('admin.bookings.pay', $booking->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-mark-paid">
-                                <i class="ph-bold ph-hand-coins" style="color:#fff !important;"></i> Mark as Paid (at Counter)
-                            </button>
-                        </form>
                     @endif
 
-                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 0.5rem 0;">
+                    <div style="height: 1px; background: #e2e8f0; margin: 0.25rem 0;"></div>
 
-                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this booking permanently?');">
+                    <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="event.preventDefault(); showConfirmModal('delete', this);">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-delete">
@@ -821,7 +919,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> <!-- end admin-body -->
     </main>
 
     <!-- Confirmation Modal -->
@@ -850,10 +948,15 @@
                 msg.innerText = 'Are you sure you want to approve this booking?';
                 confirmBtn.innerText = 'Yes, Approve';
                 confirmBtn.className = 'confirm-btn-confirm';
-            } else {
+            } else if (type === 'reject') {
                 title.innerText = 'Reject Booking';
                 msg.innerText = 'Are you sure you want to reject this booking?';
                 confirmBtn.innerText = 'Yes, Reject';
+                confirmBtn.className = 'confirm-btn-confirm is-reject';
+            } else if (type === 'delete') {
+                title.innerText = 'Delete Booking';
+                msg.innerText = 'Are you sure you want to delete this booking permanently? This action cannot be undone.';
+                confirmBtn.innerText = 'Yes, Delete';
                 confirmBtn.className = 'confirm-btn-confirm is-reject';
             }
             modal.style.display = 'flex';
@@ -867,37 +970,37 @@
             if (pendingForm) pendingForm.submit();
         });
 
+        const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
 
+        // Profile Dropdown Toggle
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminProfileMenu = document.getElementById('adminProfileMenu');
+        if (adminProfileBtn) {
+            adminProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminProfileMenu.classList.toggle('open');
+            });
+        }
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+        }
+
         document.addEventListener('click', (event) => {
+            if (adminProfileMenu) adminProfileMenu.classList.remove('open');
             if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('open')) {
                 const isClickInsideSidebar = sidebar.contains(event.target);
-                
-                if (!isClickInsideSidebar) {
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(event.target);
+                if (!isClickInsideSidebar && !isClickOnToggle) {
                     sidebar.classList.remove('open');
                 }
             }
         });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        function downloadBookingPDF() {
-            const element = document.querySelector('.details-grid');
-            const bookingId = '{{ $booking->id }}';
-            const opt = {
-                margin: 0.5,
-                filename: `Booking_Details_${bookingId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            // Add a temporary title for the PDF
-            const header = document.createElement('div');
-            header.innerHTML = `<h1 style="color: #1e293b; font-family: sans-serif; margin-bottom: 20px;">Booking Details #${bookingId}</h1>`;
-            
-            html2pdf().set(opt).from(element).save();
-        }
+
     </script>
 </body>
 </html>
