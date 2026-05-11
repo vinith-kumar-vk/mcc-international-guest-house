@@ -387,67 +387,46 @@ function initSuccessPage() {
 function downloadDummyReceipt() {
     const btn = document.querySelector('.btn-outline');
     const originalText = btn.innerHTML;
+    const wrapper = document.querySelector('.success-wrapper');
+    const actions = document.querySelector('.success-actions');
+
     btn.innerHTML = '<i class="ph-bold ph-spinner"></i> Generating...';
     btn.disabled = true;
 
-    try {
-        // Create an off-screen container to ensure html2canvas calculates dimensions properly
-        const printContainer = document.createElement('div');
-        printContainer.innerHTML = document.querySelector('.success-wrapper').outerHTML;
+    // Temporary print adjustments
+    actions.style.display = 'none';
+    const originalShadow = wrapper.style.boxShadow;
+    wrapper.style.boxShadow = 'none';
 
-        // Remove Action buttons from the PDF clone
-        const actions = printContainer.querySelector('.success-actions');
-        if (actions) actions.remove();
+    const bkId = document.getElementById('recBkId').textContent;
+    const opt = {
+        margin: [0.5, 0.5],
+        filename: `${bkId}_Receipt.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
 
-        // Enforce static styles for the PDF capture to avoid responsive breaks
-        const wrapper = printContainer.querySelector('.success-wrapper');
-        wrapper.style.margin = '0 auto';
-        wrapper.style.boxShadow = 'none';
-        wrapper.style.border = '2px solid #eaeaea';
-        wrapper.style.maxWidth = '800px';
-
-        // Position it completely off-screen but in the DOM
-        printContainer.style.position = 'absolute';
-        printContainer.style.top = '-10000px';
-        printContainer.style.left = '-10000px';
-        printContainer.style.width = '800px';
-        printContainer.style.background = '#ffffff';
-        printContainer.style.padding = '40px';
-        document.body.appendChild(printContainer);
-
-        const bkId = document.getElementById('recBkId').textContent;
-        const opt = {
-            margin: 0, // Using internal padding instead of jsPDF margins
-            filename: `${bkId}_Receipt.pdf`,
-            image: { type: 'jpeg', quality: 1.0 },
-            html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: 'avoid-all' } // Prevents snapping table items into 2 pages
-        };
-
-        if (window.html2pdf) {
-            html2pdf().set(opt).from(printContainer).save().then(() => {
-                document.body.removeChild(printContainer);
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }).catch(e => {
-                console.error(e);
-                document.body.removeChild(printContainer);
-                fallbackTextDownload();
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
-        } else {
-            document.body.removeChild(printContainer);
-            fallbackTextDownload();
+    if (window.html2pdf) {
+        html2pdf().set(opt).from(wrapper).save().then(() => {
+            actions.style.display = 'flex';
+            wrapper.style.boxShadow = originalShadow;
             btn.innerHTML = originalText;
             btn.disabled = false;
-        }
-    } catch (err) {
-        console.error(err);
-        fallbackTextDownload();
+        }).catch(err => {
+            console.error('PDF Error:', err);
+            actions.style.display = 'flex';
+            wrapper.style.boxShadow = originalShadow;
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            fallbackTextDownload();
+        });
+    } else {
+        actions.style.display = 'flex';
+        wrapper.style.boxShadow = originalShadow;
         btn.innerHTML = originalText;
         btn.disabled = false;
+        fallbackTextDownload();
     }
 }
 
@@ -467,19 +446,19 @@ function fallbackTextDownload() {
 
 // --- HEADER DROPDOWN LOGIC ---
 function toggleDropdown(event) {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     const menu = document.getElementById('profileMenu');
     if (menu) {
-        menu.classList.toggle('show');
+        menu.classList.toggle('active');
     }
 }
 
 document.addEventListener('click', function(event) {
     const menu = document.getElementById('profileMenu');
     const btn = document.querySelector('.profile-btn');
-    if (menu && menu.classList.contains('show')) {
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-            menu.classList.remove('show');
+    if (menu && menu.classList.contains('active')) {
+        if (btn && !btn.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.remove('active');
         }
     }
 });

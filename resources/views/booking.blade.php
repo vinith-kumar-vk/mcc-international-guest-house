@@ -4,30 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Space - MMIP Room Booking</title>
+    <title>Book Space - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    @include('partials.dynamic-styles')
+    <style>
+        /* Fix ONLY for Proceed to Payment / Confirm Booking button */
+        #proceedBtn:not(:disabled) {
+            background-color: #ff6a00 !important;
+            color: #ffffff !important;
+            border-color: #ff6a00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+        }
+        #proceedBtn:not(:disabled):hover,
+        #proceedBtn:not(:disabled):focus {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:not(:disabled):active {
+            background-color: #e65c00 !important;
+            color: #ffffff !important;
+            border-color: #e65c00 !important;
+            transform: none !important;
+            scale: 1 !important;
+            box-shadow: none !important;
+        }
+        #proceedBtn:disabled {
+            background-color: #ccc !important;
+            color: #888 !important;
+            border-color: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            scale: 1 !important;
+        }
+        #proceedBtn,
+        .confirm-booking-btn,
+        .confirm-booking-btn:active,
+        .confirm-booking-btn:focus,
+        #proceedBtn:active,
+        #proceedBtn:focus {
+            transform: none !important;
+            scale: 1 !important;
+            transition: none !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="header-left">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="header-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="header-logo" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
         </div>
         <div class="header-center">
-            <h1>MMIP Room Booking</h1>
+            <h1>MCC International Guest House</h1>
         </div>
         <div class="header-right">
             <div class="profile-dropdown">
                 <button class="profile-btn" onclick="toggleDropdown(event)">
-                    <i class="ph-fill ph-user-circle"></i>
+                    <i class="ph-fill ph-user-circle" style="color: var(--primary-color); font-size:1.75rem;"></i>
                 </button>
                 <div class="dropdown-menu" id="profileMenu">
                     @auth
-                        <a href="#" class="dropdown-item logout">Logout</a>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="dropdown-item logout" style="width:100%; text-align:left; background:none; border:none; padding:10px 15px; cursor:pointer; font-family:inherit;">Logout</button>
+                        </form>
                     @else
-                        <a href="#" class="dropdown-item">Login</a>
+                        <a href="{{ route('login') }}" class="dropdown-item">Login</a>
                     @endauth
                 </div>
             </div>
@@ -73,7 +126,7 @@
                     </div>
                 @endif
 
-                <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" onsubmit="proceedToPayment(event)">
+                <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" onsubmit="proceedToPayment(event)" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="room_name" id="hidden_room_name" value="{{ request('room') }}">
                     <input type="hidden" name="total_price" id="hidden_total_price">
@@ -152,10 +205,16 @@
                         </label>
                     </div>
 
+                    <div class="form-group" style="margin-top: 1rem; margin-bottom: 2rem;">
+                        <label for="referral_attachment" style="font-weight: 600; color: var(--text-color); margin-bottom: 0.5rem; display: block;">Referral Attachment</label>
+                        <input type="file" id="referral_attachment" name="referral_attachment" class="form-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <small class="form-helper" style="color: var(--text-light); margin-top: 0.25rem; display: block;">Upload a referral document if applicable (PDF, Image, etc.)</small>
+                    </div>
+
                     <div class="button-group" style="margin-top: 1.5rem;">
                         <button type="button" class="btn btn-outline" onclick="window.location.href='{{ route('home') }}'"><i
                                 class="ph-bold ph-arrow-left"></i> Back to Spaces</button>
-                        <button type="submit" class="btn" id="proceedBtn" disabled><i
+                        <button type="submit" class="btn confirm-booking-btn" id="proceedBtn" disabled><i
                                 class="ph-bold ph-credit-card"></i> Proceed to Payment</button>
                     </div>
                 </form>
