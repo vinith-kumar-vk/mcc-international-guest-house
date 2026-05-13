@@ -40,6 +40,14 @@
             box-shadow: 0 8px 25px rgba(255,122,0,0.25);
         }
 
+        .hero-dot {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .hero-dot.active {
+            background-color: var(--primary-color) !important;
+        }
+
         /* =============================================================
            HERO WELCOME SECTION (Base is in responsive.css)
         ============================================================= */
@@ -236,11 +244,11 @@
         <div class="hero-slider-arrow right"><button class="hero-next"><i class="ph-bold ph-caret-right"></i></button></div>
         <!-- Dots -->
         <div class="hero-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;">
-            <div class="hero-dot active" style="width:30px;height:4px;border-radius:2px;background:var(--primary-color);cursor:pointer;transition:all 0.3s ease;"></div>
-            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
-            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
-            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
-            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot active" style="width:30px;height:4px;border-radius:2px;cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;cursor:pointer;transition:all 0.3s ease;"></div>
+            <div class="hero-dot" style="width:30px;height:4px;border-radius:2px;cursor:pointer;transition:all 0.3s ease;"></div>
         </div>
     </section>
 
@@ -256,13 +264,15 @@
             let timer;
             let isDragging = false;
             let isHovered = false;
+            let startX = 0;
 
             function renderSlide(index) {
+                if (index < 0 || index >= slides.length) return;
                 slides.forEach(s => s.classList.remove('active-slide'));
-                dots.forEach(d => d.style.background = 'rgba(255,255,255,0.4)');
+                dots.forEach(d => d.classList.remove('active'));
                 
                 slides[index].classList.add('active-slide');
-                dots[index].style.background = 'var(--primary-color)';
+                if (dots[index]) dots[index].classList.add('active');
                 current = index;
             }
 
@@ -271,9 +281,11 @@
 
             function startTimer() {
                 stopTimer();
-                if (!isHovered && !isDragging) {
-                    timer = setInterval(nextSlide, 4000);
-                }
+                timer = setInterval(() => {
+                    if (!isHovered && !isDragging) {
+                        nextSlide();
+                    }
+                }, 4000);
             }
 
             function stopTimer() {
@@ -358,8 +370,8 @@
                             $roomCards = [
                                 ['badge' => 'Standard', 'badgeClass' => 'standard-badge', 'image' => asset('assets/standard/standardroom.JPG'), 'title' => 'Standard Rooms', 'desc' => 'Thoughtfully designed for efficiency and comfort, our Standard Rooms provide a restful haven for short-term visitors with essential modern amenities.', 'route' => 'standard.rooms', 'btnText' => 'EXPLORE STANDARD'],
                                 ['badge' => 'Premium', 'badgeClass' => 'premium-badge', 'image' => asset('assets/room1.JPG'), 'title' => 'Advance Rooms', 'desc' => 'Experience elevated hospitality in our Advance Rooms, specifically curated for guests seeking enhanced privacy and premium comfort during longer stays.', 'route' => 'advance.rooms', 'btnText' => 'EXPLORE ADVANCE'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/conference.JPG'), 'title' => 'Conference Hall', 'desc' => 'A versatile venue designed for large-scale gatherings and corporate events with high-definition projection and professional acoustics.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
-                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/glass.JPG'), 'title' => 'Glass Room', 'desc' => 'Inspire creativity in our modern Glass Room, designed for collaborative brainstorming and focused team sessions with ample natural light.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Conference', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/conference.JPG'), 'title' => 'Conference Room', 'desc' => 'A versatile venue designed for large-scale gatherings and corporate events with high-definition projection and professional acoustics.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
+                                ['badge' => 'Glass Room', 'badgeClass' => 'conference-badge', 'image' => asset('assets/standard/glass.JPG'), 'title' => 'Glass Room', 'desc' => 'Inspire creativity in our modern Glass Room, designed for collaborative brainstorming and focused team sessions with ample natural light.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE HALLS'],
                                 ['badge' => 'Suite', 'badgeClass' => 'suite-badge', 'image' => asset('assets/suite.JPG'), 'title' => 'Suite Room', 'desc' => 'Our flagship Suite Room offers the pinnacle of luxury, featuring a grand king-size bed and premium toiletries for ultimate relaxation.', 'route' => 'conference.rooms', 'btnText' => 'EXPLORE SUITE'],
                             ];
                         @endphp
@@ -533,7 +545,7 @@
                         <span class="badge conference-badge" style="position: absolute; top: 1rem; left: 1rem; z-index: 5;">Conference</span>
                     </div>
                     <div class="card-content">
-                        <h2>Conference / Glass Rooms</h2>
+                        <h2>Conference & Glass Rooms</h2>
                         <p class="description">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
                         <p class="gst-text">+ {{ $gstRate }}% GST applicable</p>
                         <div class="card-btn-wrapper">

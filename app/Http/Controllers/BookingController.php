@@ -62,7 +62,7 @@ class BookingController extends Controller
             // Advance Rooms (Numbered 101, 201 etc): ₹2500 per 24-hour day
             $days = ceil($durationHours / 24);
             $basePrice = $days * 2500;
-        } elseif (in_array(strtolower($roomName), ['conference-hall', 'glass-room', 'suite-room'])) {
+        } elseif (in_array(strtolower($roomName), ['conference-hall', 'conference-room', 'glass-room', 'suite-room'])) {
             // Special Facility Rooms: ₹500 per hour (Minimum 4 hours = ₹2000)
             $billableHours = max(4, $durationHours);
             $basePrice = $billableHours * 500;
@@ -115,7 +115,7 @@ class BookingController extends Controller
         // 3. Send notification email to the Principal
         try {
             // Get dynamic settings
-            $principalEmail = \App\Models\Setting::where('key', 'principal_email')->value('value') ?? 'unfortunately2909@gmail.com';
+            $principalEmail = \App\Models\Setting::where('key', 'principal_email')->value('value') ?? 'prasathragul75@gmail.com';
             $senderEmail    = \App\Models\Setting::where('key', 'sender_email')->value('value')    ?? 'prasathragul75@gmail.com';
             $mailPassword   = \App\Models\Setting::where('key', 'mail_password')->value('value')   ?? 'wnzt bweh qwvk gtbu';
             $mailHost       = \App\Models\Setting::where('key', 'mail_host')->value('value')       ?? 'smtp.gmail.com';

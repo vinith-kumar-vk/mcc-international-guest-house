@@ -255,7 +255,7 @@ class AdminController extends Controller
             // Apply Dynamic Mail Config
             $this->applyMailConfig();
 
-            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
+            Mail::to($booking->email)->send(new PaymentLinkMail($booking, $paymentLink));
         } catch (\Exception $e) {
             \Log::error('Failed to send guest payment link: ' . $e->getMessage());
         }
@@ -282,7 +282,7 @@ class AdminController extends Controller
 
         try {
             $this->applyMailConfig();
-            Mail::to('unfortunately2909@gmail.com')->send(new PaymentLinkMail($booking, $paymentLink));
+            Mail::to($booking->email)->send(new PaymentLinkMail($booking, $paymentLink));
         } catch (\Exception $e) {
             \Log::error('Failed to resend guest payment link: ' . $e->getMessage());
             return back()->with('error', 'Failed to send email. Check logs.');

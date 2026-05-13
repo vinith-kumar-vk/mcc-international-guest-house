@@ -98,8 +98,6 @@ class LoginController extends Controller
             'role' => 'guest',
         ]);
 
-        Auth::login($user);
-
-        return redirect()->route('home')->with('success', 'Account created successfully!');
+        return redirect()->route('login')->with('success', 'Account created successfully! Please login to continue.');
     }
 }

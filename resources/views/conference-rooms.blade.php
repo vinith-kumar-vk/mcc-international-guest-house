@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conference / Glass Rooms - MCC IGH</title>
+    <title>Conference & Glass Rooms - MCC IGH</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -310,18 +310,18 @@
             <div class="breadcrumb" style="font-size: 1rem; margin-bottom: 1.5rem;">
                 <a href="{{ route('home') }}" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Home</a> 
                 <span style="color: #333; margin: 0 8px;">></span> 
-                <span style="color: var(--text-color); font-weight: 500;">Conference / Glass Rooms</span>
+                <span style="color: var(--text-color); font-weight: 500;">Conference & Glass Rooms</span>
             </div>
 
             <div class="title-section" style="margin: 0rem 0 3.5rem 0; text-align: left;">
-                <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.6rem; color: #222; letter-spacing: -1px;">Conference / Glass Rooms</h1>
+                <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.6rem; color: #222; letter-spacing: -1px;">Conference & Glass Rooms</h1>
                 <p style="color: #666; font-size: 1rem; font-weight: 400; line-height: 1.5; max-width: 600px;">A versatile and professionally equipped venue designed for large-scale gatherings, corporate events, and interactive workshops with HD projection.</p>
             </div>
 
             @php
                 $specialRooms = [
                     [
-                        'name' => 'Conference Hall', 
+                        'name' => 'Conference Room', 
                         'capacity' => 60, 
                         'img' => asset('assets/standard/conference.JPG'), 
                         'desc' => 'Professional hall featuring HD projection, high-grade acoustics, and seating for 60 members.',

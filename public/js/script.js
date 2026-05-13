@@ -5,7 +5,7 @@ const roomDatabase = {
         amenities: ['<i class="ph ph-wifi-high"></i> WiFi', '<i class="ph ph-wind"></i> AC', '<i class="ph ph-presentation-chart"></i> Whiteboard'],
         image: 'assets/meeting.png'
     },
-    'Conference Hall': {
+    'Conference Room': {
         capacity: 10,
         amenities: ['<i class="ph ph-wifi-high"></i> WiFi', '<i class="ph ph-projector-screen"></i> Projector', '<i class="ph ph-wind"></i> AC'],
         image: 'assets/conference.png'

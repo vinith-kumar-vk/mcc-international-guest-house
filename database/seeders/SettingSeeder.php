@@ -15,7 +15,7 @@ class SettingSeeder extends Seeder
         $settings = [
             [
                 'key' => 'principal_email',
-                'value' => 'unfortunately2909@gmail.com',
+                'value' => 'prasathragul75@gmail.com',
                 'description' => 'The email address that receives booking requests for initial approval.'
             ],
             [
